@@ -4,21 +4,26 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { produtos } from "@/data/produtos";
+import { ChevronDown } from "lucide-react";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
     { href: "/", label: t("nav.home") },
-    { href: "/produtos", label: t("nav.products") },
+    { href: "/produtos", label: t("nav.products"), hasDropdown: true },
     { href: "/sobre", label: t("nav.about") },
     { href: "/videos", label: t("nav.videos") },
     { href: "/blog", label: t("nav.blog") },
     { href: "/contato", label: t("nav.contact") },
   ];
 
+  // Organizar produtos por categoria para o dropdown
+  const categoriasDropdown = ["Protecocho", "Hidramax", "Multicocho", "Nutrisilo"];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -41,7 +46,7 @@ export default function Navbar() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 88, // Aumentado para comportar uma logo maior
+          height: 88,
         }}
       >
         {/* Logo */}
@@ -63,30 +68,103 @@ export default function Navbar() {
           }}
         >
           {navLinks.map((link) => (
-            <Link
+            <div
               key={link.href}
-              href={link.href}
-              style={{
-                color: textColor,
-                fontWeight: 600,
-                fontSize: "0.9rem",
-                padding: "8px 16px",
-                borderRadius: 8,
-                transition: "all 0.2s ease",
-                fontFamily: "Inter, sans-serif",
-                letterSpacing: "0.02em",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = "#f0c060";
-                (e.target as HTMLElement).style.background = "rgba(255,255,255,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = textColor;
-                (e.target as HTMLElement).style.background = "transparent";
-              }}
+              style={{ position: "relative" }}
+              onMouseEnter={() => link.hasDropdown && setDropdownOpen(true)}
+              onMouseLeave={() => link.hasDropdown && setDropdownOpen(false)}
             >
-              {link.label}
-            </Link>
+              <Link
+                href={link.href}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  color: textColor,
+                  fontWeight: 600,
+                  fontSize: "0.9rem",
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  transition: "all 0.2s ease",
+                  fontFamily: "Inter, sans-serif",
+                  letterSpacing: "0.02em",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "#f0c060";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = textColor;
+                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                }}
+              >
+                {link.label}
+                {link.hasDropdown && <ChevronDown size={14} style={{ transition: "transform 0.2s", transform: dropdownOpen ? "rotate(180deg)" : "none" }} />}
+              </Link>
+
+              {/* Submenu Produtos */}
+              {link.hasDropdown && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: 0,
+                    minWidth: 260,
+                    background: "white",
+                    borderRadius: 12,
+                    boxShadow: "var(--shadow-md)",
+                    padding: 16,
+                    display: dropdownOpen ? "block" : "none",
+                    opacity: dropdownOpen ? 1 : 0,
+                    transform: dropdownOpen ? "translateY(0)" : "translateY(10px)",
+                    transition: "all 0.2s ease",
+                    pointerEvents: dropdownOpen ? "auto" : "none",
+                    zIndex: 100,
+                    border: "1px solid var(--cinza-medio)"
+                  }}
+                >
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {categoriasDropdown.map(categoria => {
+                      const prods = produtos.filter(p => p.categoria === categoria || p.categoria_en === categoria);
+                      return (
+                        <div key={categoria}>
+                          <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--verde-medio)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8, borderBottom: "1px solid var(--cinza-medio)", paddingBottom: 4 }}>
+                            {language === "PT" ? categoria : prods[0]?.categoria_en || categoria}
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                            {prods.map(p => (
+                              <Link
+                                key={p.id}
+                                href={`/produtos/${p.slug}`}
+                                style={{
+                                  fontSize: "0.85rem",
+                                  color: "var(--preto-suave)",
+                                  textDecoration: "none",
+                                  padding: "6px 8px",
+                                  borderRadius: 6,
+                                  transition: "all 0.2s ease"
+                                }}
+                                onMouseEnter={(e) => {
+                                  (e.currentTarget as HTMLElement).style.background = "var(--verde-suave)";
+                                  (e.currentTarget as HTMLElement).style.color = "var(--verde-escuro)";
+                                }}
+                                onMouseLeave={(e) => {
+                                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                                  (e.currentTarget as HTMLElement).style.color = "var(--preto-suave)";
+                                }}
+                                onClick={() => setDropdownOpen(false)}
+                              >
+                                {language === "PT" ? p.nome : p.nome_en || p.nome}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           ))}
           <div style={{ position: "relative", marginLeft: 8, marginRight: 8 }}>
             <select
@@ -108,12 +186,7 @@ export default function Navbar() {
               <option value="PT">PT</option>
               <option value="EN">EN</option>
             </select>
-            <svg 
-              width="10" height="6" viewBox="0 0 10 6" fill="none" 
-              style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
-            >
-              <path d="M1 1L5 5L9 1" stroke="var(--verde-escuro)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <ChevronDown size={14} color="var(--verde-escuro)" style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} />
           </div>
           <Link
             href="/contato"
@@ -180,34 +253,65 @@ export default function Navbar() {
           }}
         >
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              style={{
-                display: "block",
-                color: "rgba(255,255,255,0.85)",
-                fontWeight: 500,
-                fontSize: "1.05rem",
-                padding: "14px 0",
-                borderBottom: "1px solid rgba(255,255,255,0.08)",
-                fontFamily: "Inter, sans-serif",
-              }}
-            >
-            {link.label}
-            </Link>
+            <div key={link.href}>
+              <Link
+                href={link.href}
+                onClick={() => !link.hasDropdown && setMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  color: "rgba(255,255,255,0.85)",
+                  fontWeight: 500,
+                  fontSize: "1.05rem",
+                  padding: "14px 0",
+                  borderBottom: "1px solid rgba(255,255,255,0.08)",
+                  fontFamily: "Inter, sans-serif",
+                  textDecoration: "none"
+                }}
+              >
+                {link.label}
+                {link.hasDropdown && <ChevronDown size={18} style={{ opacity: 0.5 }} onClick={(e) => { e.preventDefault(); setDropdownOpen(!dropdownOpen); }} />}
+              </Link>
+              {link.hasDropdown && dropdownOpen && (
+                <div style={{ padding: "12px 0 12px 16px", background: "rgba(0,0,0,0.15)", borderRadius: 8, marginTop: 8 }}>
+                  {categoriasDropdown.map(categoria => {
+                    const prods = produtos.filter(p => p.categoria === categoria || p.categoria_en === categoria);
+                    return (
+                      <div key={categoria} style={{ marginBottom: 12 }}>
+                        <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--ouro)", textTransform: "uppercase", marginBottom: 6 }}>
+                          {language === "PT" ? categoria : prods[0]?.categoria_en || categoria}
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          {prods.map(p => (
+                            <Link
+                              key={p.id}
+                              href={`/produtos/${p.slug}`}
+                              onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}
+                              style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.9rem", textDecoration: "none" }}
+                            >
+                              {language === "PT" ? p.nome : p.nome_en || p.nome}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           ))}
           
           <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
             <button 
               onClick={() => setLanguage("PT")} 
-              style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: language === "PT" ? "white" : "transparent", color: language === "PT" ? "var(--verde-escuro)" : "white", fontWeight: 600 }}
+              style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: language === "PT" ? "white" : "transparent", color: language === "PT" ? "var(--verde-escuro)" : "white", fontWeight: 600, cursor: "pointer" }}
             >
               PT
             </button>
             <button 
               onClick={() => setLanguage("EN")} 
-              style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: language === "EN" ? "white" : "transparent", color: language === "EN" ? "var(--verde-escuro)" : "white", fontWeight: 600 }}
+              style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: language === "EN" ? "white" : "transparent", color: language === "EN" ? "var(--verde-escuro)" : "white", fontWeight: 600, cursor: "pointer" }}
             >
               EN
             </button>
