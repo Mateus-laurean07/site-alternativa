@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BlogPost } from "@/types";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Calendar, Clock, PenTool, BookOpen, ShoppingBag } from "lucide-react";
 
 interface BlogClientProps {
   post: BlogPost;
@@ -50,9 +51,9 @@ export default function BlogClient({ post, outros }: BlogClientProps) {
             <span style={{ background: "rgba(255,255,255,0.15)", color: "white", padding: "4px 14px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 600 }}>{language === "PT" ? post.categoria : post.categoria_en || post.categoria}</span>
             <h1 style={{ color: "white", marginTop: 20, marginBottom: 20 }}>{language === "PT" ? post.titulo : post.titulo_en || post.titulo}</h1>
             <div style={{ display: "flex", gap: 20, color: "rgba(255,255,255,0.7)", fontSize: "0.9rem" }}>
-              <span>✍️ {post.autor}</span>
-              <span>📅 {new Date(post.data).toLocaleDateString(language === "PT" ? "pt-BR" : "en-US", { day: "2-digit", month: "long", year: "numeric" })}</span>
-              <span>⏱️ {post.tempoLeitura} {language === "PT" ? "min de leitura" : "min read"}</span>
+              <span style={{ display: "flex", alignItems: "center", gap: 6 }}><PenTool size={16} /> {post.autor}</span>
+              <span style={{ display: "flex", alignItems: "center", gap: 6 }}><Calendar size={16} /> {new Date(post.data).toLocaleDateString(language === "PT" ? "pt-BR" : "en-US", { day: "2-digit", month: "long", year: "numeric" })}</span>
+              <span style={{ display: "flex", alignItems: "center", gap: 6 }}><Clock size={16} /> {post.tempoLeitura} {language === "PT" ? "min de leitura" : "min read"}</span>
             </div>
           </div>
         </div>
@@ -85,7 +86,7 @@ export default function BlogClient({ post, outros }: BlogClientProps) {
 
             <aside style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div style={{ background: "var(--verde-suave)", borderRadius: 20, padding: 28 }}>
-                <h4 style={{ color: "var(--verde-escuro)", marginBottom: 20 }}>📚 {language === "PT" ? "Outros Artigos" : "Other Articles"}</h4>
+                <h4 style={{ color: "var(--verde-escuro)", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}><BookOpen size={20} /> {language === "PT" ? "Outros Artigos" : "Other Articles"}</h4>
                 {outros.map((p) => (
                   <Link key={p.id} href={`/blog/${p.slug}`} style={{ display: "block", padding: "14px 0", borderBottom: "1px solid rgba(0,0,0,0.08)", textDecoration: "none" }}>
                     <div style={{ fontSize: "0.75rem", color: "var(--verde-medio)", fontWeight: 600, marginBottom: 4 }}>{language === "PT" ? p.categoria : p.categoria_en || p.categoria}</div>
@@ -94,7 +95,7 @@ export default function BlogClient({ post, outros }: BlogClientProps) {
                 ))}
               </div>
               <div style={{ background: "var(--gradient-verde)", borderRadius: 20, padding: 28, textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🐄</div>
+                <div style={{ color: "white", marginBottom: 12 }}><ShoppingBag size={40} /></div>
                 <h4 style={{ color: "white", marginBottom: 12 }}>{language === "PT" ? "Conheça Nossos Produtos" : "Discover Our Products"}</h4>
                 <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.85rem", marginBottom: 20 }}>{language === "PT" ? "Soluções completas para o manejo do seu rebanho." : "Complete solutions for herd handling."}</p>
                 <Link href="/produtos" className="btn-ouro" style={{ display: "inline-flex", fontSize: "0.85rem", padding: "10px 20px" }}>{language === "PT" ? "Ver Produtos" : "View Products"}</Link>

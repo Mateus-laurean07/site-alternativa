@@ -31,7 +31,7 @@
 
   /* Tipografia */
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Playfair Display', serif;
+  --font-display: 'Inter', sans-serif;
 
   /* Bordas */
   --radius-sm: 8px;

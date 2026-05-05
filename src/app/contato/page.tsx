@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { MapPin, Smartphone, Mail, Camera } from "lucide-react";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -13,10 +14,10 @@ export default function ContatoPage() {
   const [enviando, setEnviando] = useState(false);
 
   const contatos = [
-    { icon: "📍", titulo: language === "PT" ? "Endereço" : "Address", valor: "Lucas do Rio Verde / MT", link: "https://maps.app.goo.gl/qD6ZJkVr1wQxS5hU9" },
-    { icon: "📱", titulo: "WhatsApp", valor: "(65) 99990-2024", link: "https://wa.me/5565999902024" },
-    { icon: "✉️", titulo: "E-mail", valor: "contato@alternativamt.com.br", link: "mailto:contato@alternativamt.com.br" },
-    { icon: "📷", titulo: "Instagram", valor: "@alternativacochos", link: "https://instagram.com/alternativacochos" }
+    { icon: <MapPin size={24} />, titulo: language === "PT" ? "Endereço" : "Address", valor: "Lucas do Rio Verde / MT", link: "https://maps.app.goo.gl/qD6ZJkVr1wQxS5hU9" },
+    { icon: <Smartphone size={24} />, titulo: "WhatsApp", valor: "(65) 99990-2024", link: "https://wa.me/5565999902024" },
+    { icon: <Mail size={24} />, titulo: "E-mail", valor: "contato@alternativamt.com.br", link: "mailto:contato@alternativamt.com.br" },
+    { icon: <Camera size={24} />, titulo: "Instagram", valor: "@alternativacochos", link: "https://instagram.com/alternativacochos" }
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

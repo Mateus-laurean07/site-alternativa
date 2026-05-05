@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Tag, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -145,7 +146,7 @@ export default function BlogPage() {
               style={{ display: "flex", flexDirection: "column", gap: 24 }}
             >
               <div style={{ background: "var(--verde-suave)", borderRadius: 20, padding: 28 }}>
-                <h4 style={{ color: "var(--verde-escuro)", marginBottom: 20 }}>🏷️ {language === "PT" ? "Categorias" : "Categories"}</h4>
+                <h4 style={{ color: "var(--verde-escuro)", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}><Tag size={20} /> {language === "PT" ? "Categorias" : "Categories"}</h4>
                 {["Saúde Animal", "Nutrição", "Manejo", "Tecnologia", "Mercado"].map((cat) => (
                   <div key={cat} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "var(--verde-escuro)", fontSize: "0.9rem" }}>
                     {language === "PT" ? cat : categoriesMap[cat] || cat}
@@ -156,7 +157,7 @@ export default function BlogPage() {
                 ))}
               </div>
               <div style={{ background: "var(--gradient-verde)", borderRadius: 20, padding: 28, textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>💬</div>
+                <div style={{ color: "white", marginBottom: 12 }}><MessageCircle size={40} /></div>
                 <h4 style={{ color: "white", marginBottom: 12 }}>{language === "PT" ? "Precisa de Ajuda?" : "Need Help?"}</h4>
                 <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.875rem", marginBottom: 20 }}>{language === "PT" ? "Fale com nosso especialista via WhatsApp." : "Talk to our specialist via WhatsApp."}</p>
                 <a href="https://wa.me/5565999902024" target="_blank" rel="noreferrer" className="btn-whatsapp" style={{ fontSize: "0.85rem", padding: "12px 20px", justifyContent: "center", display: "inline-flex" }}>

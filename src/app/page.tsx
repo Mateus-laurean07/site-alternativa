@@ -18,6 +18,7 @@ const staggerContainer = {
 
 
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Shield, Recycle, Box, HeartHandshake, Wrench, Truck, Calculator, Newspaper, CheckCircle } from "lucide-react";
 
 export default function HomePage() {
   const { language, t } = useLanguage();
@@ -52,12 +53,12 @@ export default function HomePage() {
   ];
 
   const features = [
-    { icon: "🛡️", titulo: language === "PT" ? "Alta Resistência UV" : "High UV Resistance", desc: language === "PT" ? "Material especialmente tratado contra raios ultravioleta, garantindo durabilidade em qualquer clima." : "Specially treated material against ultraviolet rays, ensuring durability in any climate." },
-    { icon: "♻️", titulo: language === "PT" ? "Material Reciclado" : "Recycled Material", desc: language === "PT" ? "Fabricados com plástico reciclado, contribuindo para um agronegócio mais sustentável." : "Manufactured with recycled plastic, contributing to a more sustainable agribusiness." },
-    { icon: "📦", titulo: language === "PT" ? "Tamanhos Variados" : "Various Sizes", desc: language === "PT" ? "Da pequena propriedade à grande fazenda, temos o tamanho ideal para o seu rebanho." : "From small farms to large ranches, we have the ideal size for your herd." },
-    { icon: "🐄", titulo: language === "PT" ? "Bem-Estar Animal" : "Animal Welfare", desc: language === "PT" ? "Design projetado para facilitar o acesso dos animais e reduzir o estresse no manejo." : "Designed to facilitate animal access and reduce handling stress." },
-    { icon: "🔧", titulo: language === "PT" ? "Fácil Montagem" : "Easy Assembly", desc: language === "PT" ? "Sistema modular e intuitivo que pode ser montado sem ferramentas especializadas." : "Intuitive and modular system that can be assembled without specialized tools." },
-    { icon: "🚛", titulo: language === "PT" ? "Entrega Nacional" : "National Delivery", desc: language === "PT" ? "Enviamos para todas as regiões do Brasil com logística eficiente e segura." : "We ship to all regions of Brazil with efficient and safe logistics." },
+    { icon: <Shield size={32} />, titulo: language === "PT" ? "Alta Resistência UV" : "High UV Resistance", desc: language === "PT" ? "Material especialmente tratado contra raios ultravioleta, garantindo durabilidade em qualquer clima." : "Specially treated material against ultraviolet rays, ensuring durability in any climate." },
+    { icon: <Recycle size={32} />, titulo: language === "PT" ? "Material Reciclado" : "Recycled Material", desc: language === "PT" ? "Fabricados com plástico reciclado, contribuindo para um agronegócio mais sustentável." : "Manufactured with recycled plastic, contributing to a more sustainable agribusiness." },
+    { icon: <Box size={32} />, titulo: language === "PT" ? "Tamanhos Variados" : "Various Sizes", desc: language === "PT" ? "Da pequena propriedade à grande fazenda, temos o tamanho ideal para o seu rebanho." : "From small farms to large ranches, we have the ideal size for your herd." },
+    { icon: <HeartHandshake size={32} />, titulo: language === "PT" ? "Bem-Estar Animal" : "Animal Welfare", desc: language === "PT" ? "Design projetado para facilitar o acesso dos animais e reduzir o estresse no manejo." : "Designed to facilitate animal access and reduce handling stress." },
+    { icon: <Wrench size={32} />, titulo: language === "PT" ? "Fácil Montagem" : "Easy Assembly", desc: language === "PT" ? "Sistema modular e intuitivo que pode ser montado sem ferramentas especializadas." : "Intuitive and modular system that can be assembled without specialized tools." },
+    { icon: <Truck size={32} />, titulo: language === "PT" ? "Entrega Nacional" : "National Delivery", desc: language === "PT" ? "Enviamos para todas as regiões do Brasil com logística eficiente e segura." : "We ship to all regions of Brazil with efficient and safe logistics." },
   ];
 
   const depoimentos = [
@@ -163,7 +164,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 style={{ background: "var(--gradient-verde)", borderRadius: 24, padding: 48, color: "white", textAlign: "center" }}
               >
-                <div style={{ fontSize: "4rem", marginBottom: 16 }}>🧮</div>
+                <div style={{ color: "var(--ouro)", marginBottom: 16 }}><Calculator size={64} /></div>
                 <h3 style={{ color: "var(--ouro)", marginBottom: 16 }}>{language === "PT" ? "Faça seu Cálculo" : "Calculate Your Savings"}</h3>
                 <p style={{ color: "rgba(255,255,255,0.8)", marginBottom: 32 }}>
                   {language === "PT" ? "Calcule quanto você pode economizar com a linha Alternativa na sua propriedade." : "Calculate how much you can save with the Alternativa line on your property."}
@@ -247,7 +248,7 @@ export default function HomePage() {
               />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 32, background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  {(language === "PT" ? ["🐄 Bovinos", "🌱 Sustentável", "🏆 Pioneira", "🇧🇷 Nacional"] : ["🐄 Cattle", "🌱 Sustainable", "🏆 Pioneer", "🇧🇷 National"]).map((item) => (
+                  {(language === "PT" ? ["Bovinos", "Sustentável", "Pioneira", "Nacional"] : ["Cattle", "Sustainable", "Pioneer", "National"]).map((item) => (
                     <div key={item} style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", borderRadius: 12, padding: 16, textAlign: "center", color: "white", fontSize: "0.9rem", fontWeight: 600 }}>
                       {item}
                     </div>
@@ -343,8 +344,8 @@ export default function HomePage() {
             {blogPosts.map((post) => (
               <Link key={post.id} href={`/blog/${post.slug}`} className="blog-card" style={{ textDecoration: "none" }}>
                 <div className="blog-card-image">
-                  <div style={{ width: "100%", height: "100%", background: "var(--gradient-verde)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "3rem" }}>
-                    📰
+                  <div style={{ width: "100%", height: "100%", background: "var(--gradient-verde)", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.8)" }}>
+                    <Newspaper size={48} />
                   </div>
                 </div>
                 <div style={{ padding: 24 }}>

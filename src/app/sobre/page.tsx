@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Target, Eye, Gem, Users, Microscope, Handshake, Truck } from "lucide-react";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,9 +19,9 @@ export default function SobrePage() {
   const { language } = useLanguage();
 
   const mvv = [
-    { icon: "🎯", titulo: language === "PT" ? "Missão" : "Mission", texto: language === "PT" ? "Oferecer soluções inovadoras em cochos e bebedouros que promovam a produtividade do pecuarista, o bem-estar animal e a sustentabilidade do agronegócio brasileiro." : "Offer innovative solutions in troughs and drinkers that promote breeder productivity, animal welfare, and the sustainability of Brazilian agribusiness." },
-    { icon: "🔭", titulo: language === "PT" ? "Visão" : "Vision", texto: language === "PT" ? "Ser a marca referência em equipamentos para pecuária em toda a América Latina, reconhecida pela excelência, inovação e compromisso com o produtor rural." : "To be the reference brand in livestock equipment throughout Latin America, recognized for excellence, innovation, and commitment to rural producers." },
-    { icon: "💎", titulo: language === "PT" ? "Valores" : "Values", texto: language === "PT" ? "Qualidade acima de tudo, honestidade nas relações, inovação constante, respeito ao produtor, sustentabilidade ambiental e orgulho pelo agronegócio brasileiro." : "Quality above all, honesty in relationships, constant innovation, respect for the producer, environmental sustainability, and pride in Brazilian agribusiness." },
+    { icon: <Target size={32} />, titulo: language === "PT" ? "Missão" : "Mission", texto: language === "PT" ? "Fornecer soluções inovadoras e de alta resistência para o manejo pecuário, focando no bem-estar animal e na eficiência produtiva do agronegócio." : "Provide innovative and high-resistance solutions for livestock management, focusing on animal welfare and agribusiness production efficiency." },
+    { icon: <Eye size={32} />, titulo: language === "PT" ? "Visão" : "Vision", texto: language === "PT" ? "Ser a marca referência em tecnologia de cochos e bebedouros em todo o território nacional, reconhecida pela durabilidade e qualidade incomparável." : "To be the benchmark brand in trough and drinker technology throughout the national territory, recognized for its durability and incomparable quality." },
+    { icon: <Gem size={32} />, titulo: language === "PT" ? "Valores" : "Values", texto: language === "PT" ? "Qualidade acima de tudo, honestidade nas relações, inovação constante, respeito ao produtor, sustentabilidade ambiental e orgulho pelo agronegócio brasileiro." : "Quality above all, honesty in relationships, constant innovation, respect for the producer, environmental sustainability, and pride in Brazilian agribusiness." },
   ];
 
   const timeline = [
@@ -34,10 +35,10 @@ export default function SobrePage() {
   ];
 
   const equipe = [
-    { nome: language === "PT" ? "Fundadores" : "Founders", cargo: language === "PT" ? "Visão e liderança" : "Vision and leadership", emoji: "👨‍🌾" },
-    { nome: "P&D", cargo: language === "PT" ? "Inovação e desenvolvimento" : "Innovation and development", emoji: "🔬" },
-    { nome: language === "PT" ? "Comercial" : "Commercial", cargo: language === "PT" ? "Atendimento ao produtor" : "Producer service", emoji: "🤝" },
-    { nome: language === "PT" ? "Logística" : "Logistics", cargo: language === "PT" ? "Entrega nacional" : "National delivery", emoji: "🚛" },
+    { nome: language === "PT" ? "Fundadores" : "Founders", cargo: language === "PT" ? "Visão e liderança" : "Vision and leadership", icon: <Users size={48} /> },
+    { nome: "P&D", cargo: language === "PT" ? "Inovação e desenvolvimento" : "Innovation and development", icon: <Microscope size={48} /> },
+    { nome: language === "PT" ? "Comercial" : "Commercial", cargo: language === "PT" ? "Atendimento ao produtor" : "Producer service", icon: <Handshake size={48} /> },
+    { nome: language === "PT" ? "Logística" : "Logistics", cargo: language === "PT" ? "Entrega nacional" : "National delivery", icon: <Truck size={48} /> },
   ];
 
   return (
@@ -153,7 +154,7 @@ export default function SobrePage() {
           >
             {mvv.map((item) => (
               <motion.div key={item.titulo} variants={fadeInUp} className="feature-card">
-                <div style={{ fontSize: "3rem", marginBottom: 20 }}>{item.icon}</div>
+                <div style={{ color: "var(--verde-escuro)", marginBottom: 20 }}>{item.icon}</div>
                 <h3 style={{ color: "var(--verde-escuro)", marginBottom: 16, fontSize: "1.4rem" }}>{item.titulo}</h3>
                 <p style={{ color: "var(--cinza-texto)", lineHeight: 1.7 }}>{item.texto}</p>
               </motion.div>
@@ -198,7 +199,7 @@ export default function SobrePage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 24 }}>
             {equipe.map((e) => (
               <div key={e.nome} style={{ background: "var(--cinza-claro)", borderRadius: 20, padding: 32, textAlign: "center", border: "1px solid var(--cinza-medio)" }}>
-                <div style={{ fontSize: "3.5rem", marginBottom: 16 }}>{e.emoji}</div>
+                <div style={{ fontSize: "3rem", marginBottom: 16, display: "flex", justifyContent: "center", color: "var(--verde-escuro)" }}>{e.icon}</div>
                 <h4 style={{ color: "var(--verde-escuro)", marginBottom: 8 }}>{e.nome}</h4>
                 <p style={{ fontSize: "0.85rem", color: "var(--cinza-texto)" }}>{e.cargo}</p>
               </div>

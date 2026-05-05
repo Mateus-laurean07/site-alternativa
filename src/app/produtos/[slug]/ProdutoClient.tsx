@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Produto } from "@/types";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { FileText, ClipboardList } from "lucide-react";
 
 interface ProdutoClientProps {
   produto: Produto;
@@ -92,7 +93,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
                 </Link>
                 {produto.manual && (
                   <a href={produto.manual} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px", border: "2px solid var(--cinza-medio)", borderRadius: 999, color: "var(--cinza-texto)", fontWeight: 600, fontSize: "0.875rem", transition: "all 0.2s" }}>
-                    📄 {language === "PT" ? "Baixar Manual em PDF" : "Download PDF Manual"}
+                    <FileText size={18} /> {language === "PT" ? "Baixar Manual em PDF" : "Download PDF Manual"}
                   </a>
                 )}
               </div>
@@ -101,7 +102,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
 
           {/* ESPECIFICAÇÕES */}
           <div style={{ marginTop: 64, background: "var(--cinza-claro)", borderRadius: 20, padding: 40 }}>
-            <h3 style={{ color: "var(--verde-escuro)", marginBottom: 32 }}>📋 {language === "PT" ? "Especificações Técnicas" : "Technical Specifications"}</h3>
+            <h3 style={{ color: "var(--verde-escuro)", marginBottom: 32, display: "flex", alignItems: "center", gap: 8 }}><ClipboardList size={24} /> {language === "PT" ? "Especificações Técnicas" : "Technical Specifications"}</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
               {produto.especificacoes.map((e) => (
                 <div key={e.chave} style={{ background: "white", borderRadius: 12, padding: 20, border: "1px solid var(--cinza-medio)" }}>
