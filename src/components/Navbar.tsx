@@ -61,12 +61,17 @@ export default function Navbar() {
             height: 88,
           }}
         >
-        {/* Logo */}
+        {/* Logo — ES é quadrada, precisa de mais altura */}
         <Link href="/" style={{ display: "flex", alignItems: "center", height: "100%" }}>
           <img 
             src={logoSrc} 
             alt="Alternativa Cochos e Bebedouros" 
-            style={{ height: "64px", width: "auto", objectFit: "contain" }}
+            style={{ 
+              height: language === "ES" ? "78px" : "64px", 
+              width: "auto", 
+              objectFit: "contain",
+              transition: "height 0.3s ease"
+            }}
           />
         </Link>
 
