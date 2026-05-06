@@ -56,6 +56,7 @@ export const metadata: Metadata = {
 };
 
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 
 export default function RootLayout({
   children,
@@ -65,21 +66,21 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link rel="dns-prefetch" href="https://economia.awesomeapi.com.br" />
+        <link rel="preconnect" href="https://economia.awesomeapi.com.br" />
+        <link rel="preload" href="/images/hero/hero-1.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/images/hero/hero-2.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/images/hero/hero-3.webp" as="image" type="image/webp" />
       </head>
       <body>
-        <LanguageProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <WhatsAppFloat />
-        </LanguageProvider>
+        <SmoothScrollProvider>
+          <LanguageProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <WhatsAppFloat />
+          </LanguageProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

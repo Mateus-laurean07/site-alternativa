@@ -47,7 +47,7 @@ export default function SobrePage() {
       <section style={{ position: "relative", paddingTop: 120, paddingBottom: 80, overflow: "hidden" }}>
         {/* Background Image */}
         <Image 
-          src="/images/sobre/DSC_8353.JPG" 
+          src="/images/sobre/DSC_8353.webp" 
           alt="Boi Curioso" 
           fill 
           sizes="100vw"
@@ -173,7 +173,7 @@ export default function SobrePage() {
               viewport={{ once: true }}
               style={{ position: "relative", borderRadius: 24, overflow: "hidden" }}
             >
-              <Image src="/images/sobre/DSC_8354.JPG" alt="Pecuária Nacional" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+              <Image src="/images/sobre/DSC_8354.webp" alt="Pecuária Nacional" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: "cover" }} />
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
@@ -182,7 +182,7 @@ export default function SobrePage() {
               transition={{ delay: 0.2 }}
               style={{ position: "relative", borderRadius: 24, overflow: "hidden" }}
             >
-              <Image src="/images/sobre/DSC_8358.JPG" alt="Gado no pasto" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: "cover" }} />
+              <Image src="/images/sobre/DSC_8358.webp" alt="Gado no pasto" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: "cover" }} />
             </motion.div>
           </div>
         </div>

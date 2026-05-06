@@ -26,19 +26,19 @@ export default function HomePage() {
 
   const heroSlides = [
     {
-      bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(26,58,31,0.72) 100%), url('/images/hero/hero-1.webp') center/cover no-repeat",
+      bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(26,58,31,0.72) 100%), url('/images/hero/hero-1.png') center/cover no-repeat",
       tag: language === "PT" ? "Desde 2011" : "Since 2011",
       titulo: language === "PT" ? "A Solução Completa para seu Rebanho" : "The Complete Solution for Your Herd",
       sub: language === "PT" ? "Cochos e bebedouros de alta resistência para maximizar a produtividade do seu gado." : "High-resistance troughs and drinkers to maximize your cattle's productivity.",
     },
     {
-      bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(45,106,53,0.72) 100%), url('/images/hero/hero-2.webp') center/cover no-repeat",
+      bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(45,106,53,0.72) 100%), url('/images/hero/hero-2.png') center/cover no-repeat",
       tag: language === "PT" ? "Alta Durabilidade" : "High Durability",
       titulo: language === "PT" ? "Proteção e Performance em um só Produto" : "Protection and Performance in One Product",
       sub: language === "PT" ? "Linha Protecocho: mantém o suplemento protegido da chuva e do sol por muito mais tempo." : "Protecocho Line: keeps the supplement protected from rain and sun for much longer.",
     },
     {
-      bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(26,58,31,0.78) 100%), url('/images/hero/hero-3.webp') center/cover no-repeat",
+      bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(26,58,31,0.78) 100%), url('/images/hero/hero-3.png') center/cover no-repeat",
       tag: "Hidramax 1300",
       titulo: language === "PT" ? "Água Limpa, Rebanho Saudável" : "Clean Water, Healthy Herd",
       sub: language === "PT" ? "O bebedouro mais avançado do mercado. Fluxo contínuo com boia de 1 polegada." : "The most advanced drinker on the market. Continuous flow with 1-inch float.",
@@ -204,7 +204,6 @@ export default function HomePage() {
                       src={p.imagem} 
                       alt={p.nome} 
                       fill 
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                       style={{ objectFit: "contain", padding: "16px" }} 
                     />
                   </motion.div>
@@ -245,7 +244,6 @@ export default function HomePage() {
                 src="/images/sobre/DSC_8353.JPG" 
                 alt="Bois no pasto" 
                 fill 
-                sizes="(max-width: 768px) 100vw, 50vw"
                 style={{ objectFit: "cover" }} 
               />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 32, background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>

@@ -30,8 +30,8 @@
   --shadow-ouro: 0 4px 24px rgba(201,168,76,0.30);
 
   /* Tipografia */
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Inter', sans-serif;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Bordas */
   --radius-sm: 8px;

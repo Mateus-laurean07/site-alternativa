@@ -34,21 +34,103 @@ export default function Navbar() {
   const textColor = "rgba(255,255,255,0.95)";
   const logoSrc = "/images/logo/Alternativa Comederos - Horizontal branca2.png";
 
+  // ── Cotações integradas ──────────────────────────────────
+  interface Cotacao { nome: string; valor: string; unidade: string; variacao: number; emoji: string; }
+  const [cotacoes, setCotacoes] = useState<Cotacao[]>([]);
+  const [hora, setHora] = useState("");
+
+  useEffect(() => {
+    const buscar = async () => {
+      try {
+        const res = await fetch("/api/cotacoes");
+        if (res.ok) { const d = await res.json(); setCotacoes(d.cotacoes); }
+      } catch { /* silencioso */ }
+    };
+    buscar();
+    const iv = setInterval(buscar, 10 * 60 * 1000);
+    const tick = setInterval(() => setHora(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })), 1000);
+    setHora(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
+    return () => { clearInterval(iv); clearInterval(tick); };
+  }, []);
+
+  const tickerItems = cotacoes.length > 0 ? [...cotacoes, ...cotacoes, ...cotacoes] : [];
+  // ────────────────────────────────────────────────────────
+
   return (
     <nav
       className={`navbar ${scrolled ? "navbar-scrolled" : "navbar-transparent"}`}
-      style={{ padding: "0 24px" }}
+      style={{ padding: 0 }}
     >
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
+      {/* ── Faixa de Cotações ── */}
+      {cotacoes.length > 0 && (
+        <div style={{
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          overflow: "hidden",
+          height: 32,
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          height: 88,
-        }}
-      >
+          background: "rgba(0,0,0,0.25)",
+        }}>
+          {/* Badge fixo */}
+          <div style={{
+            flexShrink: 0,
+            padding: "0 12px",
+            borderRight: "1px solid rgba(255,255,255,0.12)",
+            fontSize: "0.6rem",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "#c9a84c",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}>
+            📊 Cotações
+          </div>
+          {/* Ticker scroll */}
+          <div style={{ overflow: "hidden", flex: 1, height: "100%", display: "flex", alignItems: "center", position: "relative" }}>
+            <style>{`
+              @keyframes nv-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-33.333%); } }
+              .nv-ticker-track { display: flex; width: max-content; animation: nv-ticker 50s linear infinite; }
+              .nv-ticker-track:hover { animation-play-state: paused; }
+            `}</style>
+            <div className="nv-ticker-track">
+              {tickerItems.map((c, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "center", gap: 5, padding: "0 20px", borderRight: "1px solid rgba(255,255,255,0.07)", whiteSpace: "nowrap" }}>
+                  <span style={{ fontSize: "0.8rem" }}>{c.emoji}</span>
+                  <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{c.nome}</span>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "white" }}>{c.valor}</span>
+                  <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.4)" }}>/{c.unidade}</span>
+                  {c.variacao !== 0 && (
+                    <span style={{ fontSize: "0.62rem", fontWeight: 700, color: c.variacao > 0 ? "#4ade80" : "#f87171" }}>
+                      {c.variacao > 0 ? "▲" : "▼"} {Math.abs(c.variacao).toFixed(2)}%
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Hora */}
+          {hora && (
+            <div style={{ flexShrink: 0, padding: "0 12px", fontSize: "0.62rem", color: "rgba(255,255,255,0.35)", borderLeft: "1px solid rgba(255,255,255,0.08)" }}>
+              ⏱ {hora}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Linha principal do menu ── */}
+      <div style={{ padding: "0 24px" }}>
+        <div
+          style={{
+            maxWidth: 1280,
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: 88,
+          }}
+        >
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", height: "100%" }}>
           <img 
@@ -108,49 +190,59 @@ export default function Navbar() {
                   style={{
                     position: "absolute",
                     top: "100%",
-                    left: 0,
-                    minWidth: 260,
-                    background: "white",
-                    borderRadius: 12,
-                    boxShadow: "var(--shadow-md)",
-                    padding: 16,
+                    left: "50%",
+                    minWidth: 720,
+                    background: "#f4f4f4", // Light gray background to match image
+                    borderRadius: 16,
+                    boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+                    padding: 32,
                     display: dropdownOpen ? "block" : "none",
                     opacity: dropdownOpen ? 1 : 0,
-                    transform: dropdownOpen ? "translateY(0)" : "translateY(10px)",
+                    transform: dropdownOpen ? "translate(-50%, 0)" : "translate(-50%, 10px)",
                     transition: "all 0.2s ease",
                     pointerEvents: dropdownOpen ? "auto" : "none",
                     zIndex: 100,
-                    border: "1px solid var(--cinza-medio)"
+                    border: "1px solid rgba(0,0,0,0.05)"
                   }}
                 >
-                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                    {categoriasDropdown.map(categoria => {
-                      const prods = produtos.filter(p => p.categoria === categoria || p.categoria_en === categoria);
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px 24px" }}>
+                    {[
+                      { key: "Multicocho", title: "Linha Multicocho" },
+                      { key: "Protecocho", title: "Linha Protecocho" },
+                      { key: "Hidramax", title: "Linha Hidramax" },
+                      { key: "Nutrisilo", title: "Linha Nutrisilo" },
+                      { key: "Suínos", title: "Linha Suínos" }
+                    ].map(categoriaObj => {
+                      const prods = produtos.filter(p => p.categoria === categoriaObj.key || p.categoria_en === categoriaObj.key);
                       return (
-                        <div key={categoria}>
-                          <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--verde-medio)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8, borderBottom: "1px solid var(--cinza-medio)", paddingBottom: 4 }}>
-                            {language === "PT" ? categoria : prods[0]?.categoria_en || categoria}
+                        <div key={categoriaObj.key}>
+                          <div style={{ 
+                            fontSize: "1rem", 
+                            fontWeight: 600, 
+                            color: "#118D37", // Green title exactly matching image
+                            marginBottom: 20,
+                            fontFamily: "'Inter', sans-serif"
+                          }}>
+                            {language === "PT" ? categoriaObj.title : prods[0]?.categoria_en || categoriaObj.key}
                           </div>
-                          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                             {prods.map(p => (
                               <Link
                                 key={p.id}
                                 href={`/produtos/${p.slug}`}
                                 style={{
-                                  fontSize: "0.85rem",
-                                  color: "var(--preto-suave)",
+                                  fontSize: "0.95rem",
+                                  color: "#64748B", // Slate gray matching image
                                   textDecoration: "none",
-                                  padding: "6px 8px",
-                                  borderRadius: 6,
-                                  transition: "all 0.2s ease"
+                                  transition: "color 0.2s ease",
+                                  fontWeight: 400,
+                                  fontFamily: "'Inter', sans-serif"
                                 }}
                                 onMouseEnter={(e) => {
-                                  (e.currentTarget as HTMLElement).style.background = "var(--verde-suave)";
-                                  (e.currentTarget as HTMLElement).style.color = "var(--verde-escuro)";
+                                  (e.currentTarget as HTMLElement).style.color = "#118D37";
                                 }}
                                 onMouseLeave={(e) => {
-                                  (e.currentTarget as HTMLElement).style.background = "transparent";
-                                  (e.currentTarget as HTMLElement).style.color = "var(--preto-suave)";
+                                  (e.currentTarget as HTMLElement).style.color = "#6b7280";
                                 }}
                                 onClick={() => setDropdownOpen(false)}
                               >
@@ -195,6 +287,7 @@ export default function Navbar() {
           >
             {t("nav.quote")}
           </Link>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -211,35 +304,9 @@ export default function Navbar() {
           className="mobile-menu-btn"
           aria-label="Menu"
         >
-          <div
-            style={{
-              width: 24,
-              height: 2,
-              background: "white",
-              marginBottom: 5,
-              transition: "all 0.3s",
-              transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none",
-            }}
-          />
-          <div
-            style={{
-              width: 24,
-              height: 2,
-              background: "white",
-              marginBottom: 5,
-              opacity: menuOpen ? 0 : 1,
-              transition: "all 0.3s",
-            }}
-          />
-          <div
-            style={{
-              width: 24,
-              height: 2,
-              background: "white",
-              transition: "all 0.3s",
-              transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none",
-            }}
-          />
+          <div style={{ width: 24, height: 2, background: "white", marginBottom: 5, transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
+          <div style={{ width: 24, height: 2, background: "white", marginBottom: 5, opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
+          <div style={{ width: 24, height: 2, background: "white", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
         </button>
       </div>
 

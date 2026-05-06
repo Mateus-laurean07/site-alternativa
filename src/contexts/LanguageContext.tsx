@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 type Language = "PT" | "EN";
 
@@ -50,16 +50,14 @@ const LanguageContext = createContext<LanguageContextProps>({
 });
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>("PT");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const savedLang = localStorage.getItem("language") as Language;
-    if (savedLang && (savedLang === "PT" || savedLang === "EN")) {
-      setLanguageState(savedLang);
+  const [language, setLanguageState] = useState<Language>(() => {
+    // Lazy initializer: runs once on mount, before first render
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("language");
+      if (saved === "PT" || saved === "EN") return saved;
     }
-  }, []);
+    return "PT";
+  });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -67,8 +65,6 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const t = (key: string) => {
-    // Default to PT on server to match initial HTML and avoid hydration errors
-    if (!mounted) return translations["PT"][key] || key; 
     return translations[language][key] || key;
   };
 

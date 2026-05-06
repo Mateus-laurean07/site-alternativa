@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
 
   return (
     <footer style={{ background: "var(--preto)", color: "white" }}>
@@ -150,9 +151,29 @@ export default function Footer() {
           <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", margin: 0 }}>
             © {year} Alternativa Plásticos. {language === "PT" ? "Todos os direitos reservados." : "All rights reserved."}
           </p>
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.75rem", margin: 0 }}>
-            {language === "PT" ? "Desenvolvido com ❤️ para o agronegócio brasileiro" : "Developed with ❤️ for Brazilian agribusiness"}
-          </p>
+          <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem", margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
+            <span>{language === "PT" ? "Desenvolvido com ❤️ por" : "Developed with ❤️ by"}</span>
+            <a href="https://naveo.com.br/" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center" }}>
+              <img 
+                src="/images/naveo-logo.png" 
+                alt="Naveo" 
+                style={{ 
+                  height: 24, 
+                  objectFit: "contain", 
+                  opacity: 0.8,
+                  transition: "all 0.3s ease"
+                }} 
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.transform = "scale(1.15)";
+                  (e.currentTarget as HTMLImageElement).style.opacity = "1";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.transform = "scale(1)";
+                  (e.currentTarget as HTMLImageElement).style.opacity = "0.8";
+                }}
+              />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
