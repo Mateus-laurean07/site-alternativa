@@ -1,20 +1,12 @@
-<p align="center">
-  <img src="public/images/logo/Alternativa Comederos - Horizontal branca2.png" alt="Alternativa Cochos e Bebedouros" width="400" />
-</p>
+# Alternativa Cochos e Bebedouros
 
-<h1 align="center">Alternativa Cochos e Bebedouros</h1>
+> **Soluções em cochos, bebedouros e equipamentos para pecuária de alto desempenho.**
 
-<p align="center">
-  <strong>Soluções em cochos, bebedouros e equipamentos para pecuária de alto desempenho.</strong>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16.2-black?logo=next.js" alt="Next.js" />
-  <img src="https://img.shields.io/badge/React-19.2-61dafb?logo=react" alt="React" />
-  <img src="https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Framer%20Motion-12-ff69b4?logo=framer" alt="Framer Motion" />
-  <img src="https://img.shields.io/badge/Deploy-Cloudflare%20Pages-f38020?logo=cloudflare" alt="Cloudflare" />
-</p>
+![Next.js](https://img.shields.io/badge/Next.js-16.2-black?logo=next.js)
+![React](https://img.shields.io/badge/React-19.2-61dafb?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript)
+![Framer Motion](https://img.shields.io/badge/Framer%20Motion-12-ff69b4?logo=framer)
+![Cloudflare](https://img.shields.io/badge/Deploy-Cloudflare%20Pages-f38020?logo=cloudflare)
 
 ---
 
@@ -35,7 +27,7 @@ Site institucional da **Alternativa Cochos e Bebedouros**, empresa referência e
 
 ## 🏗️ Arquitetura
 
-```
+```text
 src/
 ├── app/
 │   ├── api/cotacoes/      # API Route — cotações de commodities
@@ -63,7 +55,7 @@ src/
 ## 🛠️ Stack Tecnológica
 
 | Tecnologia | Função |
-|---|---|
+| --- | --- |
 | **Next.js 16** | Framework React com App Router e SSR |
 | **React 19** | UI reativa com hooks modernos |
 | **TypeScript 5** | Tipagem estática em todo o projeto |
@@ -103,7 +95,7 @@ Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 ### Scripts disponíveis
 
 | Comando | Descrição |
-|---|---|
+| --- | --- |
 | `npm run dev` | Inicia o servidor de desenvolvimento (Turbopack) |
 | `npm run build` | Gera o build de produção |
 | `npm start` | Roda o build de produção localmente |
@@ -118,14 +110,10 @@ Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 1. Acesse [Cloudflare Pages](https://pages.cloudflare.com/)
 2. Conecte o repositório GitHub
 3. Configure as variáveis:
-
-| Setting | Valor |
-|---|---|
-| **Framework preset** | Next.js |
-| **Build command** | `npm run build` |
-| **Build output directory** | `.next` |
-| **Node.js version** | `18` |
-
+   - **Framework preset**: Next.js
+   - **Build command**: `npm run build`
+   - **Build output directory**: `.next`
+   - **Node.js version**: `18`
 4. Clique em **Save and Deploy**
 
 > **Nota:** Para usar o Next.js com Cloudflare Pages, pode ser necessário o adaptador `@cloudflare/next-on-pages`. Consulte a [documentação oficial](https://developers.cloudflare.com/pages/framework-guides/nextjs/).
@@ -156,7 +144,7 @@ O endpoint `/api/cotacoes` retorna preços atualizados de commodities agrícolas
 ## 📦 Linhas de Produtos
 
 | Linha | Produtos | Segmento |
-|---|---|---|
+| --- | --- | --- |
 | **Multicocho** | 200L, 250L | Bovinos — alimentação |
 | **Protecocho** | 200L, 250L, 400L, 500L | Bovinos — suplementação protegida |
 | **Hidramax** | 1300L, Autoabastecimento | Bovinos — hidratação |
@@ -180,7 +168,7 @@ O endpoint `/api/cotacoes` retorna preços atualizados de commodities agrícolas
 Todas as imagens foram otimizadas para **WebP**:
 
 | Pasta | Conteúdo | Formato |
-|---|---|---|
+| --- | --- | --- |
 | `public/images/hero/` | 3 slides do carrossel hero | WebP (350KB total) |
 | `public/images/produtos/` | 17 fotos de produtos | WebP (~30KB cada) |
 | `public/images/sobre/` | 3 fotos institucionais | WebP (~130KB cada) |
