@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 interface Cotacao {
   nome: string;
   nomeEn: string;
+  nomeEs: string;
   valor: string;
   unidade: string;
   variacao: number;
@@ -59,6 +60,7 @@ export async function GET() {
     {
       nome: "Milho",
       nomeEn: "Corn",
+      nomeEs: "Maíz",
       valor: `R$ ${milho.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "sc 60kg",
       variacao: milho.variacao,
@@ -68,6 +70,7 @@ export async function GET() {
     {
       nome: "Soja",
       nomeEn: "Soybean",
+      nomeEs: "Soja",
       valor: `R$ ${soja.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "sc 60kg",
       variacao: soja.variacao,
@@ -77,6 +80,7 @@ export async function GET() {
     {
       nome: "Bezerro",
       nomeEn: "Calf",
+      nomeEs: "Ternero",
       valor: `R$ ${bezerro.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "cab",
       variacao: bezerro.variacao,
@@ -86,6 +90,7 @@ export async function GET() {
     {
       nome: "Boi Gordo",
       nomeEn: "Cattle",
+      nomeEs: "Buey Gordo",
       valor: `R$ ${boi.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "@",
       variacao: boi.variacao,
@@ -95,6 +100,7 @@ export async function GET() {
     {
       nome: "Dólar",
       nomeEn: "Dollar",
+      nomeEs: "Dólar",
       valor: dolar
         ? `R$ ${dolar.preco.toLocaleString("pt-BR", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}`
         : "-- ",

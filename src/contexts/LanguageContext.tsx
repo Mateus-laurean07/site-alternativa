@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type Language = "PT" | "EN";
+type Language = "PT" | "EN" | "ES";
 
 interface Translations {
   [key: string]: {
@@ -34,6 +34,18 @@ export const translations: Translations = {
     "hero.title": "The Evolution of Management Starts Here",
     "hero.subtitle": "High-resistance troughs and drinkers that ensure maximum utilization and health for your herd.",
     "hero.cta": "View Products"
+  },
+  ES: {
+    "nav.home": "Inicio",
+    "nav.products": "Productos",
+    "nav.about": "Nosotros",
+    "nav.videos": "Videos",
+    "nav.blog": "Blog",
+    "nav.contact": "Contacto",
+    "nav.quote": "Solicitar Presupuesto",
+    "hero.title": "La Evolución del Manejo Comienza Aquí",
+    "hero.subtitle": "Comederos y bebederos de alta resistencia que garantizan el máximo aprovechamiento y salud para su rebaño.",
+    "hero.cta": "Conocer Productos"
   }
 };
 
@@ -56,8 +68,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   // Depois do mount (client only), lê a preferência salva
   useEffect(() => {
     const saved = localStorage.getItem("language");
-    if (saved === "EN") {
-      setLanguageState("EN");
+    if (saved === "EN" || saved === "ES") {
+      setLanguageState(saved);
     }
   }, []);
 
@@ -67,7 +79,7 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const t = (key: string) => {
-    return translations[language][key] || key;
+    return translations[language]?.[key] || translations["PT"][key] || key;
   };
 
   return (

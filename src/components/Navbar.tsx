@@ -32,7 +32,14 @@ export default function Navbar() {
   }, []);
 
   const textColor = "rgba(255,255,255,0.95)";
-  const logoSrc = "/images/logo/Alternativa Comederos - Horizontal branca2.png";
+
+  // Logo muda conforme idioma
+  const logoMap: Record<string, string> = {
+    PT: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
+    EN: "/images/logo/Alternativa Comederos - Horizontal branca1.png",
+    ES: "/images/logo/Alternativa Comederos - ESP 2.png",
+  };
+  const logoSrc = logoMap[language] || logoMap.PT;
 
   return (
     <nav
@@ -146,7 +153,7 @@ export default function Navbar() {
                             marginBottom: 20,
                             fontFamily: "'Inter', sans-serif"
                           }}>
-                            {language === "PT" ? categoriaObj.title : prods[0]?.categoria_en || categoriaObj.key}
+                            {language === "ES" ? (categoriaObj.title.replace("Linha", "Línea")) : language === "EN" ? (prods[0]?.categoria_en || categoriaObj.key) : categoriaObj.title}
                           </div>
                           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                             {prods.map(p => (
@@ -169,7 +176,7 @@ export default function Navbar() {
                                 }}
                                 onClick={() => setDropdownOpen(false)}
                               >
-                                {language === "PT" ? p.nome : p.nome_en || p.nome}
+                                {language === "EN" ? (p.nome_en || p.nome) : p.nome}
                               </Link>
                             ))}
                           </div>
@@ -184,7 +191,7 @@ export default function Navbar() {
           <div style={{ position: "relative", marginLeft: 8, marginRight: 8 }}>
             <select
               value={language}
-              onChange={(e) => setLanguage(e.target.value as "PT" | "EN")}
+              onChange={(e) => setLanguage(e.target.value as "PT" | "EN" | "ES")}
               style={{
                 appearance: "none",
                 background: "white",
@@ -198,8 +205,9 @@ export default function Navbar() {
                 outline: "none"
               }}
             >
-              <option value="PT">PT</option>
-              <option value="EN">EN</option>
+              <option value="PT">🇧🇷 PT</option>
+              <option value="EN">🇺🇸 EN</option>
+              <option value="ES">🇪🇸 ES</option>
             </select>
             <ChevronDown size={14} color="var(--verde-escuro)" style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} />
           </div>
@@ -270,7 +278,7 @@ export default function Navbar() {
                     return (
                       <div key={categoria} style={{ marginBottom: 12 }}>
                         <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--ouro)", textTransform: "uppercase", marginBottom: 6 }}>
-                          {language === "PT" ? categoria : prods[0]?.categoria_en || categoria}
+                          {language === "ES" ? categoria : language === "EN" ? (prods[0]?.categoria_en || categoria) : categoria}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {prods.map(p => (
@@ -280,7 +288,7 @@ export default function Navbar() {
                               onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}
                               style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.9rem", textDecoration: "none" }}
                             >
-                              {language === "PT" ? p.nome : p.nome_en || p.nome}
+                              {language === "EN" ? (p.nome_en || p.nome) : p.nome}
                             </Link>
                           ))}
                         </div>
@@ -293,18 +301,25 @@ export default function Navbar() {
           ))}
           
           <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
-            <button 
-              onClick={() => setLanguage("PT")} 
-              style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: language === "PT" ? "white" : "transparent", color: language === "PT" ? "var(--verde-escuro)" : "white", fontWeight: 600, cursor: "pointer" }}
-            >
-              PT
-            </button>
-            <button 
-              onClick={() => setLanguage("EN")} 
-              style={{ flex: 1, padding: "8px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: language === "EN" ? "white" : "transparent", color: language === "EN" ? "var(--verde-escuro)" : "white", fontWeight: 600, cursor: "pointer" }}
-            >
-              EN
-            </button>
+            {(["PT", "EN", "ES"] as const).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setLanguage(lang)}
+                style={{
+                  flex: 1,
+                  padding: "8px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.2)",
+                  background: language === lang ? "white" : "transparent",
+                  color: language === lang ? "var(--verde-escuro)" : "white",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontSize: "0.85rem"
+                }}
+              >
+                {lang === "PT" ? "🇧🇷 PT" : lang === "EN" ? "🇺🇸 EN" : "🇪🇸 ES"}
+              </button>
+            ))}
           </div>
 
           <Link

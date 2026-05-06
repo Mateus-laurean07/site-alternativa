@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 interface Cotacao {
   nome: string;
   nomeEn: string;
+  nomeEs: string;
   valor: string;
   unidade: string;
   variacao: number;
@@ -18,13 +19,13 @@ export default function NavbarTicker() {
   // Lazy initializer: se já temos cache, usa direto — sem setState no efeito
   const [cotacoes, setCotacoes] = useState<Cotacao[]>(() => _cotacoesCache);
   const [hora, setHora] = useState("");
-  const [lang, setLang] = useState<"PT" | "EN">("PT");
+  const [lang, setLang] = useState<"PT" | "EN" | "ES">("PT");
 
   // Efeito 1: Detecção de idioma
   useEffect(() => {
     const detectLang = () => {
       const saved = localStorage.getItem("language");
-      setLang(saved === "EN" ? "EN" : "PT");
+      setLang(saved === "EN" ? "EN" : saved === "ES" ? "ES" : "PT");
     };
     detectLang();
 
@@ -71,7 +72,7 @@ export default function NavbarTicker() {
   if (cotacoes.length === 0) return null;
 
   const items = [...cotacoes, ...cotacoes, ...cotacoes];
-  const labelBadge = lang === "EN" ? "📊 Prices" : "📊 Cotações";
+  const labelBadge = lang === "EN" ? "📊 Prices" : lang === "ES" ? "📊 Cotizaciones" : "📊 Cotações";
 
   return (
     <>
@@ -144,7 +145,7 @@ export default function NavbarTicker() {
               >
                 <span style={{ fontSize: "0.8rem" }}>{c.emoji}</span>
                 <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
-                  {lang === "EN" && c.nomeEn ? c.nomeEn : c.nome}
+                  {lang === "EN" && c.nomeEn ? c.nomeEn : lang === "ES" && c.nomeEs ? c.nomeEs : c.nome}
                 </span>
                 <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "white" }}>
                   {c.valor}
