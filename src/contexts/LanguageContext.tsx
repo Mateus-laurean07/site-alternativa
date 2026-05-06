@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 type Language = "PT" | "EN";
 
@@ -50,14 +50,16 @@ const LanguageContext = createContext<LanguageContextProps>({
 });
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>(() => {
-    // Lazy initializer: runs once on mount, before first render
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("language");
-      if (saved === "PT" || saved === "EN") return saved;
+  // Sempre inicia com "PT" tanto no server quanto no client — evita hydration mismatch
+  const [language, setLanguageState] = useState<Language>("PT");
+
+  // Depois do mount (client only), lê a preferência salva
+  useEffect(() => {
+    const saved = localStorage.getItem("language");
+    if (saved === "EN") {
+      setLanguageState("EN");
     }
-    return "PT";
-  });
+  }, []);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

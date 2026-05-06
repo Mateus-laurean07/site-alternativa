@@ -15,61 +15,57 @@ interface Cotacao {
 let _cotacoesCache: Cotacao[] = [];
 
 export default function NavbarTicker() {
-  const [cotacoes, setCotacoes] = useState<Cotacao[]>(_cotacoesCache);
+  // Lazy initializer: se já temos cache, usa direto — sem setState no efeito
+  const [cotacoes, setCotacoes] = useState<Cotacao[]>(() => _cotacoesCache);
   const [hora, setHora] = useState("");
   const [lang, setLang] = useState<"PT" | "EN">("PT");
 
+  // Efeito 1: Detecção de idioma
   useEffect(() => {
-    // Detecta idioma salvo no localStorage (mesmo sistema do LanguageContext)
     const detectLang = () => {
-      const saved = typeof window !== "undefined" ? localStorage.getItem("language") : null;
+      const saved = localStorage.getItem("language");
       setLang(saved === "EN" ? "EN" : "PT");
     };
     detectLang();
 
-    // Escuta mudanças de idioma via storage event (quando LanguageContext salva)
     const onStorage = (e: StorageEvent) => {
       if (e.key === "language") detectLang();
     };
-    // Escuta evento customizado disparado pelo LanguageContext
-    const onLangChange = () => detectLang();
-
     window.addEventListener("storage", onStorage);
-    window.addEventListener("languagechange", onLangChange);
-    // Polling leve como fallback (a cada 500ms)
     const langPoll = setInterval(detectLang, 500);
 
-    // Busca cotações
-    if (_cotacoesCache.length > 0) setCotacoes(_cotacoesCache);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      clearInterval(langPoll);
+    };
+  }, []);
 
+  // Efeito 2: Busca cotações (sem setCotacoes síncrono — cache já está no lazy init)
+  useEffect(() => {
     const buscar = async () => {
       try {
         const res = await fetch("/api/cotacoes");
-        if (res.ok) {
-          const d: { cotacoes: Cotacao[] } = await res.json();
-          _cotacoesCache = d.cotacoes;
-          setCotacoes(d.cotacoes);
-        }
-      } catch (_e) {
-        if (_cotacoesCache.length > 0) setCotacoes(_cotacoesCache);
+        if (!res.ok) return;
+        const d = await res.json() as { cotacoes: Cotacao[] };
+        _cotacoesCache = d.cotacoes;
+        setCotacoes(d.cotacoes);
+      } catch {
+        // mantém dados do cache — já está no state via lazy init
       }
     };
 
     buscar();
     const iv = setInterval(buscar, 10 * 60 * 1000);
+    return () => clearInterval(iv);
+  }, []);
 
+  // Efeito 3: Relógio
+  useEffect(() => {
     const atualizarHora = () =>
       setHora(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
     atualizarHora();
-    const tick = setInterval(atualizarHora, 60 * 1000);
-
-    return () => {
-      clearInterval(iv);
-      clearInterval(tick);
-      clearInterval(langPoll);
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener("languagechange", onLangChange);
-    };
+    const tick = setInterval(atualizarHora, 60_000);
+    return () => clearInterval(tick);
   }, []);
 
   if (cotacoes.length === 0) return null;
