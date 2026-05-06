@@ -23,7 +23,12 @@ export default function Navbar() {
   ];
 
   // Organizar produtos por categoria para o dropdown
-  const categoriasDropdown = ["Protecocho", "Hidramax", "Multicocho", "Nutrisilo"];
+  const categoriasDropdown = [
+    "Protecocho",
+    "Hidramax",
+    "Multicocho",
+    "Nutrisilo",
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -37,7 +42,7 @@ export default function Navbar() {
   const logoMap: Record<string, string> = {
     PT: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
     EN: "/images/logo/Alternativa Comederos - Horizontal branca1.png",
-    ES: "/images/logo/Alternativa Comederos - ESP 2.png",
+    ES: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
   };
   const logoSrc = logoMap[language] || logoMap.PT;
 
@@ -59,170 +64,227 @@ export default function Navbar() {
             alignItems: "center",
             justifyContent: "space-between",
             height: 88,
+            transition: "height 0.3s ease",
           }}
         >
-        {/* Logo — ES é quadrada, precisa de mais altura */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", height: "100%" }}>
-          <img 
-            src={logoSrc} 
-            alt="Alternativa Cochos e Bebedouros" 
-            style={{ 
-              height: language === "ES" ? "78px" : "64px", 
-              width: "auto", 
+          {/* Logo — ES é quadrada, precisa de mais altura */}
+          <Link
+            href="/"
+            style={{ display: "flex", alignItems: "center", height: "100%" }}
+          >
+            <img
+              src={logoSrc}
+              alt="Alternativa Cochos e Bebedouros"
+            style={{
+              height: "64px",
+              width: "auto",
               objectFit: "contain",
-              transition: "height 0.3s ease"
             }}
-          />
-        </Link>
+            />
+          </Link>
 
-        {/* Desktop Nav */}
-        <div
-          className="desktop-nav"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          {navLinks.map((link) => (
-            <div
-              key={link.href}
-              style={{ position: "relative" }}
-              onMouseEnter={() => link.hasDropdown && setDropdownOpen(true)}
-              onMouseLeave={() => link.hasDropdown && setDropdownOpen(false)}
-            >
-              <Link
-                href={link.href}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  color: textColor,
-                  fontWeight: 600,
-                  fontSize: "0.9rem",
-                  padding: "8px 16px",
-                  borderRadius: 8,
-                  transition: "all 0.2s ease",
-                  fontFamily: "Inter, sans-serif",
-                  letterSpacing: "0.02em",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = "#f0c060";
-                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = textColor;
-                  (e.currentTarget as HTMLElement).style.background = "transparent";
-                }}
+          {/* Desktop Nav */}
+          <div
+            className="desktop-nav"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            {navLinks.map((link) => (
+              <div
+                key={link.href}
+                style={{ position: "relative" }}
+                onMouseEnter={() => link.hasDropdown && setDropdownOpen(true)}
+                onMouseLeave={() => link.hasDropdown && setDropdownOpen(false)}
               >
-                {link.label}
-                {link.hasDropdown && <ChevronDown size={14} style={{ transition: "transform 0.2s", transform: dropdownOpen ? "rotate(180deg)" : "none" }} />}
-              </Link>
-
-              {/* Submenu Produtos */}
-              {link.hasDropdown && (
-                <div
+                <Link
+                  href={link.href}
                   style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: "50%",
-                    minWidth: 720,
-                    background: "#f4f4f4", // Light gray background to match image
-                    borderRadius: 16,
-                    boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
-                    padding: 32,
-                    display: dropdownOpen ? "block" : "none",
-                    opacity: dropdownOpen ? 1 : 0,
-                    transform: dropdownOpen ? "translate(-50%, 0)" : "translate(-50%, 10px)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                    color: textColor,
+                    fontWeight: 600,
+                    fontSize: "0.9rem",
+                    padding: "8px 16px",
+                    borderRadius: 8,
                     transition: "all 0.2s ease",
-                    pointerEvents: dropdownOpen ? "auto" : "none",
-                    zIndex: 100,
-                    border: "1px solid rgba(0,0,0,0.05)"
+                    fontFamily: "Inter, sans-serif",
+                    letterSpacing: "0.02em",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = "#f0c060";
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(255,255,255,0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = textColor;
+                    (e.currentTarget as HTMLElement).style.background =
+                      "transparent";
                   }}
                 >
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px 24px" }}>
-                    {[
-                      { key: "Multicocho", title: "Linha Multicocho" },
-                      { key: "Protecocho", title: "Linha Protecocho" },
-                      { key: "Hidramax", title: "Linha Hidramax" },
-                      { key: "Nutrisilo", title: "Linha Nutrisilo" },
-                      { key: "Suínos", title: "Linha Suínos" }
-                    ].map(categoriaObj => {
-                      const prods = produtos.filter(p => p.categoria === categoriaObj.key || p.categoria_en === categoriaObj.key);
-                      return (
-                        <div key={categoriaObj.key}>
-                          <div style={{ 
-                            fontSize: "1rem", 
-                            fontWeight: 600, 
-                            color: "#118D37", // Green title exactly matching image
-                            marginBottom: 20,
-                            fontFamily: "'Inter', sans-serif"
-                          }}>
-                            {language === "ES" ? (categoriaObj.title.replace("Linha", "Línea")) : language === "EN" ? (prods[0]?.categoria_en || categoriaObj.key) : categoriaObj.title}
+                  {link.label}
+                  {link.hasDropdown && (
+                    <ChevronDown
+                      size={14}
+                      style={{
+                        transition: "transform 0.2s",
+                        transform: dropdownOpen ? "rotate(180deg)" : "none",
+                      }}
+                    />
+                  )}
+                </Link>
+
+                {/* Submenu Produtos */}
+                {link.hasDropdown && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      left: "50%",
+                      minWidth: 720,
+                      background: "#f4f4f4", // Light gray background to match image
+                      borderRadius: 16,
+                      boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+                      padding: 32,
+                      display: dropdownOpen ? "block" : "none",
+                      opacity: dropdownOpen ? 1 : 0,
+                      transform: dropdownOpen
+                        ? "translate(-50%, 0)"
+                        : "translate(-50%, 10px)",
+                      transition: "all 0.2s ease",
+                      pointerEvents: dropdownOpen ? "auto" : "none",
+                      zIndex: 100,
+                      border: "1px solid rgba(0,0,0,0.05)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(3, 1fr)",
+                        gap: "32px 24px",
+                      }}
+                    >
+                      {[
+                        { key: "Multicocho", title: "Linha Multicocho" },
+                        { key: "Protecocho", title: "Linha Protecocho" },
+                        { key: "Hidramax", title: "Linha Hidramax" },
+                        { key: "Nutrisilo", title: "Linha Nutrisilo" },
+                        { key: "Suínos", title: "Linha Suínos" },
+                      ].map((categoriaObj) => {
+                        const prods = produtos.filter(
+                          (p) =>
+                            p.categoria === categoriaObj.key ||
+                            p.categoria_en === categoriaObj.key,
+                        );
+                        return (
+                          <div key={categoriaObj.key}>
+                            <div
+                              style={{
+                                fontSize: "1rem",
+                                fontWeight: 600,
+                                color: "#118D37", // Green title exactly matching image
+                                marginBottom: 20,
+                                fontFamily: "'Inter', sans-serif",
+                              }}
+                            >
+                              {language === "ES"
+                                ? categoriaObj.title.replace("Linha", "Línea")
+                                : language === "EN"
+                                  ? prods[0]?.categoria_en || categoriaObj.key
+                                  : categoriaObj.title}
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 16,
+                              }}
+                            >
+                              {prods.map((p) => (
+                                <Link
+                                  key={p.id}
+                                  href={`/produtos/${p.slug}`}
+                                  style={{
+                                    fontSize: "0.95rem",
+                                    color: "#64748B", // Slate gray matching image
+                                    textDecoration: "none",
+                                    transition: "color 0.2s ease",
+                                    fontWeight: 400,
+                                    fontFamily: "'Inter', sans-serif",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    (
+                                      e.currentTarget as HTMLElement
+                                    ).style.color = "#118D37";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    (
+                                      e.currentTarget as HTMLElement
+                                    ).style.color = "#6b7280";
+                                  }}
+                                  onClick={() => setDropdownOpen(false)}
+                                >
+                                  {language === "EN"
+                                    ? p.nome_en || p.nome
+                                    : p.nome}
+                                </Link>
+                              ))}
+                            </div>
                           </div>
-                          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                            {prods.map(p => (
-                              <Link
-                                key={p.id}
-                                href={`/produtos/${p.slug}`}
-                                style={{
-                                  fontSize: "0.95rem",
-                                  color: "#64748B", // Slate gray matching image
-                                  textDecoration: "none",
-                                  transition: "color 0.2s ease",
-                                  fontWeight: 400,
-                                  fontFamily: "'Inter', sans-serif"
-                                }}
-                                onMouseEnter={(e) => {
-                                  (e.currentTarget as HTMLElement).style.color = "#118D37";
-                                }}
-                                onMouseLeave={(e) => {
-                                  (e.currentTarget as HTMLElement).style.color = "#6b7280";
-                                }}
-                                onClick={() => setDropdownOpen(false)}
-                              >
-                                {language === "EN" ? (p.nome_en || p.nome) : p.nome}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
-          <div style={{ position: "relative", marginLeft: 8, marginRight: 8 }}>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as "PT" | "EN" | "ES")}
-              style={{
-                appearance: "none",
-                background: "white",
-                border: "none",
-                borderRadius: 20,
-                padding: "6px 28px 6px 12px",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: "var(--verde-escuro)",
-                cursor: "pointer",
-                outline: "none"
-              }}
+                )}
+              </div>
+            ))}
+            <div
+              style={{ position: "relative", marginLeft: 8, marginRight: 8 }}
             >
-              <option value="PT">🇧🇷 PT</option>
-              <option value="EN">🇺🇸 EN</option>
-              <option value="ES">🇪🇸 ES</option>
-            </select>
-            <ChevronDown size={14} color="var(--verde-escuro)" style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} />
-          </div>
-          <Link
-            href="/contato"
-            className="btn-ouro"
-            style={{ padding: "10px 24px", fontSize: "0.85rem" }}
-          >
-            {t("nav.quote")}
-          </Link>
+              <select
+                value={language}
+                onChange={(e) =>
+                  setLanguage(e.target.value as "PT" | "EN" | "ES")
+                }
+                style={{
+                  appearance: "none",
+                  background: "white",
+                  border: "none",
+                  borderRadius: 20,
+                  padding: "6px 28px 6px 12px",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  color: "var(--verde-escuro)",
+                  cursor: "pointer",
+                  outline: "none",
+                }}
+              >
+                <option value="PT">🇧🇷 PT</option>
+                <option value="EN">🇺🇸 EN</option>
+                <option value="ES">🇪🇸 ES</option>
+              </select>
+              <ChevronDown
+                size={14}
+                color="var(--verde-escuro)"
+                style={{
+                  position: "absolute",
+                  right: 10,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
+                }}
+              />
+            </div>
+            <Link
+              href="/contato"
+              className="btn-ouro"
+              style={{ padding: "10px 24px", fontSize: "0.85rem" }}
+            >
+              {t("nav.quote")}
+            </Link>
           </div>
         </div>
 
@@ -240,9 +302,39 @@ export default function Navbar() {
           className="mobile-menu-btn"
           aria-label="Menu"
         >
-          <div style={{ width: 24, height: 2, background: "white", marginBottom: 5, transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
-          <div style={{ width: 24, height: 2, background: "white", marginBottom: 5, opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-          <div style={{ width: 24, height: 2, background: "white", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
+          <div
+            style={{
+              width: 24,
+              height: 2,
+              background: "white",
+              marginBottom: 5,
+              transition: "all 0.3s",
+              transform: menuOpen
+                ? "rotate(45deg) translate(5px, 5px)"
+                : "none",
+            }}
+          />
+          <div
+            style={{
+              width: 24,
+              height: 2,
+              background: "white",
+              marginBottom: 5,
+              opacity: menuOpen ? 0 : 1,
+              transition: "all 0.3s",
+            }}
+          />
+          <div
+            style={{
+              width: 24,
+              height: 2,
+              background: "white",
+              transition: "all 0.3s",
+              transform: menuOpen
+                ? "rotate(-45deg) translate(5px, -5px)"
+                : "none",
+            }}
+          />
         </button>
       </div>
 
@@ -270,30 +362,75 @@ export default function Navbar() {
                   padding: "14px 0",
                   borderBottom: "1px solid rgba(255,255,255,0.08)",
                   fontFamily: "Inter, sans-serif",
-                  textDecoration: "none"
+                  textDecoration: "none",
                 }}
               >
                 {link.label}
-                {link.hasDropdown && <ChevronDown size={18} style={{ opacity: 0.5 }} onClick={(e) => { e.preventDefault(); setDropdownOpen(!dropdownOpen); }} />}
+                {link.hasDropdown && (
+                  <ChevronDown
+                    size={18}
+                    style={{ opacity: 0.5 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDropdownOpen(!dropdownOpen);
+                    }}
+                  />
+                )}
               </Link>
               {link.hasDropdown && dropdownOpen && (
-                <div style={{ padding: "12px 0 12px 16px", background: "rgba(0,0,0,0.15)", borderRadius: 8, marginTop: 8 }}>
-                  {categoriasDropdown.map(categoria => {
-                    const prods = produtos.filter(p => p.categoria === categoria || p.categoria_en === categoria);
+                <div
+                  style={{
+                    padding: "12px 0 12px 16px",
+                    background: "rgba(0,0,0,0.15)",
+                    borderRadius: 8,
+                    marginTop: 8,
+                  }}
+                >
+                  {categoriasDropdown.map((categoria) => {
+                    const prods = produtos.filter(
+                      (p) =>
+                        p.categoria === categoria ||
+                        p.categoria_en === categoria,
+                    );
                     return (
                       <div key={categoria} style={{ marginBottom: 12 }}>
-                        <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "var(--ouro)", textTransform: "uppercase", marginBottom: 6 }}>
-                          {language === "ES" ? categoria : language === "EN" ? (prods[0]?.categoria_en || categoria) : categoria}
+                        <div
+                          style={{
+                            fontSize: "0.7rem",
+                            fontWeight: 700,
+                            color: "var(--ouro)",
+                            textTransform: "uppercase",
+                            marginBottom: 6,
+                          }}
+                        >
+                          {language === "ES"
+                            ? categoria
+                            : language === "EN"
+                              ? prods[0]?.categoria_en || categoria
+                              : categoria}
                         </div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                          {prods.map(p => (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 8,
+                          }}
+                        >
+                          {prods.map((p) => (
                             <Link
                               key={p.id}
                               href={`/produtos/${p.slug}`}
-                              onClick={() => { setMenuOpen(false); setDropdownOpen(false); }}
-                              style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.9rem", textDecoration: "none" }}
+                              onClick={() => {
+                                setMenuOpen(false);
+                                setDropdownOpen(false);
+                              }}
+                              style={{
+                                color: "rgba(255,255,255,0.7)",
+                                fontSize: "0.9rem",
+                                textDecoration: "none",
+                              }}
                             >
-                              {language === "EN" ? (p.nome_en || p.nome) : p.nome}
+                              {language === "EN" ? p.nome_en || p.nome : p.nome}
                             </Link>
                           ))}
                         </div>
@@ -304,7 +441,7 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          
+
           <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
             {(["PT", "EN", "ES"] as const).map((lang) => (
               <button
@@ -319,7 +456,7 @@ export default function Navbar() {
                   color: language === lang ? "var(--verde-escuro)" : "white",
                   fontWeight: 600,
                   cursor: "pointer",
-                  fontSize: "0.85rem"
+                  fontSize: "0.85rem",
                 }}
               >
                 {lang === "PT" ? "🇧🇷 PT" : lang === "EN" ? "🇺🇸 EN" : "🇪🇸 ES"}
@@ -331,7 +468,12 @@ export default function Navbar() {
             href="/contato"
             className="btn-ouro"
             onClick={() => setMenuOpen(false)}
-            style={{ marginTop: 20, display: "inline-flex", width: "100%", justifyContent: "center" }}
+            style={{
+              marginTop: 20,
+              display: "inline-flex",
+              width: "100%",
+              justifyContent: "center",
+            }}
           >
             {t("nav.quote")}
           </Link>
