@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { produtos } from "@/data/produtos";
 import { ChevronDown } from "lucide-react";
+import NavbarTicker from "@/components/NavbarTicker";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -34,90 +34,13 @@ export default function Navbar() {
   const textColor = "rgba(255,255,255,0.95)";
   const logoSrc = "/images/logo/Alternativa Comederos - Horizontal branca2.png";
 
-  // ── Cotações integradas ──────────────────────────────────
-  interface Cotacao { nome: string; valor: string; unidade: string; variacao: number; emoji: string; }
-  const [cotacoes, setCotacoes] = useState<Cotacao[]>([]);
-  const [hora, setHora] = useState("");
-
-  useEffect(() => {
-    const buscar = async () => {
-      try {
-        const res = await fetch("/api/cotacoes");
-        if (res.ok) { const d = await res.json(); setCotacoes(d.cotacoes); }
-      } catch { /* silencioso */ }
-    };
-    buscar();
-    const iv = setInterval(buscar, 10 * 60 * 1000);
-    const tick = setInterval(() => setHora(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })), 1000);
-    setHora(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
-    return () => { clearInterval(iv); clearInterval(tick); };
-  }, []);
-
-  const tickerItems = cotacoes.length > 0 ? [...cotacoes, ...cotacoes, ...cotacoes] : [];
-  // ────────────────────────────────────────────────────────
-
   return (
     <nav
       className={`navbar ${scrolled ? "navbar-scrolled" : "navbar-transparent"}`}
       style={{ padding: 0 }}
     >
-      {/* ── Faixa de Cotações ── */}
-      {cotacoes.length > 0 && (
-        <div style={{
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          overflow: "hidden",
-          height: 32,
-          display: "flex",
-          alignItems: "center",
-          background: "rgba(0,0,0,0.25)",
-        }}>
-          {/* Badge fixo */}
-          <div style={{
-            flexShrink: 0,
-            padding: "0 12px",
-            borderRight: "1px solid rgba(255,255,255,0.12)",
-            fontSize: "0.6rem",
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "#c9a84c",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}>
-            📊 Cotações
-          </div>
-          {/* Ticker scroll */}
-          <div style={{ overflow: "hidden", flex: 1, height: "100%", display: "flex", alignItems: "center", position: "relative" }}>
-            <style>{`
-              @keyframes nv-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-33.333%); } }
-              .nv-ticker-track { display: flex; width: max-content; animation: nv-ticker 50s linear infinite; }
-              .nv-ticker-track:hover { animation-play-state: paused; }
-            `}</style>
-            <div className="nv-ticker-track">
-              {tickerItems.map((c, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "center", gap: 5, padding: "0 20px", borderRight: "1px solid rgba(255,255,255,0.07)", whiteSpace: "nowrap" }}>
-                  <span style={{ fontSize: "0.8rem" }}>{c.emoji}</span>
-                  <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>{c.nome}</span>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "white" }}>{c.valor}</span>
-                  <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.4)" }}>/{c.unidade}</span>
-                  {c.variacao !== 0 && (
-                    <span style={{ fontSize: "0.62rem", fontWeight: 700, color: c.variacao > 0 ? "#4ade80" : "#f87171" }}>
-                      {c.variacao > 0 ? "▲" : "▼"} {Math.abs(c.variacao).toFixed(2)}%
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Hora */}
-          {hora && (
-            <div style={{ flexShrink: 0, padding: "0 12px", fontSize: "0.62rem", color: "rgba(255,255,255,0.35)", borderLeft: "1px solid rgba(255,255,255,0.08)" }}>
-              ⏱ {hora}
-            </div>
-          )}
-        </div>
-      )}
+      {/* ── Faixa de Cotações (componente independente, não re-monta com idioma) ── */}
+      <NavbarTicker />
 
       {/* ── Linha principal do menu ── */}
       <div style={{ padding: "0 24px" }}>
