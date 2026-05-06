@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 interface Cotacao {
   nome: string;
+  nomeEn: string;
   valor: string;
   unidade: string;
   variacao: number;
@@ -16,12 +17,30 @@ let _cotacoesCache: Cotacao[] = [];
 export default function NavbarTicker() {
   const [cotacoes, setCotacoes] = useState<Cotacao[]>(_cotacoesCache);
   const [hora, setHora] = useState("");
+  const [lang, setLang] = useState<"PT" | "EN">("PT");
 
   useEffect(() => {
-    // Se já temos dados em cache, não precisa esperar a API
-    if (_cotacoesCache.length > 0) {
-      setCotacoes(_cotacoesCache);
-    }
+    // Detecta idioma salvo no localStorage (mesmo sistema do LanguageContext)
+    const detectLang = () => {
+      const saved = typeof window !== "undefined" ? localStorage.getItem("language") : null;
+      setLang(saved === "EN" ? "EN" : "PT");
+    };
+    detectLang();
+
+    // Escuta mudanças de idioma via storage event (quando LanguageContext salva)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "language") detectLang();
+    };
+    // Escuta evento customizado disparado pelo LanguageContext
+    const onLangChange = () => detectLang();
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("languagechange", onLangChange);
+    // Polling leve como fallback (a cada 500ms)
+    const langPoll = setInterval(detectLang, 500);
+
+    // Busca cotações
+    if (_cotacoesCache.length > 0) setCotacoes(_cotacoesCache);
 
     const buscar = async () => {
       try {
@@ -32,7 +51,6 @@ export default function NavbarTicker() {
           setCotacoes(d.cotacoes);
         }
       } catch (_e) {
-        // mantém dados anteriores em caso de falha
         if (_cotacoesCache.length > 0) setCotacoes(_cotacoesCache);
       }
     };
@@ -43,17 +61,21 @@ export default function NavbarTicker() {
     const atualizarHora = () =>
       setHora(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
     atualizarHora();
-    const tick = setInterval(atualizarHora, 60 * 1000); // a cada minuto é suficiente
+    const tick = setInterval(atualizarHora, 60 * 1000);
 
     return () => {
       clearInterval(iv);
       clearInterval(tick);
+      clearInterval(langPoll);
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("languagechange", onLangChange);
     };
-  }, []); // [] = monta 1x, nunca sofre com troca de idioma
+  }, []);
 
   if (cotacoes.length === 0) return null;
 
   const items = [...cotacoes, ...cotacoes, ...cotacoes];
+  const labelBadge = lang === "EN" ? "📊 Prices" : "📊 Cotações";
 
   return (
     <>
@@ -98,7 +120,7 @@ export default function NavbarTicker() {
             alignItems: "center",
           }}
         >
-          📊 Cotações
+          {labelBadge}
         </div>
 
         {/* Ticker em loop */}
@@ -126,7 +148,7 @@ export default function NavbarTicker() {
               >
                 <span style={{ fontSize: "0.8rem" }}>{c.emoji}</span>
                 <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "rgba(255,255,255,0.85)" }}>
-                  {c.nome}
+                  {lang === "EN" && c.nomeEn ? c.nomeEn : c.nome}
                 </span>
                 <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "white" }}>
                   {c.valor}

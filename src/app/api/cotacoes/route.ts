@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 interface Cotacao {
   nome: string;
+  nomeEn: string;
   valor: string;
   unidade: string;
   variacao: number;
@@ -10,7 +11,6 @@ interface Cotacao {
 }
 
 // Preços de referência CEPEA (atualizar manualmente conforme mercado)
-// Quando integração com API real estiver disponível, substituir aqui
 const PRECOS_REFERENCIA = {
   milho:   { base: 68.50, min: 60, max: 85 },
   soja:    { base: 138.20, min: 120, max: 165 },
@@ -18,13 +18,12 @@ const PRECOS_REFERENCIA = {
   boi:     { base: 335.00, min: 300, max: 380 },
 };
 
-// Simula variação realista (+/- 0.3% ao dia)
+// Simula variação realista (+/- 0.8% ao dia, determinístico por data)
 function simularPreco(ref: { base: number; min: number; max: number }, seed: number) {
-  // Usa seed baseado na data para manter consistente no mesmo dia
   const hoje = new Date();
   const daySeed = hoje.getFullYear() * 10000 + (hoje.getMonth() + 1) * 100 + hoje.getDate() + seed;
-  const pseudo = Math.sin(daySeed) * 0.5 + 0.5; // 0..1 determinístico por dia
-  const variacao = (pseudo - 0.5) * 2 * 0.8; // -0.8% to +0.8%
+  const pseudo = Math.sin(daySeed) * 0.5 + 0.5;
+  const variacao = (pseudo - 0.5) * 2 * 0.8;
   const preco = ref.base * (1 + variacao / 100);
   return {
     preco: Math.max(ref.min, Math.min(ref.max, preco)),
@@ -35,7 +34,7 @@ function simularPreco(ref: { base: number; min: number; max: number }, seed: num
 async function fetchDolar(): Promise<{ preco: number; variacao: number } | null> {
   try {
     const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL", {
-      next: { revalidate: 300 }, // cache 5 minutos
+      next: { revalidate: 300 },
     });
     if (!res.ok) return null;
     const data = await res.json();
@@ -59,6 +58,7 @@ export async function GET() {
   const cotacoes: Cotacao[] = [
     {
       nome: "Milho",
+      nomeEn: "Corn",
       valor: `R$ ${milho.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "sc 60kg",
       variacao: milho.variacao,
@@ -67,6 +67,7 @@ export async function GET() {
     },
     {
       nome: "Soja",
+      nomeEn: "Soybean",
       valor: `R$ ${soja.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "sc 60kg",
       variacao: soja.variacao,
@@ -75,6 +76,7 @@ export async function GET() {
     },
     {
       nome: "Bezerro",
+      nomeEn: "Calf",
       valor: `R$ ${bezerro.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "cab",
       variacao: bezerro.variacao,
@@ -83,6 +85,7 @@ export async function GET() {
     },
     {
       nome: "Boi Gordo",
+      nomeEn: "Cattle",
       valor: `R$ ${boi.preco.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       unidade: "@",
       variacao: boi.variacao,
@@ -91,6 +94,7 @@ export async function GET() {
     },
     {
       nome: "Dólar",
+      nomeEn: "Dollar",
       valor: dolar
         ? `R$ ${dolar.preco.toLocaleString("pt-BR", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}`
         : "-- ",
