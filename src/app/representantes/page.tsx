@@ -48,7 +48,11 @@ export default function RepresentantesPage() {
   const [estadoSelecionado, setEstadoSelecionado] = useState<string | null>(null);
 
   const dadosEstado = estadoSelecionado ? getRepresentantesByEstado(estadoSelecionado) : null;
-  const temRepresentantes = (id: string) => representantesPorEstado.some((e) => e.id === id);
+  const temRepresentantes = (id: string) => {
+    const estado = getRepresentantesByEstado(id);
+    if (!estado) return false;
+    return estado.representantes.some((r) => r.nome !== "Matriz (Direcionamentos)");
+  };
 
   return (
     <>
@@ -65,18 +69,14 @@ export default function RepresentantesPage() {
         }
         .estado-path.sem-rep {
           fill: #93c47d;
-          cursor: default;
         }
-        .estado-path.com-rep:hover {
+        .estado-path.com-rep:hover, .estado-path.sem-rep:hover {
           fill: #388e3c;
           filter: drop-shadow(0 2px 6px rgba(46,125,50,0.4));
         }
-        .estado-path.com-rep.ativo {
+        .estado-path.com-rep.ativo, .estado-path.sem-rep.ativo {
           fill: #c9a84c;
           filter: drop-shadow(0 4px 12px rgba(201,168,76,0.5));
-        }
-        .estado-path.sem-rep:hover {
-          fill: #a8d5a2;
         }
         @keyframes submenuIn {
           from { opacity: 0; transform: translateY(-8px) scale(0.95); }
@@ -135,7 +135,7 @@ export default function RepresentantesPage() {
             }}>
               {[
                 { valor: `${representantesPorEstado.length}`, label: "Estados" },
-                { valor: `${representantesPorEstado.reduce((s, e) => s + e.representantes.length, 0)}+`, label: "Representantes" },
+                { valor: "14+", label: "Representantes" },
                 { valor: "100%", label: "Nacional" },
               ].map((item, i) => (
                 <div key={i} style={{
@@ -209,10 +209,10 @@ export default function RepresentantesPage() {
                           className={`estado-path ${comRep ? "com-rep" : "sem-rep"} ${ativo ? "ativo" : ""}`}
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (comRep) setEstadoSelecionado(ativo ? null : estado.id);
+                            setEstadoSelecionado(ativo ? null : estado.id);
                           }}
                         >
-                          <title>{estado.nome}{comRep ? " — clique para ver representantes" : ""}</title>
+                          <title>{estado.nome}</title>
                         </path>
                         <text
                           x={estado.labelX}
@@ -242,8 +242,8 @@ export default function RepresentantesPage() {
                     const estado = estados.find(e => e.id === estadoSelecionado);
                     if (!estado) return null;
                     const nReps = dadosEstado.representantes.length;
-                    const popupW = 180;
-                    const popupH = 30 + nReps * 24 + 12;
+                    const popupW = 200;
+                    const popupH = 40 + nReps * 55 + 12;
                     const px = Math.min(Math.max(estado.labelX - popupW / 2, 4), 613 - popupW - 4);
                     const py = estado.labelY - popupH - 12;
                     return (
@@ -252,7 +252,7 @@ export default function RepresentantesPage() {
                         x={px}
                         y={py}
                         width={popupW}
-                        height={popupH + 4}
+                        height={popupH + 20}
                         style={{ overflow: "visible", zIndex: 9999 }}
                       >
                         <div
@@ -307,20 +307,22 @@ export default function RepresentantesPage() {
                               <div
                                 key={i}
                                 style={{
-                                  padding: "5px 12px",
-                                  fontSize: 11,
-                                  fontWeight: 600,
-                                  color: "#1a3a1f",
+                                  padding: "8px 12px",
                                   borderBottom: i < dadosEstado.representantes.length - 1
                                     ? "1px solid #f0f4f0" : "none",
                                   display: "flex",
-                                  alignItems: "center",
-                                  gap: 6,
+                                  alignItems: "flex-start",
+                                  gap: 8,
                                   lineHeight: 1.4,
                                 }}
                               >
-                                <span style={{ color: "#2e7d32", fontSize: 8, flexShrink: 0 }}>●</span>
-                                {rep.nome}
+                                <span style={{ color: "#2e7d32", fontSize: 8, flexShrink: 0, marginTop: 3 }}>●</span>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: "#1a3a1f" }}>{rep.nome}</span>
+                                  {rep.telefone && <span style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c" }}>{rep.telefone}</span>}
+                                  {rep.cidade && <span style={{ fontSize: 9, color: "#666" }}>{rep.cidade}</span>}
+                                  {rep.detalhe && <span style={{ fontSize: 9, color: "#888", fontStyle: "italic" }}>{rep.detalhe}</span>}
+                                </div>
                               </div>
                             ))}
                           </div>

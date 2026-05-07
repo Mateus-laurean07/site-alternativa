@@ -3,6 +3,7 @@ export interface Representante {
   telefone?: string;
   email?: string;
   cidade?: string;
+  detalhe?: string;
 }
 
 export interface EstadoRepresentantes {
@@ -11,105 +12,122 @@ export interface EstadoRepresentantes {
   representantes: Representante[];
 }
 
+const direcionamentoGeral: Representante = {
+  nome: "Matriz (Direcionamentos)",
+  telefone: "(65) 99990-2024",
+  detalhe: "Demais regiões e direcionamentos"
+};
+
 export const representantesPorEstado: EstadoRepresentantes[] = [
+  { id: "AC", nome: "Acre", representantes: [direcionamentoGeral] },
+  { id: "AL", nome: "Alagoas", representantes: [direcionamentoGeral] },
+  { id: "AM", nome: "Amazonas", representantes: [direcionamentoGeral] },
+  { id: "AP", nome: "Amapá", representantes: [direcionamentoGeral] },
   {
-    id: "MT",
-    nome: "Mato Grosso",
+    id: "BA",
+    nome: "Bahia",
     representantes: [
-      { nome: "João Carlos Silva", telefone: "(65) 99988-1234", email: "joao@alternativa.com.br", cidade: "Lucas do Rio Verde" },
-      { nome: "Maria Oliveira", telefone: "(65) 99877-5678", email: "maria@alternativa.com.br", cidade: "Rondonópolis" },
-      { nome: "Pedro Almeida", telefone: "(65) 99766-9012", cidade: "Cuiabá" },
+      { nome: "Palmares Representações", telefone: "(63) 99106-0804", detalhe: "Bahia" },
+      { nome: "Manzoli Representações", telefone: "(27) 99706-9965", detalhe: "Sul da Bahia" },
+    ],
+  },
+  { id: "CE", nome: "Ceará", representantes: [direcionamentoGeral] },
+  { id: "DF", nome: "Distrito Federal", representantes: [direcionamentoGeral] },
+  {
+    id: "ES",
+    nome: "Espírito Santo",
+    representantes: [
+      { nome: "Manzoli Representações", telefone: "(27) 99706-9965", detalhe: "Espírito Santo" },
     ],
   },
   {
     id: "GO",
     nome: "Goiás",
     representantes: [
-      { nome: "Carlos Mendes", telefone: "(62) 99955-3344", email: "carlos@alternativa.com.br", cidade: "Goiânia" },
-      { nome: "Ana Paula Ferreira", telefone: "(62) 98844-5566", cidade: "Rio Verde" },
+      { nome: "Garcia Rural", telefone: "(62) 98650-9940", detalhe: "Centro Norte de Goiás" },
+      { nome: "Isaac Lucas", telefone: "(64) 99300-6207", detalhe: "Sul de Goiás" },
+    ],
+  },
+  {
+    id: "MA",
+    nome: "Maranhão",
+    representantes: [
+      { nome: "Isaac Lucas", telefone: "(64) 99300-6207", detalhe: "Maranhão" },
+      { nome: "Palmares Representações", telefone: "(63) 99106-0804", detalhe: "Norte do Maranhão" },
+    ],
+  },
+  {
+    id: "MT",
+    nome: "Mato Grosso",
+    representantes: [
+      { nome: "GF Representação", telefone: "(65) 98113-0823", detalhe: "Mato Grosso" },
     ],
   },
   {
     id: "MS",
     nome: "Mato Grosso do Sul",
     representantes: [
-      { nome: "Roberto Costa", telefone: "(67) 99933-7788", email: "roberto@alternativa.com.br", cidade: "Campo Grande" },
-      { nome: "Fernanda Lima", telefone: "(67) 98822-9900", cidade: "Dourados" },
+      { nome: "Lino Rauber", telefone: "(65) 99962-3030", cidade: "Campo Grande/MS", detalhe: "Filial: Rua Bento Gonçalves, nº 328" },
     ],
   },
   {
     id: "MG",
     nome: "Minas Gerais",
     representantes: [
-      { nome: "Antônio Pereira", telefone: "(31) 99911-1122", email: "antonio@alternativa.com.br", cidade: "Belo Horizonte" },
-      { nome: "Juliana Santos", telefone: "(34) 98800-3344", cidade: "Uberlândia" },
-    ],
-  },
-  {
-    id: "PR",
-    nome: "Paraná",
-    representantes: [
-      { nome: "Lucas Rodrigues", telefone: "(41) 99899-5566", email: "lucas@alternativa.com.br", cidade: "Curitiba" },
-      { nome: "Camila Souza", telefone: "(44) 98788-7788", cidade: "Maringá" },
-    ],
-  },
-  {
-    id: "SC",
-    nome: "Santa Catarina",
-    representantes: [
-      { nome: "Marcos Ribeiro", telefone: "(48) 99877-9900", email: "marcos@alternativa.com.br", cidade: "Florianópolis" },
-    ],
-  },
-  {
-    id: "RS",
-    nome: "Rio Grande do Sul",
-    representantes: [
-      { nome: "Paulo Nascimento", telefone: "(51) 99866-1122", email: "paulo@alternativa.com.br", cidade: "Porto Alegre" },
-      { nome: "Sandra Machado", telefone: "(55) 98755-3344", cidade: "Santa Maria" },
-    ],
-  },
-  {
-    id: "RO",
-    nome: "Rondônia",
-    representantes: [
-      { nome: "Thiago Barbosa", telefone: "(69) 99844-5566", email: "thiago@alternativa.com.br", cidade: "Porto Velho" },
-    ],
-  },
-  {
-    id: "SP",
-    nome: "São Paulo",
-    representantes: [
-      { nome: "Rafael Carvalho", telefone: "(11) 99833-7788", email: "rafael@alternativa.com.br", cidade: "São Paulo" },
-      { nome: "Bianca Correia", telefone: "(18) 98722-9900", cidade: "Presidente Prudente" },
-    ],
-  },
-  {
-    id: "TO",
-    nome: "Tocantins",
-    representantes: [
-      { nome: "Alexandre Gomes", telefone: "(63) 99811-1122", email: "alexandre@alternativa.com.br", cidade: "Palmas" },
-    ],
-  },
-  {
-    id: "BA",
-    nome: "Bahia",
-    representantes: [
-      { nome: "Daniela Araújo", telefone: "(71) 99800-3344", email: "daniela@alternativa.com.br", cidade: "Salvador" },
-      { nome: "Eduardo Moreira", telefone: "(74) 98699-5566", cidade: "Barreiras" },
+      { nome: "Isaac Lucas", telefone: "(64) 99300-6207", detalhe: "Sul de Minas Gerais" },
+      { nome: "Manzoli Representações", telefone: "(27) 99706-9965", detalhe: "Norte de Minas Gerais" },
     ],
   },
   {
     id: "PA",
     nome: "Pará",
     representantes: [
-      { nome: "Gustavo Teixeira", telefone: "(91) 99788-7788", email: "gustavo@alternativa.com.br", cidade: "Belém" },
+      { nome: "Garcia Rural", telefone: "(62) 98650-9940", detalhe: "Pará" },
+    ],
+  },
+  { id: "PB", nome: "Paraíba", representantes: [direcionamentoGeral] },
+  {
+    id: "PR",
+    nome: "Paraná",
+    representantes: [
+      { nome: "Ziquita Agro Paraná", telefone: "(41) 99904-4730", detalhe: "Paraná" },
+    ],
+  },
+  { id: "PE", nome: "Pernambuco", representantes: [direcionamentoGeral] },
+  {
+    id: "PI",
+    nome: "Piauí",
+    representantes: [
+      { nome: "Palmares Representações", telefone: "(63) 99106-0804", detalhe: "Piauí" },
+    ],
+  },
+  { id: "RJ", nome: "Rio de Janeiro", representantes: [direcionamentoGeral] },
+  { id: "RN", nome: "Rio Grande do Norte", representantes: [direcionamentoGeral] },
+  { id: "RS", nome: "Rio Grande do Sul", representantes: [direcionamentoGeral] },
+  { id: "RO", nome: "Rondônia", representantes: [direcionamentoGeral] },
+  { id: "RR", nome: "Roraima", representantes: [direcionamentoGeral] },
+  {
+    id: "SC",
+    nome: "Santa Catarina",
+    representantes: [
+      { nome: "Ziquita Agro Paraná", telefone: "(41) 99904-4730", detalhe: "Santa Catarina" },
     ],
   },
   {
-    id: "AM",
-    nome: "Amazonas",
+    id: "SP",
+    nome: "São Paulo",
     representantes: [
-      { nome: "Isabela Rocha", telefone: "(92) 99777-9900", email: "isabela@alternativa.com.br", cidade: "Manaus" },
+      { nome: "Isaac Lucas", telefone: "(64) 99300-6207", detalhe: "São Paulo" },
+      { nome: "Lino Rauber", telefone: "(65) 99962-3030", detalhe: "Extremo Oeste de São Paulo" },
+      { nome: "Ziquita Agro Paraná", telefone: "(41) 99904-4730", detalhe: "Extremo Sul de São Paulo" },
+    ],
+  },
+  { id: "SE", nome: "Sergipe", representantes: [direcionamentoGeral] },
+  {
+    id: "TO",
+    nome: "Tocantins",
+    representantes: [
+      { nome: "Garcia Rural", telefone: "(62) 98650-9940", detalhe: "Tocantins" },
     ],
   },
 ];
