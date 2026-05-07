@@ -6,8 +6,10 @@ export const blogPosts: BlogPost[] = [
     slug: "importancia-agua-limpa-para-gado",
     titulo: "A Importância da Água Limpa para o Rebanho Bovino",
     titulo_en: "The Importance of Clean Water for Cattle Herds",
-    resumo: "Entenda como a qualidade da água impacta diretamente na produtividade e saúde do seu rebanho.",
-    resumo_en: "Understand how water quality directly impacts the productivity and health of your herd.",
+    resumo:
+      "Entenda como a qualidade da água impacta diretamente na produtividade e saúde do seu rebanho.",
+    resumo_en:
+      "Understand how water quality directly impacts the productivity and health of your herd.",
     conteudo: `
 A água é o nutriente mais importante para os bovinos. Um animal adulto pode consumir entre 40 e 80 litros de água por dia, dependendo do peso, produção e temperatura ambiente.
 
@@ -56,7 +58,7 @@ Using quality drinkers, such as Hidramax 1300, ensures that water remains clean 
 
 Investing in quality drinkers is one of the best returns a rancher can have on the property.
     `,
-    imagem: "/images/blog/agua-limpa.jpg",
+    imagem: "/images/blog/agua-limpa.png",
     autor: "Equipe Alternativa",
     data: "2025-03-15",
     categoria: "Saúde Animal",
@@ -69,8 +71,10 @@ Investing in quality drinkers is one of the best returns a rancher can have on t
     slug: "suplementacao-proteica-periodo-seco",
     titulo: "Suplementação Proteica no Período Seco: Como Fazer Certo",
     titulo_en: "Protein Supplementation in the Dry Season: How to Do It Right",
-    resumo: "Guia completo sobre como manejar a suplementação proteica durante a seca para manter a performance do rebanho.",
-    resumo_en: "Complete guide on how to manage protein supplementation during the drought to maintain herd performance.",
+    resumo:
+      "Guia completo sobre como manejar a suplementação proteica durante a seca para manter a performance do rebanho.",
+    resumo_en:
+      "Complete guide on how to manage protein supplementation during the drought to maintain herd performance.",
     conteudo: `
 O período seco é o grande desafio da pecuária brasileira, especialmente na região Centro-Oeste. A queda na qualidade e quantidade das pastagens exige uma estratégia nutricional eficiente.
 
@@ -119,7 +123,7 @@ Protecocho was developed exactly for this scenario. Its integrated cover protect
 
 With correct handling, it's possible to maintain or even improve herd performance during drought.
     `,
-    imagem: "/images/blog/suplementacao.jpg",
+    imagem: "/images/blog/suplementacao.png",
     autor: "Equipe Alternativa",
     data: "2025-02-10",
     categoria: "Nutrição",
@@ -132,8 +136,10 @@ With correct handling, it's possible to maintain or even improve herd performanc
     slug: "confinamento-vantagens-e-cuidados",
     titulo: "Confinamento Bovino: Vantagens e Cuidados no Manejo",
     titulo_en: "Cattle Feedlot: Advantages and Care in Handling",
-    resumo: "Tudo que você precisa saber sobre o sistema de confinamento para maximizar o ganho de peso do seu rebanho.",
-    resumo_en: "Everything you need to know about the feedlot system to maximize your herd's weight gain.",
+    resumo:
+      "Tudo que você precisa saber sobre o sistema de confinamento para maximizar o ganho de peso do seu rebanho.",
+    resumo_en:
+      "Everything you need to know about the feedlot system to maximize your herd's weight gain.",
     conteudo: `
 O confinamento bovino é uma estratégia crescente no agronegócio brasileiro. Quando bem manejado, permite ganhos de peso superiores aos sistemas a pasto.
 
@@ -192,7 +198,7 @@ The Feedlot Multicocho, in J and Straight models, was developed precisely to mee
 
 Investment in quality equipment pays off quickly with improved system efficiency.
     `,
-    imagem: "/images/blog/confinamento.jpg",
+    imagem: "/images/blog/confinamento.png",
     autor: "Equipe Alternativa",
     data: "2025-01-20",
     categoria: "Manejo",
