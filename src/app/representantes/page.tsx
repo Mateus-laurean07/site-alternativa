@@ -85,52 +85,48 @@ export default function RepresentantesPage() {
         .submenu-popup {
           animation: submenuIn 0.18s ease forwards;
         }
+        .tel-link {
+          transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+        }
+        .tel-link:hover {
+          transform: scale(1.05) translateX(2px);
+          color: #b59543 !important;
+        }
       `}</style>
 
       {/* HERO */}
       <section style={{
-        background: "linear-gradient(135deg, #0f1a10 0%, #1b3a20 100%)",
+        backgroundImage: "linear-gradient(rgba(15,26,16,0.85), rgba(15,26,16,0.95)), url('/images/hero/hero-2.webp')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         paddingTop: 120,
         paddingBottom: 80,
-        textAlign: "center",
-        position: "relative",
-        overflow: "hidden",
+        textAlign: "left",
       }}>
-        {/* Fundo decorativo */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(46,125,50,0.18) 0%, transparent 70%)",
-        }} />
-        <div style={{
-          position: "absolute", bottom: -1, left: 0, right: 0, height: 60,
-          background: "linear-gradient(to bottom, transparent, var(--cinza-claro,#f8f9f5))",
-        }} />
-
-        <div className="container" style={{ position: "relative", zIndex: 2 }}>
-          <div className="breadcrumb" style={{ marginBottom: 20, justifyContent: "center" }}>
+        <div className="container">
+          <div className="breadcrumb" style={{ marginBottom: 20, justifyContent: "flex-start" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.45)" }}>Início</Link>
             <span style={{ color: "rgba(255,255,255,0.25)" }}>›</span>
             <span style={{ color: "rgba(255,255,255,0.75)" }}>Representantes</span>
           </div>
 
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <span className="badge badge-ouro" style={{ marginBottom: 20, display: "inline-block", letterSpacing: "0.08em" }}>
-              🌎 Rede Nacional
+            <span className="badge badge-ouro" style={{ marginBottom: 20, display: "inline-block", letterSpacing: "0.08em", padding: "6px 14px" }}>
+              REDE NACIONAL
             </span>
             <h1 style={{ color: "white", marginBottom: 20, fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800 }}>
               {language === "PT" ? "Nossos Representantes" : "Our Representatives"}
             </h1>
-            <p style={{ color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: "0 auto 40px", fontSize: "1.05rem", lineHeight: 1.75 }}>
+            <p style={{ color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: "0 0 40px 0", fontSize: "1.05rem", lineHeight: 1.75 }}>
               Presente em todo o Brasil. Encontre o representante mais próximo de você e garanta a melhor solução para sua propriedade.
             </p>
 
             {/* Stats */}
             <div style={{
-              display: "flex", gap: 0, justifyContent: "center", flexWrap: "wrap",
+              display: "inline-flex", gap: 0, justifyContent: "flex-start", flexWrap: "wrap",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: 16, padding: "6px",
-              maxWidth: 480, margin: "0 auto",
               backdropFilter: "blur(8px)",
             }}>
               {[
@@ -319,7 +315,17 @@ export default function RepresentantesPage() {
                                 <span style={{ color: "#2e7d32", fontSize: 8, flexShrink: 0, marginTop: 3 }}>●</span>
                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                   <span style={{ fontSize: 11, fontWeight: 700, color: "#1a3a1f" }}>{rep.nome}</span>
-                                  {rep.telefone && <span style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c" }}>{rep.telefone}</span>}
+                                  {rep.telefone && (
+                                    <a 
+                                      href={`https://wa.me/55${rep.telefone.replace(/\D/g, '')}`}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="tel-link"
+                                      style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c", textDecoration: "none", display: "inline-block" }}
+                                    >
+                                      {rep.telefone}
+                                    </a>
+                                  )}
                                   {rep.cidade && <span style={{ fontSize: 9, color: "#666" }}>{rep.cidade}</span>}
                                   {rep.detalhe && <span style={{ fontSize: 9, color: "#888", fontStyle: "italic" }}>{rep.detalhe}</span>}
                                 </div>

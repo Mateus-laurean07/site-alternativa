@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Produto } from "@/types";
@@ -13,6 +14,8 @@ interface ProdutoClientProps {
 
 export default function ProdutoClient({ produto, relacionados }: ProdutoClientProps) {
   const { language } = useLanguage();
+  const [imagemAtual, setImagemAtual] = useState(produto.imagem);
+  const galeria = produto.imagens && produto.imagens.length > 0 ? produto.imagens : [produto.imagem];
 
   return (
     <>
@@ -35,22 +38,42 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
       {/* PRODUTO DETALHE */}
       <section className="section-padding-sm">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "start" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "5fr 7fr", gap: 48, alignItems: "start" }}>
             {/* GALERIA */}
-            <div>
-              <div style={{ background: "white", borderRadius: 20, height: 420, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, border: "1px solid var(--cinza-medio)", position: "relative", overflow: "hidden" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ background: "white", borderRadius: 20, height: 420, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid var(--cinza-medio)", position: "relative", overflow: "hidden" }}>
                 <Image 
-                  src={produto.imagem} 
+                  src={imagemAtual} 
                   alt={produto.nome} 
                   fill 
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: "contain", padding: "32px" }} 
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  style={{ objectFit: "contain", padding: "16px" }} 
                   priority
                 />
+                {produto.tag && (
+                  <div style={{ position: "absolute", top: 16, left: 16, background: "var(--gradient-ouro)", color: "var(--preto)", padding: "6px 16px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 700, zIndex: 10 }}>
+                    ⭐ {language === "PT" ? produto.tag : produto.tag_en || produto.tag}
+                  </div>
+                )}
               </div>
-              {produto.tag && (
-                <div style={{ display: "inline-block", background: "var(--gradient-ouro)", color: "var(--preto)", padding: "6px 16px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 700 }}>
-                  ⭐ {language === "PT" ? produto.tag : produto.tag_en || produto.tag}
+              
+              {/* THUMBNAILS */}
+              {galeria.length > 1 && (
+                <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8 }}>
+                  {galeria.map((img, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setImagemAtual(img)}
+                      style={{ 
+                        width: 80, height: 80, flexShrink: 0, position: "relative", 
+                        borderRadius: 12, overflow: "hidden", 
+                        border: imagemAtual === img ? "2px solid #c9a84c" : "1px solid var(--cinza-medio)",
+                        background: "white", cursor: "pointer", transition: "all 0.2s" 
+                      }}
+                    >
+                      <Image src={img} alt={`Thumbnail ${idx}`} fill style={{ objectFit: "contain", padding: 8 }} />
+                    </button>
+                  ))}
                 </div>
               )}
             </div>

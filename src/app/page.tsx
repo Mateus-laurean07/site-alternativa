@@ -415,7 +415,6 @@ export default function HomePage() {
                         fontSize: "1.5rem",
                         fontWeight: 800,
                         color: item.cor,
-                        fontFamily: "Playfair Display, serif",
                       }}
                     >
                       {item.valor}
@@ -446,16 +445,13 @@ export default function HomePage() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               style={{
-                background: "var(--gradient-verde)",
+                background: "var(--verde-escuro)",
                 borderRadius: 24,
                 padding: 48,
                 color: "white",
                 textAlign: "center",
               }}
             >
-              <div style={{ color: "var(--ouro)", marginBottom: 16 }}>
-                <Calculator size={64} />
-              </div>
               <h3 style={{ color: "var(--ouro)", marginBottom: 16 }}>
                 {language === "PT"
                   ? "Faça seu Cálculo"
@@ -490,7 +486,6 @@ export default function HomePage() {
                     fontSize: "2.5rem",
                     fontWeight: 900,
                     color: "var(--ouro)",
-                    fontFamily: "Playfair Display, serif",
                   }}
                 >
                   100%
