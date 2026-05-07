@@ -229,11 +229,11 @@ export default function HomePage() {
                 {language === "PT" ? "Ver Produtos" : "View Products"}
               </Link>
               <Link
-                href="/contato"
+                href="/representantes"
                 className="btn-secondary"
                 style={{ color: "white", borderColor: "rgba(255,255,255,0.5)" }}
               >
-                {t("nav.quote")}
+                {language === "PT" ? "Encontrar Representante" : "Find a Representative"}
               </Link>
             </div>
           </div>

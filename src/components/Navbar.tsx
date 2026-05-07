@@ -19,6 +19,7 @@ export default function Navbar() {
     { href: "/sobre", label: t("nav.about") },
     { href: "/videos", label: t("nav.videos") },
     { href: "/blog", label: t("nav.blog") },
+    { href: "/representantes", label: t("nav.reps") },
     { href: "/contato", label: t("nav.contact") },
   ];
 
