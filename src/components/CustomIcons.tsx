@@ -13,15 +13,30 @@ export const CowIcon = ({ size = 24, color = "currentColor", className = "" }) =
     strokeLinejoin="round"
     className={className}
   >
-    <rect x="5" y="8" width="14" height="12" rx="4" />
-    <path d="M5 10c-2-1-3-3-2-4s3 0 4 2" />
-    <path d="M19 10c2-1 3-3 2-4s-3 0-4 2" />
-    <path d="M7 8V5c0-1.5 1-2 2-2" />
-    <path d="M17 8V5c0-1.5-1-2-2-2" />
-    <path d="M8 15h8" />
-    <path d="M9 18h6" />
-    <path d="M9 12h.01" />
-    <path d="M15 12h.01" />
+    {/* Heart floating above */}
+    <path d="M14 4.5a1.5 1.5 0 0 0-2.5-1 1.5 1.5 0 0 0 0 2.1L14 8l2.5-2.4a1.5 1.5 0 0 0 0-2.1 1.5 1.5 0 0 0-2.5 1z" />
+    
+    {/* Snout and jaw */}
+    <path d="M5 14l-1.5 1.5c-1 1-.5 2.5 1 2.5h3c1 0 1.5-.5 2-1" />
+    
+    {/* Back and hind */}
+    <path d="M5 14c1-2 3-3 6-3h4c3 0 5 1 6 3v5" />
+    
+    {/* Belly */}
+    <path d="M9.5 17c2 1.5 4.5 1.5 6.5 0" />
+    
+    {/* Legs */}
+    <path d="M8 17v5" />
+    <path d="M10 18v4" />
+    <path d="M16 17v5" />
+    <path d="M18 18v4" />
+    
+    {/* Horn and Ear */}
+    <path d="M6 13c-.5-1.5 0-3 1.5-3" />
+    <path d="M8 13c1 1 2.5.5 2-1" />
+    
+    {/* Tail */}
+    <path d="M21 16c1 1 1 3 0 4" />
   </svg>
 );
 
