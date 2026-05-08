@@ -17,7 +17,7 @@ const staggerContainer = {
 };
 
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CowIcon, BrazilMapIcon } from "@/components/CustomIcons";
+import { CowIcon } from "@/components/CustomIcons";
 import {
   Shield,
   Recycle,
@@ -139,7 +139,7 @@ export default function HomePage() {
           : "Intuitive and modular system that can be assembled without specialized tools.",
     },
     {
-      icon: <BrazilMapIcon size={32} />,
+      icon: <Map size={32} />,
       titulo: language === "PT" ? "Entrega Nacional" : "National Delivery",
       desc:
         language === "PT"
