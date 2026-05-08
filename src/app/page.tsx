@@ -17,6 +17,7 @@ const staggerContainer = {
 };
 
 import { useLanguage } from "@/contexts/LanguageContext";
+import { CowIcon, BrazilMapIcon } from "@/components/CustomIcons";
 import {
   Shield,
   Recycle,
@@ -122,7 +123,7 @@ export default function HomePage() {
           : "From small farms to large ranches, we have the ideal size for your herd.",
     },
     {
-      icon: <HandHeart size={32} />,
+      icon: <CowIcon size={32} />,
       titulo: language === "PT" ? "Bem-Estar Animal" : "Animal Welfare",
       desc:
         language === "PT"
@@ -138,7 +139,7 @@ export default function HomePage() {
           : "Intuitive and modular system that can be assembled without specialized tools.",
     },
     {
-      icon: <Map size={32} />,
+      icon: <BrazilMapIcon size={32} />,
       titulo: language === "PT" ? "Entrega Nacional" : "National Delivery",
       desc:
         language === "PT"
