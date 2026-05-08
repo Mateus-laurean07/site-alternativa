@@ -108,7 +108,7 @@ export default function SobrePage() {
                   { num: "12+", label: language === "PT" ? "Produtos na linha" : "Products in line" },
                 ].map((s) => (
                   <div key={s.label} style={{ background: "var(--verde-suave)", borderRadius: 12, padding: "20px 16px", textAlign: "center" }}>
-                    <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--verde-escuro)", fontFamily: "Playfair Display, serif" }}>{s.num}</div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--verde-escuro)" }}>{s.num}</div>
                     <div style={{ fontSize: "0.8rem", color: "var(--cinza-texto)", marginTop: 4 }}>{s.label}</div>
                   </div>
                 ))}

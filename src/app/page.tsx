@@ -933,7 +933,6 @@ export default function HomePage() {
                     style={{
                       color: "var(--verde-escuro)",
                       margin: "8px 0 12px",
-                      fontFamily: "Playfair Display, serif",
                     }}
                   >
                     {post.titulo}

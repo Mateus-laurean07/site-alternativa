@@ -27,7 +27,6 @@ export default function BlogPage() {
             key={i}
             style={{
               color: "var(--verde-escuro)",
-              fontFamily: "Playfair Display, serif",
               fontSize: "1.2rem",
               marginTop: 24,
               marginBottom: 12,
@@ -233,7 +232,6 @@ export default function BlogPage() {
                         <h2
                           style={{
                             color: "var(--verde-escuro)",
-                            fontFamily: "Playfair Display, serif",
                             fontSize: "1.5rem",
                             marginBottom: 12,
                           }}

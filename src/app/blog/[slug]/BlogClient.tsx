@@ -17,7 +17,7 @@ export default function BlogClient({ post, outros }: BlogClientProps) {
   const renderMarkdown = (text: string) => {
     const lines = text.split("\n");
     return lines.map((line, i) => {
-      if (line.startsWith("## ")) return <h2 key={i} style={{ color: "var(--verde-escuro)", fontFamily: "Playfair Display, serif", fontSize: "1.6rem", marginTop: 40, marginBottom: 16 }}>{line.slice(3)}</h2>;
+      if (line.startsWith("## ")) return <h2 key={i} style={{ color: "var(--verde-escuro)", fontSize: "1.6rem", marginTop: 40, marginBottom: 16 }}>{line.slice(3)}</h2>;
       if (line.startsWith("- ")) return <li key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginLeft: 20, marginBottom: 6 }}>{line.slice(2)}</li>;
       if (line.match(/^\d+\./)) return <li key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginLeft: 20, marginBottom: 8 }}>{line.replace(/^\d+\. /, "")}</li>;
       if (line.trim() === "") return <br key={i} />;
