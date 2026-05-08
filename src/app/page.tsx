@@ -30,7 +30,7 @@ import {
   Maximize,
   Heart,
   Puzzle,
-  MapPin,
+  Globe,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -138,7 +138,7 @@ export default function HomePage() {
           : "Intuitive and modular system that can be assembled without specialized tools.",
     },
     {
-      icon: <MapPin size={32} />,
+      icon: <Globe size={32} />,
       titulo: language === "PT" ? "Entrega Nacional" : "National Delivery",
       desc:
         language === "PT"
