@@ -27,10 +27,10 @@ import {
   Calculator,
   Newspaper,
   Sun,
-  Maximize,
-  Heart,
+  Ruler,
+  HandHeart,
   Puzzle,
-  Globe,
+  Map,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -114,7 +114,7 @@ export default function HomePage() {
           : "Manufactured with recycled plastic, contributing to a more sustainable agribusiness.",
     },
     {
-      icon: <Maximize size={32} />,
+      icon: <Ruler size={32} />,
       titulo: language === "PT" ? "Tamanhos Variados" : "Various Sizes",
       desc:
         language === "PT"
@@ -122,7 +122,7 @@ export default function HomePage() {
           : "From small farms to large ranches, we have the ideal size for your herd.",
     },
     {
-      icon: <Heart size={32} />,
+      icon: <HandHeart size={32} />,
       titulo: language === "PT" ? "Bem-Estar Animal" : "Animal Welfare",
       desc:
         language === "PT"
@@ -138,7 +138,7 @@ export default function HomePage() {
           : "Intuitive and modular system that can be assembled without specialized tools.",
     },
     {
-      icon: <Globe size={32} />,
+      icon: <Map size={32} />,
       titulo: language === "PT" ? "Entrega Nacional" : "National Delivery",
       desc:
         language === "PT"
