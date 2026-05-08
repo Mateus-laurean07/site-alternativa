@@ -48,7 +48,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
                   alt={produto.nome} 
                   fill 
                   sizes="(max-width: 768px) 100vw, 40vw"
-                  style={{ objectFit: "contain", padding: "16px" }} 
+                  style={{ objectFit: "cover" }} 
                   priority
                 />
                 {produto.tag && (
@@ -72,7 +72,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
                         background: "white", cursor: "pointer", transition: "all 0.2s" 
                       }}
                     >
-                      <Image src={img} alt={`Thumbnail ${idx}`} fill style={{ objectFit: "contain", padding: 8 }} />
+                      <Image src={img} alt={`Thumbnail ${idx}`} fill style={{ objectFit: "cover" }} />
                     </button>
                   ))}
                 </div>

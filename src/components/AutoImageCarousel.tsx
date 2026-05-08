@@ -40,8 +40,7 @@ export default function AutoImageCarousel({
           fill
           sizes={sizes}
           style={{ 
-            objectFit: "contain", 
-            padding: "16px",
+            objectFit: "cover", 
             opacity: idx === currentIndex ? 1 : 0,
             transition: "opacity 0.8s ease-in-out",
             position: "absolute",
