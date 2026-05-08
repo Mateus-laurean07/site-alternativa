@@ -26,6 +26,11 @@ import {
   Truck,
   Calculator,
   Newspaper,
+  Sun,
+  Maximize,
+  Heart,
+  Puzzle,
+  MapPin,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -93,7 +98,7 @@ export default function HomePage() {
 
   const features = [
     {
-      icon: <Shield size={32} />,
+      icon: <Sun size={32} />,
       titulo: language === "PT" ? "Alta Resistência UV" : "High UV Resistance",
       desc:
         language === "PT"
@@ -109,7 +114,7 @@ export default function HomePage() {
           : "Manufactured with recycled plastic, contributing to a more sustainable agribusiness.",
     },
     {
-      icon: <Box size={32} />,
+      icon: <Maximize size={32} />,
       titulo: language === "PT" ? "Tamanhos Variados" : "Various Sizes",
       desc:
         language === "PT"
@@ -117,7 +122,7 @@ export default function HomePage() {
           : "From small farms to large ranches, we have the ideal size for your herd.",
     },
     {
-      icon: <HeartHandshake size={32} />,
+      icon: <Heart size={32} />,
       titulo: language === "PT" ? "Bem-Estar Animal" : "Animal Welfare",
       desc:
         language === "PT"
@@ -125,7 +130,7 @@ export default function HomePage() {
           : "Designed to facilitate animal access and reduce handling stress.",
     },
     {
-      icon: <Wrench size={32} />,
+      icon: <Puzzle size={32} />,
       titulo: language === "PT" ? "Fácil Montagem" : "Easy Assembly",
       desc:
         language === "PT"
@@ -133,7 +138,7 @@ export default function HomePage() {
           : "Intuitive and modular system that can be assembled without specialized tools.",
     },
     {
-      icon: <Truck size={32} />,
+      icon: <MapPin size={32} />,
       titulo: language === "PT" ? "Entrega Nacional" : "National Delivery",
       desc:
         language === "PT"
