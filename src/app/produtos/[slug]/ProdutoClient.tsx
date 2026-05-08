@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Produto } from "@/types";
 import { useLanguage } from "@/contexts/LanguageContext";
+import AutoImageCarousel from "@/components/AutoImageCarousel";
 import { FileText, ClipboardList } from "lucide-react";
 
 interface ProdutoClientProps {
@@ -147,12 +148,10 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
               {relacionados.map((p) => (
                 <Link key={p.id} href={`/produtos/${p.slug}`} className="produto-card" style={{ textDecoration: "none" }}>
                   <div className="produto-card-image" style={{ height: 180, position: "relative", overflow: "hidden", background: "white" }}>
-                    <Image 
-                      src={p.imagem} 
+                    <AutoImageCarousel 
+                      images={[p.imagem, ...(p.imagens || [])]} 
                       alt={p.nome} 
-                      fill 
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{ objectFit: "contain", padding: "16px" }} 
                     />
                   </div>
                   <div className="produto-card-body">

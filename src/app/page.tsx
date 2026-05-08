@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { getProdutosDestaque } from "@/data/produtos";
+import AutoImageCarousel from "@/components/AutoImageCarousel";
 import { blogPosts } from "@/data/blog";
 
 const fadeInUp = {
@@ -568,12 +569,10 @@ export default function HomePage() {
                       position: "relative",
                     }}
                   >
-                    <Image
-                      src={p.imagem}
+                    <AutoImageCarousel
+                      images={[p.imagem, ...(p.imagens || [])]}
                       alt={p.nome}
-                      fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                      style={{ objectFit: "contain", padding: "16px" }}
                     />
                   </motion.div>
                   {p.tag && (

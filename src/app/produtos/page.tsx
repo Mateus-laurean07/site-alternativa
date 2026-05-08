@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import AutoImageCarousel from "@/components/AutoImageCarousel";
 import { produtos, categorias } from "@/data/produtos";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -108,12 +109,10 @@ export default function ProdutosPage() {
                       transition={{ duration: 0.4 }}
                       style={{ width: "100%", height: "100%", position: "relative" }}
                     >
-                      <Image 
-                        src={p.imagem} 
+                      <AutoImageCarousel 
+                        images={[p.imagem, ...(p.imagens || [])]} 
                         alt={p.nome} 
-                        fill 
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        style={{ objectFit: "contain", padding: "16px" }} 
                       />
                     </motion.div>
                     {p.tag && (
