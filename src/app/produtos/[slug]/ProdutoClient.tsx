@@ -15,7 +15,7 @@ interface ProdutoClientProps {
 export default function ProdutoClient({ produto, relacionados }: ProdutoClientProps) {
   const { language } = useLanguage();
   const [imagemAtual, setImagemAtual] = useState(produto.imagem);
-  const galeria = produto.imagens && produto.imagens.length > 0 ? produto.imagens : [produto.imagem];
+  const galeria = [produto.imagem, ...(produto.imagens || [])];
 
   return (
     <>

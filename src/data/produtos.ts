@@ -11,7 +11,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Protecocho 200 é a solução ideal para produtores que buscam eficiência na suplementação proteica do rebanho a pasto. Com cobertura resistente, protege o suplemento da chuva e do sol, reduzindo perdas e garantindo qualidade nutricional. Fabricado em plástico de alta resistência UV, tem vida útil superior aos cochos metálicos.",
     descricaoCompleta_en: "The Protecocho 200 is the ideal solution for producers seeking efficiency in pasture herd protein supplementation. With a resistant cover, it protects the supplement from rain and sun, reducing losses and ensuring nutritional quality. Made of high UV-resistant plastic, it has a longer lifespan than metal troughs.",
     imagem: "/images/produtos/protecocho-200.webp",
-    imagens: ["/images/produtos/protecocho-200.png", "/images/produtos/protecocho-250.png"],
+    imagens: ["/images/produtos/protecocho-200-bois.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "200 litros", valor_en: "200 liters" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -38,7 +38,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Protecocho 250 oferece maior capacidade para rebanhos de médio a grande porte. Sua estrutura robusta e cobertura integrada garantem a qualidade do suplemento por mais tempo, mesmo nas condições climáticas mais adversas do Cerrado e Pantanal.",
     descricaoCompleta_en: "The Protecocho 250 offers greater capacity for medium to large herds. Its robust structure and integrated cover ensure supplement quality for longer, even in the most adverse weather conditions of the Cerrado and Pantanal.",
     imagem: "/images/produtos/protecocho-250.webp",
-    imagens: ["/images/produtos/protecocho-250.png"],
+    imagens: ["/images/produtos/protecocho-250-bois.webp", "/images/produtos/protecocho-250-sol.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "250 litros", valor_en: "250 liters" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -62,7 +62,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Protecocho 400 é desenvolvido para grandes operações pecuárias. Com 400 litros de capacidade, reduz a frequência de reabastecimento e garante alimentação contínua para rebanhos extensivos. Sua estrutura reforçada resiste ao impacto dos animais e às intempéries climáticas.",
     descricaoCompleta_en: "The Protecocho 400 is developed for large livestock operations. With 400 liters of capacity, it reduces replenishment frequency and ensures continuous feeding for extensive herds. Its reinforced structure resists animal impact and harsh weather.",
     imagem: "/images/produtos/protecocho-400.webp",
-    imagens: ["/images/produtos/protecocho-400.png"],
+    imagens: ["/images/produtos/protecocho-400-campo.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "400 litros", valor_en: "400 liters" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -87,7 +87,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Protecocho 500 é a escolha para propriedades de grande escala. Com 500 litros, atende rebanhos numerosos com menos visitas ao campo, otimizando o tempo do produtor e reduzindo custos operacionais.",
     descricaoCompleta_en: "The Protecocho 500 is the choice for large-scale properties. With 500 liters, it serves numerous herds with fewer field visits, optimizing the producer's time and reducing operational costs.",
     imagem: "/images/produtos/protecocho-500.webp",
-    imagens: ["/images/produtos/protecocho-500.png"],
+    imagens: ["/images/produtos/protecocho-500-bois.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "500 litros", valor_en: "500 liters" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -112,7 +112,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Hidramax 1300 é o bebedouro mais avançado da linha Alternativa. Com capacidade de 1300 litros e boia de alta vazão de 1 polegada, garante água limpa e abundante para o rebanho 24 horas por dia. Elimina o estresse hídrico dos animais e melhora a conversão alimentar e a produtividade do rebanho.",
     descricaoCompleta_en: "The Hidramax 1300 is the most advanced drinker in the Alternativa line. With a 1300-liter capacity and a 1-inch high-flow float, it guarantees clean and abundant water for the herd 24 hours a day. It eliminates animal water stress and improves feed conversion and herd productivity.",
     imagem: "/images/produtos/hidramax.webp",
-    imagens: ["/images/produtos/hidramax.png"],
+    imagens: ["/images/produtos/hidramax-bois.webp", "/images/produtos/hidramax-seca.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "1.300 litros", valor_en: "1,300 liters" },
       { chave: "Boia", chave_en: "Float", valor: "Alta vazão - 1 polegada", valor_en: "High flow - 1 inch" },
@@ -140,7 +140,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Multicocho 200 é o cocho para gado mais versátil do mercado. Com capacidade de até 200 litros, é adequado para diversas finalidades: suplementação a pasto, semiconfinamento, fornecimento de ração e silagem. Sua versatilidade e resistência o tornam o favorito dos pecuaristas brasileiros.",
     descricaoCompleta_en: "The Multicocho 200 is the most versatile cattle trough on the market. With up to 200 liters of capacity, it is suitable for various purposes: pasture supplementation, semi-confinement, feed, and silage supply. Its versatility and resistance make it the favorite of Brazilian ranchers.",
     imagem: "/images/produtos/multicocho-200.webp",
-    imagens: ["/images/produtos/multicocho-200.png"],
+    imagens: ["/images/produtos/multicocho_campo.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "200 litros", valor_en: "200 liters" },
       { chave: "Comprimento", chave_en: "Length", valor: "2,0 metros", valor_en: "2.0 meters" },
@@ -165,7 +165,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Multicocho 250 oferece até 300 litros de capacidade, sendo ideal para rebanhos maiores ou quando se deseja reduzir a frequência de abastecimento. Mantém todas as vantagens do Multicocho 200, com maior autonomia.",
     descricaoCompleta_en: "The Multicocho 250 offers up to 300 liters of capacity, ideal for larger herds or when reducing replenishment frequency is desired. It maintains all the advantages of the Multicocho 200, with greater autonomy.",
     imagem: "/images/produtos/multicocho-250.webp",
-    imagens: ["/images/produtos/multicocho-250.png"],
+    imagens: ["/images/produtos/multicocho_250_campo.webp"],
     especificacoes: [
       { chave: "Capacidade", chave_en: "Capacity", valor: "Até 300 litros", valor_en: "Up to 300 liters" },
       { chave: "Comprimento", chave_en: "Length", valor: "2,5 metros", valor_en: "2.5 meters" },
@@ -192,7 +192,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Multicocho Confinamento J é desenvolvido especificamente para sistemas de confinamento. O modelo J permite o acesso do animal ao cocho sem risco de acidentes, facilitando o manejo diário. Alta durabilidade e excelente custo-benefício.",
     descricaoCompleta_en: "The Feedlot Multicocho J is developed specifically for feedlot systems. The J model allows animal access to the trough without accident risks, facilitating daily handling. High durability and excellent cost-benefit.",
     imagem: "/images/produtos/confinamento-j.webp",
-    imagens: ["/images/produtos/confinamento-j.png"],
+    imagens: ["/images/produtos/confinamento_gado.webp"],
     especificacoes: [
       { chave: "Modelo", chave_en: "Model", valor: "Pé J", valor_en: "J-Leg" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -218,7 +218,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Multicocho Confinamento Reto é a solução para confinamentos que buscam praticidade e eficiência. Com design reto, facilita a higienização e o abastecimento mecanizado.",
     descricaoCompleta_en: "The Straight Feedlot Multicocho is the solution for feedlots seeking practicality and efficiency. With a straight design, it facilitates cleaning and mechanized replenishment.",
     imagem: "/images/produtos/confinamento-reto.webp",
-    imagens: ["/images/produtos/confinamento-reto.png"],
+    imagens: ["/images/produtos/confinamento_gado.webp"],
     especificacoes: [
       { chave: "Modelo", chave_en: "Model", valor: "Reto", valor_en: "Straight" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -240,8 +240,8 @@ export const produtos: Produto[] = [
     descricao_en: "Safe storage against rain, moisture, and rodents for mineral supplement.",
     descricaoCompleta: "O NutriSilo transforma proteção em performance: mantém o suplemento seguro contra chuva, umidade e roedores, reduzindo perdas e garantindo oferta consistente no cocho. Manejo mais eficiente, suplementação mais estratégica. O Nutrisilo pode ser integrado ao Protecocho para um sistema completo de suplementação.",
     descricaoCompleta_en: "NutriSilo turns protection into performance: it keeps the supplement safe against rain, moisture, and rodents, reducing losses and ensuring consistent supply in the trough. More efficient handling, more strategic supplementation. NutriSilo can be integrated with Protecocho for a complete supplementation system.",
-    imagem: "/images/produtos/nutrisilo.webp",
-    imagens: ["/images/produtos/nutrisilo.png"],
+    imagem: "/images/produtos/nutrisilo-2.webp",
+    imagens: ["/images/produtos/nutrisilo-milho.webp", "/images/produtos/nutrisilo-sacas.webp"],
     especificacoes: [
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
       { chave: "Proteção", chave_en: "Protection", valor: "Chuva, umidade e roedores", valor_en: "Rain, moisture, and rodents" },
@@ -265,7 +265,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "Desenvolvido para otimizar o fornecimento de ração aos animais jovens, o Creep Feeding é um cocho destinado a bezerros e filhotes, assegurando a alimentação mesmo durante o período de amamentação. Possui acesso exclusivo para animais de menor porte, impedindo que adultos consumam o alimento dos bezerros.",
     descricaoCompleta_en: "Developed to optimize feed supply to young animals, Creep Feeding is a trough designed for calves, ensuring feeding even during the nursing period. It has exclusive access for smaller animals, preventing adults from consuming calf feed.",
     imagem: "/images/produtos/creep.webp",
-    imagens: ["/images/produtos/creep.png"],
+    imagens: ["/images/produtos/creep-bezerros.webp"],
     especificacoes: [
       { chave: "Uso", chave_en: "Usage", valor: "Bezerros e filhotes", valor_en: "Calves and young animals" },
       { chave: "Acesso", chave_en: "Access", valor: "Exclusivo para animais jovens", valor_en: "Exclusive for young animals" },
@@ -291,7 +291,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "Garanta alimento por mais tempo ao seu rebanho com a linha Autoabastecimento. Com um sistema autoalimentador de alta capacidade, ela garante o suprimento contínuo de alimento, atendendo desde bezerros até gado de maior porte. Ideal para reduzir a mão de obra e garantir alimentação constante.",
     descricaoCompleta_en: "Ensure food for your herd for longer with the Self-Replenishing line. With a high-capacity self-feeding system, it guarantees continuous food supply, catering to everything from calves to larger cattle. Ideal for reducing labor and ensuring constant feeding.",
     imagem: "/images/produtos/autoabastecimento.webp",
-    imagens: ["/images/produtos/autoabastecimento.png"],
+    imagens: ["/images/produtos/autoabastecimento-floresta.webp"],
     especificacoes: [
       { chave: "Sistema", chave_en: "System", valor: "Autoabastecimento por gravidade", valor_en: "Gravity self-replenishment" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno de alta densidade", valor_en: "High-density polyethylene" },
@@ -314,7 +314,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Piso Vazado proporciona excelente escoamento de dejetos e mantém os animais limpos e secos. Fabricado em plástico resistente, oferece conforto térmico, segurança contra escorregões e facilidade de higienização, sendo fundamental para a biosseguridade da granja.",
     descricaoCompleta_en: "The Slatted Floor provides excellent waste drainage and keeps the animals clean and dry. Made of resistant plastic, it offers thermal comfort, anti-slip safety, and easy cleaning, being essential for farm biosecurity.",
     imagem: "/images/produtos/piso-vazado.webp",
-    imagens: ["/images/produtos/piso-vazado.png"],
+    imagens: ["/images/produtos/piso_vazado_porcos.webp"],
     especificacoes: [
       { chave: "Uso", chave_en: "Usage", valor: "Maternidade e creche", valor_en: "Farrowing and nursery" },
       { chave: "Material", chave_en: "Material", valor: "Polipropileno injetado", valor_en: "Injected polypropylene" },
@@ -335,7 +335,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "Desenvolvido especificamente para a anatomia das matrizes suínas, o Cocho Matriz garante fácil acesso à ração sem acúmulos nos cantos. Isso previne o azedamento do alimento, melhora a conversão alimentar e facilita o manejo diário na maternidade.",
     descricaoCompleta_en: "Developed specifically for sow anatomy, the Sow Feeder ensures easy access to feed without accumulation in the corners. This prevents feed from souring, improves feed conversion, and facilitates daily handling in the farrowing room.",
     imagem: "/images/produtos/cocho-matriz.webp",
-    imagens: ["/images/produtos/cocho-matriz.png"],
+    imagens: ["/images/produtos/cocho_matriz_porco.webp"],
     especificacoes: [
       { chave: "Animal", chave_en: "Animal", valor: "Matrizes suínas", valor_en: "Sows" },
       { chave: "Material", chave_en: "Material", valor: "Polietileno atóxico", valor_en: "Non-toxic polyethylene" },
@@ -355,7 +355,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "O Cocho Leitão incentiva o consumo precoce de ração seca, preparando o sistema digestivo do animal para o desmame. Possui bordas arredondadas e divisórias que evitam que o leitão deite no alimento, garantindo higiene e saúde.",
     descricaoCompleta_en: "The Piglet Feeder encourages early consumption of dry feed, preparing the animal's digestive system for weaning. It features rounded edges and dividers that prevent the piglet from lying on the feed, ensuring hygiene and health.",
     imagem: "/images/produtos/cocho-leitao.webp",
-    imagens: ["/images/produtos/cocho-leitao.png"],
+    imagens: ["/images/produtos/cocho_leitao_porcos.webp"],
     especificacoes: [
       { chave: "Animal", chave_en: "Animal", valor: "Leitões", valor_en: "Piglets" },
       { chave: "Bordas", chave_en: "Edges", valor: "Arredondadas", valor_en: "Rounded" },
@@ -375,7 +375,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "Diferente das grades metálicas, os Portões plásticos para suínos não enferrujam e oferecem maior durabilidade em ambientes com alta concentração de amônia. Leves, fáceis de operar e extremamente resistentes aos impactos.",
     descricaoCompleta_en: "Unlike metal grids, plastic Swine Gates do not rust and offer greater durability in environments with high ammonia concentration. Lightweight, easy to operate, and extremely impact-resistant.",
     imagem: "/images/produtos/portoes-suinos.webp",
-    imagens: ["/images/produtos/portoes-suinos.png"],
+    imagens: ["/images/produtos/portoes_porcos.webp"],
     especificacoes: [
       { chave: "Material", chave_en: "Material", valor: "Plástico de alta engenharia", valor_en: "High-engineering plastic" },
       { chave: "Uso", chave_en: "Usage", valor: "Divisórias de baias", valor_en: "Pen dividers" },
@@ -395,7 +395,7 @@ export const produtos: Produto[] = [
     descricaoCompleta: "Ideais para os primeiros dias de vida, as Bandejas de alimentação estimulam o leitão através de papinhas ou ração úmida. O formato raso e o engate rápido nos estrados vazados tornam este equipamento indispensável para um arranque vigoroso da leitegada.",
     descricaoCompleta_en: "Ideal for the first days of life, Feeding Trays stimulate piglets through gruel or wet feed. The shallow format and quick attachment to slatted floors make this equipment indispensable for a vigorous litter start.",
     imagem: "/images/produtos/bandejas-suinos.webp",
-    imagens: ["/images/produtos/bandejas-suinos.png"],
+    imagens: ["/images/produtos/bandeja_suinos_porcos.webp"],
     especificacoes: [
       { chave: "Uso", chave_en: "Usage", valor: "Papinha e ração inicial", valor_en: "Gruel and starter feed" },
       { chave: "Fixação", chave_en: "Attachment", valor: "Engate em piso vazado", valor_en: "Slatted floor attachment" },
