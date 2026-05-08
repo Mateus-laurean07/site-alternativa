@@ -141,7 +141,7 @@ export default function VideosPage() {
               Quer ver mais conteúdos? Acesse nosso canal oficial no YouTube.
             </p>
             <a 
-              href="https://youtube.com/@AlternativaCochos" 
+              href="https://www.youtube.com/channel/UCZp2amnWqefSu2LKuiydwPg" 
               target="_blank" 
               rel="noreferrer" 
               className="btn-primary"
