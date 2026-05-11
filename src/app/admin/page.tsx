@@ -1,8 +1,17 @@
 import Link from "next/link";
 import { Plus, Edit2, Trash2 } from "lucide-react";
-import { blogPosts } from "@/data/blog";
+import { neon } from "@neondatabase/serverless";
 
-export default function AdminDashboard() {
+export const revalidate = 0; // Para desativar o cache da listagem no admin
+
+export default async function AdminDashboard() {
+  const sql = neon(process.env.DATABASE_URL!);
+  let dbPosts: any[] = [];
+  try {
+    dbPosts = await sql`SELECT * FROM blog_posts ORDER BY data DESC`;
+  } catch (e) {
+    console.error("Erro ao carregar posts:", e);
+  }
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
@@ -24,11 +33,11 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {blogPosts.map((post) => (
+            {dbPosts.map((post) => (
               <tr key={post.id} style={{ borderTop: "1px solid #e9ecef" }}>
                 <td style={{ padding: "16px 24px", color: "var(--verde-escuro)", fontWeight: 500 }}>{post.titulo}</td>
                 <td style={{ padding: "16px 24px", color: "var(--cinza-texto)" }}>{post.categoria}</td>
-                <td style={{ padding: "16px 24px", color: "var(--cinza-texto)" }}>{post.data}</td>
+                <td style={{ padding: "16px 24px", color: "var(--cinza-texto)" }}>{new Date(post.data).toLocaleDateString("pt-BR")}</td>
                 <td style={{ padding: "16px 24px", textAlign: "right", display: "flex", gap: 8, justifyContent: "flex-end" }}>
                   <button style={{ background: "#f1f3f5", border: "none", width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--verde-escuro)" }}>
                     <Edit2 size={16} />
@@ -39,10 +48,10 @@ export default function AdminDashboard() {
                 </td>
               </tr>
             ))}
-            {blogPosts.length === 0 && (
+            {dbPosts.length === 0 && (
               <tr>
                 <td colSpan={4} style={{ padding: "32px", textAlign: "center", color: "var(--cinza-texto)" }}>
-                  Nenhum artigo encontrado. Clique em "Novo Artigo" para começar.
+                  Nenhum artigo encontrado no banco. Clique em "Novo Artigo" para começar.
                 </td>
               </tr>
             )}

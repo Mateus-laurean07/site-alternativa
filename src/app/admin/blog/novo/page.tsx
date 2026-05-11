@@ -20,13 +20,27 @@ export default function NovoArtigo() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.formEvent && e.preventDefault();
+    e.preventDefault();
     setLoading(true);
-    // Simular salvamento
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/blog", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        toast.success("Artigo salvo com sucesso no banco de dados!");
+        setFormData({ titulo: "", resumo: "", categoria: "", conteudo: "", imagem: "", tags: "" });
+      } else {
+        toast.error("Erro ao salvar: " + data.error);
+      }
+    } catch (error) {
+      toast.error("Erro de conexão ao tentar salvar.");
+    } finally {
       setLoading(false);
-      toast.success("A interface está pronta! O salvamento será habilitado quando conectarmos ao Banco de Dados.", { duration: 4000 });
-    }, 1000);
+    }
   };
 
   return (
