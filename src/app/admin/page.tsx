@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import AdminBlogList from "@/components/admin/AdminBlogList";
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
   const sql = neon(process.env.DATABASE_URL!);
