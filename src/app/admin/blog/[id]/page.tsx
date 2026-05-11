@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Image as ImageIcon, X, Eye } from "lucide-react";
 import toast from "react-hot-toast";
+import TagSelector from "@/components/admin/TagSelector";
 
 export default function EditarArtigo({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -11,6 +12,7 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [showPreview, setShowPreview] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     titulo: "",
     resumo: "",
@@ -33,8 +35,12 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
           categoria: data.categoria ?? "",
           conteudo: data.conteudo ?? "",
           imagem: data.imagem ?? "",
-          tags: data.tags ?? "",
         });
+        // Carregar tags já salvas como selecionadas
+        if (data.tags) {
+          const tagsArr = data.tags.split(",").map((t: string) => t.trim()).filter(Boolean);
+          setSelectedTags(tagsArr);
+        }
       } catch {
         toast.error("Erro ao carregar dados do artigo.");
       } finally {
@@ -61,10 +67,11 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
     e.preventDefault();
     setLoading(true);
     try {
+      const payload = { ...formData, tags: selectedTags.join(", ") };
       const res = await fetch(`/api/blog/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (data.success) {
@@ -135,8 +142,8 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
             />
           </div>
 
-          {/* Categoria + Tags */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          {/* Categoria */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 20 }}>
             <div>
               <label style={labelStyle}>Categoria *</label>
               <input
@@ -146,16 +153,9 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
                 style={inputStyle}
               />
             </div>
-            <div>
-              <label style={labelStyle}>Tags (separadas por vírgula)</label>
-              <input
-                type="text" name="tags"
-                value={formData.tags} onChange={handleChange}
-                placeholder="Ex: bovinos, seca, suplementação..."
-                style={inputStyle}
-              />
-            </div>
           </div>
+
+          <TagSelector selectedTags={selectedTags} onChange={setSelectedTags} />
 
           {/* Resumo */}
           <div>
@@ -345,10 +345,9 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
                 })}
               </div>
 
-              {/* Tags */}
-              {formData.tags && (
+              {selectedTags.length > 0 && (
                 <div style={{ marginTop: 40, paddingTop: 24, borderTop: "1px solid #f1f3f5", display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {formData.tags.split(",").map((t) => t.trim()).filter(Boolean).map((tag) => (
+                  {selectedTags.map((tag) => (
                     <span key={tag} style={{
                       background: "#e8f5e9", color: "var(--verde-escuro)",
                       padding: "4px 12px", borderRadius: 16, fontSize: "0.82rem", fontWeight: 600

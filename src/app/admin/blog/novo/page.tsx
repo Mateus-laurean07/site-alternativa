@@ -4,18 +4,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Image as ImageIcon, X } from "lucide-react";
 import toast from "react-hot-toast";
+import TagSelector from "@/components/admin/TagSelector";
 
 export default function NovoArtigo() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     titulo: "",
     resumo: "",
     categoria: "",
     conteudo: "",
     imagem: "",
-    tags: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -26,20 +27,20 @@ export default function NovoArtigo() {
     e.preventDefault();
     setLoading(true);
     try {
+      const payload = { ...formData, tags: selectedTags.join(", ") };
       const res = await fetch("/api/blog", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
-      
       if (data.success) {
-        toast.success("Artigo salvo com sucesso no banco de dados!");
+        toast.success("Artigo salvo com sucesso!");
         router.push("/admin");
       } else {
         toast.error("Erro ao salvar: " + data.error);
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro de conexão ao tentar salvar.");
     } finally {
       setLoading(false);
@@ -90,20 +91,9 @@ export default function NovoArtigo() {
                 style={{ width: "100%", padding: "12px 16px", borderRadius: 8, border: "1px solid #ced4da", fontSize: "1rem", outline: "none" }}
               />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "var(--verde-escuro)", marginBottom: 8 }}>
-                Tags (separadas por vírgula)
-              </label>
-              <input 
-                type="text" 
-                name="tags"
-                value={formData.tags}
-                onChange={handleChange}
-                placeholder="Ex: bovinos, seca, suplementação..."
-                style={{ width: "100%", padding: "12px 16px", borderRadius: 8, border: "1px solid #ced4da", fontSize: "1rem", outline: "none" }}
-              />
-            </div>
           </div>
+
+          <TagSelector selectedTags={selectedTags} onChange={setSelectedTags} />
 
           <div>
             <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "var(--verde-escuro)", marginBottom: 8 }}>
@@ -251,10 +241,10 @@ export default function NovoArtigo() {
                 {formData.conteudo || "Conteúdo completo aparecerá aqui..."}
               </div>
               
-              {formData.tags && (
+              {selectedTags.length > 0 && (
                 <div style={{ marginTop: 40, paddingTop: 24, borderTop: "1px solid #eee", display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {formData.tags.split(',').map(t => t.trim()).filter(Boolean).map(tag => (
-                    <span key={tag} style={{ background: "#f1f3f5", color: "var(--cinza-texto)", padding: "4px 12px", borderRadius: 16, fontSize: "0.85rem" }}>
+                  {selectedTags.map((tag) => (
+                    <span key={tag} style={{ background: "#e8f5e9", color: "var(--verde-escuro)", padding: "4px 12px", borderRadius: 16, fontSize: "0.85rem", fontWeight: 600 }}>
                       #{tag}
                     </span>
                   ))}
