@@ -1,11 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Image as ImageIcon } from "lucide-react";
 import toast from "react-hot-toast";
 
-export default function NovoArtigo() {
+export default function EditarArtigo({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [formData, setFormData] = useState({
     titulo: "",
     resumo: "",
@@ -15,6 +19,32 @@ export default function NovoArtigo() {
     tags: "",
   });
 
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/blog/${resolvedParams.id}`);
+        const data = await res.json();
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setFormData({
+            titulo: data.titulo || "",
+            resumo: data.resumo || "",
+            categoria: data.categoria || "",
+            conteudo: data.conteudo || "",
+            imagem: data.imagem || "",
+            tags: data.tags || "",
+          });
+        }
+      } catch (e) {
+        toast.error("Erro ao carregar dados do artigo.");
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchPost();
+  }, [resolvedParams.id]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -23,25 +53,29 @@ export default function NovoArtigo() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("/api/blog", {
-        method: "POST",
+      const res = await fetch(`/api/blog/${resolvedParams.id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
       });
       const data = await res.json();
       
       if (data.success) {
-        toast.success("Artigo salvo com sucesso no banco de dados!");
-        setFormData({ titulo: "", resumo: "", categoria: "", conteudo: "", imagem: "", tags: "" });
+        toast.success("Artigo atualizado com sucesso!");
+        router.push("/admin");
       } else {
-        toast.error("Erro ao salvar: " + data.error);
+        toast.error("Erro ao atualizar: " + data.error);
       }
     } catch (error) {
-      toast.error("Erro de conexão ao tentar salvar.");
+      toast.error("Erro de conexão ao tentar atualizar.");
     } finally {
       setLoading(false);
     }
   };
+
+  if (fetching) {
+    return <div style={{ textAlign: "center", padding: 64, color: "var(--verde-escuro)" }}>Carregando dados...</div>;
+  }
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto" }}>
@@ -49,7 +83,7 @@ export default function NovoArtigo() {
         <Link href="/admin" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: "50%", background: "white", color: "var(--verde-escuro)", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
           <ArrowLeft size={20} />
         </Link>
-        <h1 style={{ fontSize: "1.8rem", color: "var(--verde-escuro)", margin: 0 }}>Escrever Novo Artigo</h1>
+        <h1 style={{ fontSize: "1.8rem", color: "var(--verde-escuro)", margin: 0 }}>Editar Artigo</h1>
       </div>
 
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -160,7 +194,7 @@ export default function NovoArtigo() {
           </Link>
           <button type="submit" disabled={loading} className="btn-verde" style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <Save size={20} />
-            {loading ? "Salvando..." : "Salvar Artigo"}
+            {loading ? "Salvando..." : "Salvar Alterações"}
           </button>
         </div>
       </form>
