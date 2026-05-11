@@ -1,5 +1,6 @@
 "use client";
 import { X, PenTool, Calendar, BookOpen, ShoppingBag } from "lucide-react";
+import { useEffect } from "react";
 
 interface BlogPreviewProps {
   formData: {
@@ -32,22 +33,35 @@ const renderMarkdown = (text: string) => {
 export default function BlogPreview({ formData, selectedTags, onClose }: BlogPreviewProps) {
   const hoje = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 
+  // Trava o scroll do body enquanto a prévia está aberta
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   return (
+    // Overlay — sem scroll, apenas fundo escuro
     <div
       style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "rgba(0,0,0,0.75)", overflowY: "auto",
-        padding: "0",
+        background: "rgba(0,0,0,0.75)",
+        display: "flex", flexDirection: "column",
+        overflow: "hidden", // sem scroll aqui!
       }}
       onClick={onClose}
     >
-      {/* Barra de aviso de prévia */}
-      <div style={{
-        position: "sticky", top: 0, zIndex: 10,
-        background: "#1e293b", color: "white",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "12px 24px", fontSize: "0.875rem"
-      }}>
+      {/* Barra de aviso — fixa no topo da prévia */}
+      <div
+        style={{
+          flexShrink: 0,
+          background: "#1e293b", color: "white",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "12px 24px", fontSize: "0.875rem", zIndex: 10,
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <span>👁️ <strong>Modo Prévia</strong> — Veja exatamente como o artigo vai aparecer no blog</span>
         <button
           onClick={onClose}
@@ -61,7 +75,11 @@ export default function BlogPreview({ formData, selectedTags, onClose }: BlogPre
         </button>
       </div>
 
-      <div onClick={(e) => e.stopPropagation()}>
+      {/* Conteúdo com UM único scroll */}
+      <div
+        style={{ flex: 1, overflowY: "auto" }}
+        onClick={(e) => e.stopPropagation()}
+      >
 
         {/* ===== HERO — igual ao do blog ===== */}
         <section style={{ position: "relative", paddingTop: 100, paddingBottom: 80, overflow: "hidden", background: "#0f1a10" }}>
