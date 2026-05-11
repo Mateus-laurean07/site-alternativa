@@ -42,6 +42,7 @@ function PreviewContent({ formData, selectedTags, onClose }: BlogPreviewProps) {
   return (
     /* Um único div: é o overlay E o scroll */
     <div
+      data-lenis-prevent="true"
       style={{
         position: "fixed", inset: 0, zIndex: 99999,
         background: "rgba(0,0,0,0.75)",
