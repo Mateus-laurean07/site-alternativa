@@ -42,44 +42,48 @@ export default function BlogPreview({ formData, selectedTags, onClose }: BlogPre
   }, []);
 
   return (
-    // Overlay — sem scroll, apenas fundo escuro
-    <div
-      style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: "rgba(0,0,0,0.75)",
-        display: "flex", flexDirection: "column",
-        overflow: "hidden", // sem scroll aqui!
-      }}
-      onClick={onClose}
-    >
-      {/* Barra de aviso — fixa no topo da prévia */}
+    <>
+      {/* Overlay clicável para fechar — não tem scroll */}
+      <div
+        onClick={onClose}
+        style={{
+          position: "fixed", inset: 0, zIndex: 9999,
+          background: "rgba(0,0,0,0.75)",
+        }}
+      />
+
+      {/* Container do conteúdo — scroll único aqui */}
       <div
         style={{
-          flexShrink: 0,
-          background: "#1e293b", color: "white",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "12px 24px", fontSize: "0.875rem", zIndex: 10,
+          position: "fixed", inset: 0, zIndex: 10000,
+          overflowY: "scroll",
+          pointerEvents: "none", // deixa o overlay receber clique de fechar
         }}
-        onClick={(e) => e.stopPropagation()}
       >
-        <span>👁️ <strong>Modo Prévia</strong> — Veja exatamente como o artigo vai aparecer no blog</span>
-        <button
-          onClick={onClose}
-          style={{
-            background: "rgba(255,255,255,0.15)", border: "none", color: "white",
-            borderRadius: 8, padding: "6px 16px", cursor: "pointer",
-            fontWeight: 600, display: "flex", alignItems: "center", gap: 8
-          }}
+        <div
+          style={{ pointerEvents: "auto" }} // reativa cliques dentro do conteúdo
+          onClick={(e) => e.stopPropagation()}
         >
-          <X size={16} /> Fechar Prévia
-        </button>
-      </div>
+          {/* Barra de aviso — sticky dentro do scroll */}
+          <div style={{
+            position: "sticky", top: 0, zIndex: 10,
+            background: "#1e293b", color: "white",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "12px 24px", fontSize: "0.875rem",
+          }}>
+            <span>👁️ <strong>Modo Prévia</strong> — Veja exatamente como o artigo vai aparecer no blog</span>
+            <button
+              onClick={onClose}
+              style={{
+                background: "rgba(255,255,255,0.15)", border: "none", color: "white",
+                borderRadius: 8, padding: "6px 16px", cursor: "pointer",
+                fontWeight: 600, display: "flex", alignItems: "center", gap: 8
+              }}
+            >
+              <X size={16} /> Fechar Prévia
+            </button>
+          </div>
 
-      {/* Conteúdo com UM único scroll */}
-      <div
-        style={{ flex: 1, overflowY: "auto" }}
-        onClick={(e) => e.stopPropagation()}
-      >
 
         {/* ===== HERO — igual ao do blog ===== */}
         <section style={{ position: "relative", paddingTop: 100, paddingBottom: 80, overflow: "hidden", background: "#0f1a10" }}>
@@ -214,12 +218,14 @@ export default function BlogPreview({ formData, selectedTags, onClose }: BlogPre
                     Ver Produtos
                   </div>
                 </div>
+                </div>
               </aside>
             </div>
           </div>
         </section>
 
-      </div>
-    </div>
+        </div> {/* fecha pointerEvents auto */}
+      </div> {/* fecha scroll container */}
+    </>
   );
 }
