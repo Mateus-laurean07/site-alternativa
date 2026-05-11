@@ -2,7 +2,7 @@
 import { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Save, Image as ImageIcon, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function EditarArtigo({ params }: { params: Promise<{ id: string }> }) {
@@ -10,6 +10,7 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState({
     titulo: "",
     resumo: "",
@@ -215,7 +216,17 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
 
           <div style={{ border: "2px dashed #ced4da", borderRadius: 8, padding: formData.imagem ? "0" : "40px", textAlign: "center", color: "var(--cinza-texto)", background: "#f8f9fa", overflow: "hidden", position: "relative", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
             {formData.imagem ? (
-              <img src={formData.imagem} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 400 }} />
+              <>
+                <img src={formData.imagem} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: 400 }} />
+                <button 
+                  type="button"
+                  onClick={() => setFormData({ ...formData, imagem: "" })}
+                  style={{ position: "absolute", top: 16, right: 16, background: "rgba(220, 38, 38, 0.9)", color: "white", border: "none", borderRadius: "50%", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}
+                  title="Remover Imagem"
+                >
+                  <X size={20} />
+                </button>
+              </>
             ) : (
               <div>
                 <ImageIcon size={40} style={{ margin: "0 auto 16px", opacity: 0.5 }} />
@@ -227,6 +238,9 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
         </div>
 
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 16, marginTop: 16, marginBottom: 40 }}>
+          <button type="button" onClick={() => setShowPreview(true)} className="btn-secondary" style={{ background: "#f8f9fa", color: "var(--verde-escuro)", border: "1px solid #ced4da" }}>
+            Ver Prévia
+          </button>
           <Link href="/admin" className="btn-secondary" style={{ background: "white" }}>
             Cancelar
           </Link>
@@ -236,6 +250,52 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
           </button>
         </div>
       </form>
+
+      {/* Modal de Prévia */}
+      {showPreview && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", zIndex: 9999, overflowY: "auto", padding: "40px 20px" }}>
+          <div style={{ maxWidth: 900, margin: "0 auto", background: "white", borderRadius: 16, overflow: "hidden", position: "relative" }}>
+            <button 
+              onClick={() => setShowPreview(false)}
+              style={{ position: "absolute", top: 16, right: 16, background: "rgba(0,0,0,0.5)", color: "white", border: "none", borderRadius: "50%", width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 10 }}
+            >
+              <X size={24} />
+            </button>
+            
+            <div style={{ position: "relative", height: 300, background: "#1a3a1f" }}>
+              {formData.imagem && <img src={formData.imagem} alt="Capa" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.8 }} />}
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 40, background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>
+                <span style={{ background: "var(--ouro)", color: "var(--verde-escuro)", padding: "4px 12px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 700 }}>
+                  {formData.categoria || "Categoria"}
+                </span>
+                <h1 style={{ color: "white", fontSize: "2.2rem", margin: "16px 0 0 0", fontWeight: 800 }}>
+                  {formData.titulo || "Título do Artigo"}
+                </h1>
+              </div>
+            </div>
+            
+            <div style={{ padding: 40 }}>
+              <p style={{ fontSize: "1.2rem", color: "var(--verde-medio)", fontStyle: "italic", marginBottom: 32, paddingLeft: 16, borderLeft: "4px solid var(--ouro)" }}>
+                {formData.resumo || "Resumo do artigo..."}
+              </p>
+              
+              <div style={{ color: "var(--cinza-texto)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
+                {formData.conteudo || "Conteúdo completo aparecerá aqui..."}
+              </div>
+              
+              {formData.tags && (
+                <div style={{ marginTop: 40, paddingTop: 24, borderTop: "1px solid #eee", display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  {formData.tags.split(',').map((t: string) => t.trim()).filter(Boolean).map((tag: string) => (
+                    <span key={tag} style={{ background: "#f1f3f5", color: "var(--cinza-texto)", padding: "4px 12px", borderRadius: 16, fontSize: "0.85rem" }}>
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
