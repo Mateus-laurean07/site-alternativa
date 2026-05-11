@@ -12,6 +12,7 @@ interface BlogPost {
   data: string;
   imagem: string;
   tags: string;
+  publicado: boolean;
 }
 
 export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost[] }) {
@@ -25,6 +26,25 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
     setDeletingId(post.id);
     setDeletingTitle(post.titulo);
     setShowModal(true);
+  };
+
+  const togglePublish = async (post: BlogPost) => {
+    try {
+      const res = await fetch(`/api/blog/${post.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ publicado: !post.publicado }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPosts((prev) => prev.map(p => p.id === post.id ? { ...p, publicado: !p.publicado } : p));
+        toast.success(post.publicado ? "Artigo despublicado (rascunho)" : "Artigo publicado com sucesso!");
+      } else {
+        toast.error("Erro ao alterar status: " + data.error);
+      }
+    } catch (e) {
+      toast.error("Erro de conexão.");
+    }
   };
 
   const confirmDelete = async () => {
@@ -178,6 +198,18 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
                     {new Date(post.data).toLocaleDateString("pt-BR")}
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={() => togglePublish(post)}
+                      title={post.publicado ? "Despublicar" : "Publicar"}
+                      style={{
+                        padding: "4px 12px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 700,
+                        border: "none", cursor: "pointer",
+                        background: post.publicado ? "#e8f5e9" : "#fff3cd",
+                        color: post.publicado ? "var(--verde-escuro)" : "#856404",
+                      }}
+                    >
+                      {post.publicado ? "Publicado" : "Rascunho"}
+                    </button>
                     <Link
                       href={`/admin/blog/${post.id}`}
                       title="Editar artigo"

@@ -1,17 +1,36 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tag, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { blogPosts } from "@/data/blog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { BlogPost } from "@/types";
 
 export default function BlogPage() {
   const { language } = useLanguage();
-  const [expandedPosts, setExpandedPosts] = useState<Record<string, boolean>>(
-    {},
-  );
+  const [expandedPosts, setExpandedPosts] = useState<Record<string, boolean>>({});
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Busca os posts apenas publicados
+  useEffect(() => {
+    fetch("/api/blog?publicado=true")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+
+  const isNovo = (dataStr: string) => {
+    const dataPost = new Date(dataStr);
+    const hoje = new Date();
+    const diffEmDias = Math.floor((hoje.getTime() - dataPost.getTime()) / (1000 * 3600 * 24));
+    return diffEmDias <= 10; // 1 semana e meia (~10 dias)
+  };
 
   const toggleExpand = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -154,8 +173,17 @@ export default function BlogPage() {
           >
             {/* Posts */}
             <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-              {blogPosts.map((post, i) => (
-                <motion.div
+              {loading ? (
+                <div style={{ padding: 40, textAlign: "center", color: "var(--cinza-texto)" }}>
+                  Carregando artigos...
+                </div>
+              ) : posts.length === 0 ? (
+                <div style={{ padding: 40, textAlign: "center", color: "var(--cinza-texto)" }}>
+                  Nenhum artigo publicado no momento.
+                </div>
+              ) : (
+                posts.map((post, i) => (
+                  <motion.div
                   key={post.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -183,18 +211,22 @@ export default function BlogPage() {
                         style={{ height: 240, position: "relative" }}
                       >
                         <Image
-                          src={
-                            i % 3 === 0
-                              ? "/images/blog/boi_encarando.png"
-                              : i % 3 === 1
-                                ? "/images/blog/boi_comendo.png"
-                                : "/images/blog/boi_olhando.png"
-                          }
-                          alt="Boi"
+                          src={post.imagem || "/images/blog/boi_encarando.png"}
+                          alt={post.titulo}
                           fill
                           sizes="(max-width: 768px) 100vw, 66vw"
                           style={{ objectFit: "cover" }}
                         />
+                        {isNovo(post.data) && (
+                          <div style={{
+                            position: "absolute", top: 16, right: 16,
+                            background: "var(--ouro)", color: "var(--verde-escuro)",
+                            padding: "4px 12px", borderRadius: 20, fontSize: "0.8rem",
+                            fontWeight: 800, textTransform: "uppercase", boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
+                          }}>
+                            {language === "PT" ? "Novo" : "New"}
+                          </div>
+                        )}
                       </div>
                     </Link>
                     <div style={{ padding: 32 }}>
@@ -326,7 +358,8 @@ export default function BlogPage() {
                     </div>
                   </div>
                 </motion.div>
-              ))}
+                ))
+              )}
             </div>
 
             {/* Sidebar */}

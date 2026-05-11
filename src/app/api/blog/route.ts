@@ -23,11 +23,27 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const apenasPublicados = searchParams.get('publicado') === 'true';
+    
     const sql = neon(process.env.DATABASE_URL!);
-    const posts = await sql`SELECT * FROM blog_posts ORDER BY data DESC`;
-    return NextResponse.json(posts);
+    
+    let posts;
+    if (apenasPublicados) {
+      posts = await sql`SELECT * FROM blog_posts WHERE publicado = true ORDER BY data DESC`;
+    } else {
+      posts = await sql`SELECT * FROM blog_posts ORDER BY data DESC`;
+    }
+    
+    const formattedPosts = posts.map(post => ({
+      ...post,
+      tags: post.tags ? post.tags.split(',').map((t: string) => t.trim()).filter(Boolean) : [],
+      tempoLeitura: post.tempoleitura || 5
+    }));
+    
+    return NextResponse.json(formattedPosts);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

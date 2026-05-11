@@ -36,6 +36,7 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
           categoria: data.categoria ?? "",
           conteudo: data.conteudo ?? "",
           imagem: data.imagem ?? "",
+          tags: data.tags ?? "",
         });
         // Carregar tags já salvas como selecionadas
         if (data.tags) {

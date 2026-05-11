@@ -61,3 +61,27 @@ export async function DELETE(
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const sql = neon(process.env.DATABASE_URL!);
+    const body = await request.json();
+    
+    if (typeof body.publicado === 'boolean') {
+      await sql`
+        UPDATE blog_posts
+        SET publicado = ${body.publicado}
+        WHERE id = ${id}
+      `;
+      return NextResponse.json({ success: true });
+    }
+    
+    return NextResponse.json({ success: false, error: "Status inválido" }, { status: 400 });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
