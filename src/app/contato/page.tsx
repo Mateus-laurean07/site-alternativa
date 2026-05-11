@@ -17,7 +17,7 @@ export default function ContatoPage() {
     { icon: <MapPin size={24} />, titulo: language === "PT" ? "Endereço" : "Address", valor: "Lucas do Rio Verde / MT", link: "https://www.google.com/maps/dir/?api=1&destination=Alternativa+Cochos+Plásticos,+Lucas+do+Rio+Verde+-+MT" },
     { icon: <Smartphone size={24} />, titulo: "WhatsApp", valor: "(65) 99990-2024", link: "https://wa.me/5565999902024" },
     { icon: <Mail size={24} />, titulo: "E-mail", valor: "contato@alternativamt.com.br", link: "mailto:contato@alternativamt.com.br" },
-    { icon: <Camera size={24} />, titulo: "Instagram", valor: "@alternativacochos", link: "https://instagram.com/alternativacochos" }
+    { icon: <Camera size={24} />, titulo: "Instagram", valor: "@alternativaplasticos", link: "https://www.instagram.com/alternativaplasticos/" }
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
