@@ -35,7 +35,7 @@ export default function NovoArtigo() {
       
       if (data.success) {
         toast.success("Artigo salvo com sucesso no banco de dados!");
-        setFormData({ titulo: "", resumo: "", categoria: "", conteudo: "", imagem: "", tags: "" });
+        router.push("/admin");
       } else {
         toast.error("Erro ao salvar: " + data.error);
       }
