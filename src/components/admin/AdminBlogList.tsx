@@ -38,7 +38,7 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
       const data = await res.json();
       if (data.success) {
         setPosts((prev) => prev.map(p => p.id === post.id ? { ...p, publicado: !p.publicado } : p));
-        toast.success(post.publicado ? "Artigo despublicado (rascunho)" : "Artigo publicado com sucesso!");
+        toast.success(post.publicado ? "Artigo ocultado do blog!" : "Artigo publicado com sucesso!");
       } else {
         toast.error("Erro ao alterar status: " + data.error);
       }
@@ -200,7 +200,7 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
                   <div style={{ display: "flex", gap: 8 }}>
                     <button
                       onClick={() => togglePublish(post)}
-                      title={post.publicado ? "Despublicar" : "Publicar"}
+                      title={post.publicado ? "Despublicar/Ocultar do site" : "Publicar no site"}
                       style={{
                         padding: "4px 12px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 700,
                         border: "none", cursor: "pointer",
@@ -208,7 +208,7 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
                         color: post.publicado ? "var(--verde-escuro)" : "#856404",
                       }}
                     >
-                      {post.publicado ? "Publicado" : "Rascunho"}
+                      {post.publicado ? "Publicado" : "Publicar"}
                     </button>
                     <Link
                       href={`/admin/blog/${post.id}`}
