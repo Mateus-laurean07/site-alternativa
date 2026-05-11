@@ -31,8 +31,8 @@ import {
   Ruler,
   HandHeart,
   Puzzle,
-  Map,
 } from "lucide-react";
+import { GiBrazil } from "react-icons/gi";
 
 export default function HomePage() {
   const { language, t } = useLanguage();
@@ -139,7 +139,7 @@ export default function HomePage() {
           : "Intuitive and modular system that can be assembled without specialized tools.",
     },
     {
-      icon: <Map size={32} />,
+      icon: <GiBrazil size={32} />,
       titulo: language === "PT" ? "Entrega Nacional" : "National Delivery",
       desc:
         language === "PT"
