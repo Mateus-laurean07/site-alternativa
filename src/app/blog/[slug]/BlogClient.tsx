@@ -65,8 +65,8 @@ export default function BlogClient({ post, outros }: BlogClientProps) {
             <article style={{ background: "white", borderRadius: 20, padding: 48, boxShadow: "var(--shadow-md)", border: "1px solid var(--cinza-medio)" }}>
               <div style={{ position: "relative", borderRadius: 16, height: 360, overflow: "hidden", marginBottom: 40 }}>
                 <Image 
-                  src={post.categoria === "Saúde Animal" ? "/images/blog/boi_olhando.png" : post.categoria === "Nutrição" ? "/images/blog/boi_comendo.png" : "/images/blog/boi_encarando.png"} 
-                  alt="Gado" 
+                  src={post.imagem || "/images/blog/boi_encarando.png"} 
+                  alt={post.titulo} 
                   fill 
                   sizes="(max-width: 768px) 100vw, 66vw"
                   style={{ objectFit: "cover" }} 

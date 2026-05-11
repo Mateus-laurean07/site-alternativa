@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import BlogClient from "./BlogClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const sql = neon(process.env.DATABASE_URL!);
