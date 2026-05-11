@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Image as ImageIcon, X, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import TagSelector from "@/components/admin/TagSelector";
+import BlogPreview from "@/components/admin/BlogPreview";
 
 export default function EditarArtigo({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -274,92 +275,12 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
         </div>
       </form>
 
-      {/* Modal de Prévia */}
       {showPreview && (
-        <div
-          style={{
-            position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)",
-            zIndex: 9999, overflowY: "auto", padding: "40px 16px"
-          }}
-          onClick={() => setShowPreview(false)}
-        >
-          <div
-            style={{ maxWidth: 860, margin: "0 auto", background: "white", borderRadius: 20, overflow: "hidden", position: "relative" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowPreview(false)}
-              style={{
-                position: "absolute", top: 16, right: 16, zIndex: 10,
-                background: "rgba(0,0,0,0.55)", color: "white", border: "none",
-                borderRadius: "50%", width: 40, height: 40,
-                display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
-              }}
-            >
-              <X size={22} />
-            </button>
-
-            {/* Hero do artigo */}
-            <div style={{ position: "relative", height: 320, background: "#0f1a10" }}>
-              {formData.imagem && (
-                <img src={formData.imagem} alt="Capa" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.55 }} />
-              )}
-              <div style={{
-                position: "absolute", inset: 0,
-                background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)"
-              }} />
-              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "32px 40px" }}>
-                <span style={{
-                  background: "rgba(255,255,255,0.18)", color: "white",
-                  padding: "4px 14px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 600
-                }}>
-                  {formData.categoria || "Categoria"}
-                </span>
-                <h1 style={{ color: "white", fontSize: "2rem", margin: "14px 0 0", fontWeight: 800, lineHeight: 1.3 }}>
-                  {formData.titulo || "Título do artigo"}
-                </h1>
-              </div>
-            </div>
-
-            {/* Corpo do artigo */}
-            <div style={{ padding: "40px 48px" }}>
-              {/* Resumo destacado */}
-              {formData.resumo && (
-                <p style={{
-                  fontSize: "1.15rem", color: "#495057", fontStyle: "italic",
-                  lineHeight: 1.7, marginBottom: 32,
-                  paddingLeft: 20, borderLeft: "4px solid var(--verde-escuro)"
-                }}>
-                  {formData.resumo}
-                </p>
-              )}
-
-              {/* Conteúdo */}
-              <div style={{ color: "#333", lineHeight: 1.9, fontSize: "1rem" }}>
-                {(formData.conteudo || "Conteúdo aparecerá aqui...").split("\n").map((line, i) => {
-                  if (line.startsWith("## ")) return <h2 key={i} style={{ color: "var(--verde-escuro)", fontSize: "1.4rem", margin: "32px 0 16px" }}>{line.slice(3)}</h2>;
-                  if (line.startsWith("# ")) return <h3 key={i} style={{ color: "var(--verde-escuro)", fontSize: "1.2rem", margin: "28px 0 12px" }}>{line.slice(2)}</h3>;
-                  if (line.startsWith("- ")) return <li key={i} style={{ marginBottom: 6, marginLeft: 20 }}>{line.slice(2)}</li>;
-                  if (line.trim() === "") return <br key={i} />;
-                  return <p key={i} style={{ marginBottom: 16 }}>{line}</p>;
-                })}
-              </div>
-
-              {selectedTags.length > 0 && (
-                <div style={{ marginTop: 40, paddingTop: 24, borderTop: "1px solid #f1f3f5", display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {selectedTags.map((tag) => (
-                    <span key={tag} style={{
-                      background: "#e8f5e9", color: "var(--verde-escuro)",
-                      padding: "4px 12px", borderRadius: 16, fontSize: "0.82rem", fontWeight: 600
-                    }}>
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <BlogPreview
+          formData={formData}
+          selectedTags={selectedTags}
+          onClose={() => setShowPreview(false)}
+        />
       )}
     </div>
   );

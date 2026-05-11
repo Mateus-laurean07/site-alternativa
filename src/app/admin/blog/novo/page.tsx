@@ -2,9 +2,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Image as ImageIcon, X } from "lucide-react";
+import { ArrowLeft, Save, Image as ImageIcon, X, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import TagSelector from "@/components/admin/TagSelector";
+import BlogPreview from "@/components/admin/BlogPreview";
 
 export default function NovoArtigo() {
   const router = useRouter();
@@ -209,50 +210,12 @@ export default function NovoArtigo() {
         </div>
       </form>
 
-      {/* Modal de Prévia */}
       {showPreview && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", zIndex: 9999, overflowY: "auto", padding: "40px 20px" }}>
-          <div style={{ maxWidth: 900, margin: "0 auto", background: "white", borderRadius: 16, overflow: "hidden", position: "relative" }}>
-            <button 
-              onClick={() => setShowPreview(false)}
-              style={{ position: "absolute", top: 16, right: 16, background: "rgba(0,0,0,0.5)", color: "white", border: "none", borderRadius: "50%", width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 10 }}
-            >
-              <X size={24} />
-            </button>
-            
-            <div style={{ position: "relative", height: 300, background: "#1a3a1f" }}>
-              {formData.imagem && <img src={formData.imagem} alt="Capa" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.8 }} />}
-              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: 40, background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}>
-                <span style={{ background: "var(--ouro)", color: "var(--verde-escuro)", padding: "4px 12px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 700 }}>
-                  {formData.categoria || "Categoria"}
-                </span>
-                <h1 style={{ color: "white", fontSize: "2.2rem", margin: "16px 0 0 0", fontWeight: 800 }}>
-                  {formData.titulo || "Título do Artigo"}
-                </h1>
-              </div>
-            </div>
-            
-            <div style={{ padding: 40 }}>
-              <p style={{ fontSize: "1.2rem", color: "var(--verde-medio)", fontStyle: "italic", marginBottom: 32, paddingLeft: 16, borderLeft: "4px solid var(--ouro)" }}>
-                {formData.resumo || "Resumo do artigo..."}
-              </p>
-              
-              <div style={{ color: "var(--cinza-texto)", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>
-                {formData.conteudo || "Conteúdo completo aparecerá aqui..."}
-              </div>
-              
-              {selectedTags.length > 0 && (
-                <div style={{ marginTop: 40, paddingTop: 24, borderTop: "1px solid #eee", display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {selectedTags.map((tag) => (
-                    <span key={tag} style={{ background: "#e8f5e9", color: "var(--verde-escuro)", padding: "4px 12px", borderRadius: 16, fontSize: "0.85rem", fontWeight: 600 }}>
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <BlogPreview
+          formData={formData}
+          selectedTags={selectedTags}
+          onClose={() => setShowPreview(false)}
+        />
       )}
     </div>
   );
