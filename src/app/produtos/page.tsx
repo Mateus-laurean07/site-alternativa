@@ -1,5 +1,9 @@
 import { Metadata } from "next";
+import { neon } from "@neondatabase/serverless";
 import ProdutosClient from "./ProdutosClient";
+import { categorias } from "@/data/produtos";
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: "Catálogo de Produtos",
@@ -18,6 +22,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProdutosPage() {
-  return <ProdutosClient />;
+async function getProdutos() {
+  try {
+    const sql = neon(process.env.DATABASE_URL!);
+    const produtos = await sql`SELECT * FROM produtos WHERE disponivel = true ORDER BY id ASC`;
+    return produtos;
+  } catch (error) {
+    console.error("Erro ao carregar produtos do banco:", error);
+    return [];
+  }
+}
+
+export default async function ProdutosPage() {
+  const produtos = await getProdutos();
+  
+  return <ProdutosClient initialProdutos={produtos as any} categorias={categorias} />;
 }

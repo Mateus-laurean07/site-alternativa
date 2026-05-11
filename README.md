@@ -54,16 +54,16 @@ src/
 
 ## 🛠️ Stack Tecnológica
 
-| Tecnologia | Função |
-| --- | --- |
-| **Next.js 16** | Framework React com App Router e SSR |
-| **React 19** | UI reativa com hooks modernos |
-| **TypeScript 5** | Tipagem estática em todo o projeto |
+| Tecnologia        | Função                               |
+| ----------------- | ------------------------------------ |
+| **Next.js 16**    | Framework React com App Router e SSR |
+| **React 19**      | UI reativa com hooks modernos        |
+| **TypeScript 5**  | Tipagem estática em todo o projeto   |
 | **Framer Motion** | Animações fluidas e micro-interações |
-| **Lenis** | Scroll suave premium |
-| **Lucide React** | Ícones minimalistas e consistentes |
-| **Sharp** | Otimização de imagens no servidor |
-| **AwesomeAPI** | Cotação do dólar em tempo real |
+| **Lenis**         | Scroll suave premium                 |
+| **Lucide React**  | Ícones minimalistas e consistentes   |
+| **Sharp**         | Otimização de imagens no servidor    |
+| **AwesomeAPI**    | Cotação do dólar em tempo real       |
 
 ---
 
@@ -94,12 +94,12 @@ Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 
 ### Scripts disponíveis
 
-| Comando | Descrição |
-| --- | --- |
-| `npm run dev` | Inicia o servidor de desenvolvimento (Turbopack) |
-| `npm run build` | Gera o build de produção |
-| `npm start` | Roda o build de produção localmente |
-| `npm run lint` | Executa o ESLint |
+| Comando         | Descrição                                        |
+| --------------- | ------------------------------------------------ |
+| `npm run dev`   | Inicia o servidor de desenvolvimento (Turbopack) |
+| `npm run build` | Gera o build de produção                         |
+| `npm start`     | Roda o build de produção localmente              |
+| `npm run lint`  | Executa o ESLint                                 |
 
 ---
 
@@ -127,11 +127,46 @@ O endpoint `/api/cotacoes` retorna preços atualizados de commodities agrícolas
 ```json
 {
   "cotacoes": [
-    { "nome": "Milho", "nomeEn": "Corn", "valor": "R$ 68,50", "unidade": "sc 60kg", "variacao": 0.35, "emoji": "🌽" },
-    { "nome": "Soja", "nomeEn": "Soybean", "valor": "R$ 138,20", "unidade": "sc 60kg", "variacao": -0.12, "emoji": "🫘" },
-    { "nome": "Bezerro", "nomeEn": "Calf", "valor": "R$ 1.850,00", "unidade": "cab", "variacao": 0.45, "emoji": "🐄" },
-    { "nome": "Boi Gordo", "nomeEn": "Cattle", "valor": "R$ 335,00", "unidade": "@", "variacao": -0.22, "emoji": "🐂" },
-    { "nome": "Dólar", "nomeEn": "Dollar", "valor": "R$ 5.1234", "unidade": "BRL", "variacao": 0.15, "emoji": "💵" }
+    {
+      "nome": "Milho",
+      "nomeEn": "Corn",
+      "valor": "R$ 68,50",
+      "unidade": "sc 60kg",
+      "variacao": 0.35,
+      "emoji": "🌽"
+    },
+    {
+      "nome": "Soja",
+      "nomeEn": "Soybean",
+      "valor": "R$ 138,20",
+      "unidade": "sc 60kg",
+      "variacao": -0.12,
+      "emoji": "🫘"
+    },
+    {
+      "nome": "Bezerro",
+      "nomeEn": "Calf",
+      "valor": "R$ 1.850,00",
+      "unidade": "cab",
+      "variacao": 0.45,
+      "emoji": "🐄"
+    },
+    {
+      "nome": "Boi Gordo",
+      "nomeEn": "Cattle",
+      "valor": "R$ 335,00",
+      "unidade": "@",
+      "variacao": -0.22,
+      "emoji": "🐂"
+    },
+    {
+      "nome": "Dólar",
+      "nomeEn": "Dollar",
+      "valor": "R$ 5.1234",
+      "unidade": "BRL",
+      "variacao": 0.15,
+      "emoji": "💵"
+    }
   ]
 }
 ```
@@ -143,13 +178,13 @@ O endpoint `/api/cotacoes` retorna preços atualizados de commodities agrícolas
 
 ## 📦 Linhas de Produtos
 
-| Linha | Produtos | Segmento |
-| --- | --- | --- |
-| **Multicocho** | 200L, 250L | Bovinos — alimentação |
-| **Protecocho** | 200L, 250L, 400L, 500L | Bovinos — suplementação protegida |
-| **Hidramax** | 1300L, Autoabastecimento | Bovinos — hidratação |
-| **Nutrisilo** | Nutrisilo | Bovinos — silagem |
-| **Suínos** | Cochos, Pisos, Portões, Bandejas | Suinocultura |
+| Linha          | Produtos                         | Segmento                          |
+| -------------- | -------------------------------- | --------------------------------- |
+| **Multicocho** | 200L, 250L                       | Bovinos — alimentação             |
+| **Protecocho** | 200L, 250L, 400L, 500L           | Bovinos — suplementação protegida |
+| **Hidramax**   | 1300L, Autoabastecimento         | Bovinos — hidratação              |
+| **Nutrisilo**  | Nutrisilo                        | Bovinos — silagem                 |
+| **Suínos**     | Cochos, Pisos, Portões, Bandejas | Suinocultura                      |
 
 ---
 
@@ -167,12 +202,12 @@ O endpoint `/api/cotacoes` retorna preços atualizados de commodities agrícolas
 
 Todas as imagens foram otimizadas para **WebP**:
 
-| Pasta | Conteúdo | Formato |
-| --- | --- | --- |
-| `public/images/hero/` | 3 slides do carrossel hero | WebP (350KB total) |
-| `public/images/produtos/` | 17 fotos de produtos | WebP (~30KB cada) |
-| `public/images/sobre/` | 3 fotos institucionais | WebP (~130KB cada) |
-| `public/images/blog/` | 3 imagens de artigos | WebP (~190KB cada) |
+| Pasta                     | Conteúdo                   | Formato            |
+| ------------------------- | -------------------------- | ------------------ |
+| `public/images/hero/`     | 3 slides do carrossel hero | WebP (350KB total) |
+| `public/images/produtos/` | 17 fotos de produtos       | WebP (~30KB cada)  |
+| `public/images/sobre/`    | 3 fotos institucionais     | WebP (~130KB cada) |
+| `public/images/blog/`     | 3 imagens de artigos       | WebP (~190KB cada) |
 
 ---
 

@@ -1,44 +1,43 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
-import { Plus, Edit2, Trash2, Calendar, Folder, Tag, AlertTriangle, X } from "lucide-react";
+import { Plus, Edit2, Trash2, Video, AlertTriangle, X } from "lucide-react";
 import toast from "react-hot-toast";
 
-interface BlogPost {
+interface Video {
   id: number;
   titulo: string;
-  resumo: string;
-  categoria: string;
-  data: string;
-  imagem: string;
-  tags: string;
+  video_id: string;
+  descricao: string;
+  ordem: number;
   publicado: boolean;
 }
 
-export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost[] }) {
-  const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
+export default function AdminVideosList({ initialVideos }: { initialVideos: Video[] }) {
+  const [videos, setVideos] = useState<Video[]>(initialVideos);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [deletingTitle, setDeletingTitle] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
-  const handleDeleteClick = (post: BlogPost) => {
-    setDeletingId(post.id);
-    setDeletingTitle(post.titulo);
+  const handleDeleteClick = (video: Video) => {
+    setDeletingId(video.id);
+    setDeletingTitle(video.titulo);
     setShowModal(true);
   };
 
-  const togglePublish = async (post: BlogPost) => {
+  const togglePublicado = async (video: Video) => {
     try {
-      const res = await fetch(`/api/blog/${post.id}`, {
+      const res = await fetch(`/api/videos/${video.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicado: !post.publicado }),
+        body: JSON.stringify({ publicado: !video.publicado }),
       });
       const data = await res.json();
-      if (data.success) {
-        setPosts((prev) => prev.map(p => p.id === post.id ? { ...p, publicado: !p.publicado } : p));
-        toast.success(post.publicado ? "Artigo ocultado do blog!" : "Artigo publicado com sucesso!");
+      if (!data.error) {
+        setVideos((prev) => prev.map(v => v.id === video.id ? { ...v, publicado: !v.publicado } : v));
+        toast.success(video.publicado ? "Vídeo despublicado!" : "Vídeo publicado!");
       } else {
         toast.error("Erro ao alterar status: " + data.error);
       }
@@ -51,11 +50,11 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
     if (!deletingId) return;
     setLoadingDelete(true);
     try {
-      const res = await fetch(`/api/blog/${deletingId}`, { method: "DELETE" });
+      const res = await fetch(`/api/videos/${deletingId}`, { method: "DELETE" });
       const data = await res.json();
-      if (data.success) {
-        toast.success("Artigo excluído com sucesso!");
-        setPosts((prev) => prev.filter((p) => p.id !== deletingId));
+      if (!data.error) {
+        toast.success("Vídeo excluído com sucesso!");
+        setVideos((prev) => prev.filter((v) => v.id !== deletingId));
         setShowModal(false);
         setDeletingId(null);
         setDeletingTitle("");
@@ -77,18 +76,17 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
 
   return (
     <>
-      {/* Cabeçalho */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
         <div>
           <h1 style={{ fontSize: "2rem", color: "var(--verde-escuro)", margin: "0 0 8px 0", fontWeight: 800 }}>
-            Artigos do Blog
+            Vídeos
           </h1>
           <p style={{ color: "var(--cinza-texto)", margin: 0 }}>
-            {posts.length} {posts.length === 1 ? "publicação" : "publicações"} no total
+            {videos.length} {videos.length === 1 ? "vídeo cadastrado" : "vídeos cadastrados"}
           </p>
         </div>
         <Link
-          href="/admin/blog/novo"
+          href="/admin/videos/novo"
           style={{
             display: "flex", alignItems: "center", gap: 8,
             padding: "12px 24px", borderRadius: 8, fontWeight: 600,
@@ -97,12 +95,11 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
           }}
         >
           <Plus size={20} />
-          Novo Artigo
+          Novo Vídeo
         </Link>
       </div>
 
-      {/* Lista vazia */}
-      {posts.length === 0 ? (
+      {videos.length === 0 ? (
         <div style={{
           background: "white", borderRadius: 16, padding: 64,
           textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
@@ -112,107 +109,78 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
             display: "flex", alignItems: "center", justifyContent: "center",
             margin: "0 auto 24px", color: "var(--cinza-texto)"
           }}>
-            <Folder size={32} />
+            <Video size={32} />
           </div>
           <h3 style={{ color: "var(--verde-escuro)", marginBottom: 12, fontSize: "1.2rem" }}>
-            Nenhum artigo ainda
+            Nenhum vídeo cadastrado
           </h3>
           <p style={{ color: "var(--cinza-texto)", marginBottom: 24 }}>
-            Comece a criar conteúdo para engajar seus clientes.
+            Adicione vídeos do YouTube para exibir na galeria do site.
           </p>
-          <Link
-            href="/admin/blog/novo"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "12px 24px", borderRadius: 8, fontWeight: 600,
-              background: "var(--verde-escuro)", color: "white", textDecoration: "none"
-            }}
-          >
-            <Plus size={20} /> Criar Primeiro Artigo
-          </Link>
         </div>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 24 }}>
-          {posts.map((post) => (
+          {videos.map((video) => (
             <div
-              key={post.id}
+              key={video.id}
               style={{
                 background: "white", borderRadius: 16, overflow: "hidden",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.06)", border: "1px solid #f1f3f5",
                 display: "flex", flexDirection: "column",
               }}
             >
-              {/* Imagem ou placeholder */}
-              <div style={{ position: "relative", height: 180, background: "#e9ecef", flexShrink: 0 }}>
-                {post.imagem ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={post.imagem}
-                    alt={post.titulo}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                ) : (
-                  <div style={{
-                    width: "100%", height: "100%", display: "flex", flexDirection: "column",
-                    alignItems: "center", justifyContent: "center", color: "#adb5bd", gap: 8
-                  }}>
-                    <Folder size={32} />
-                    <span style={{ fontSize: "0.8rem" }}>Sem imagem</span>
-                  </div>
-                )}
-                <div style={{
-                  position: "absolute", top: 12, left: 12,
-                  background: "rgba(255,255,255,0.92)", backdropFilter: "blur(4px)",
-                  padding: "4px 10px", borderRadius: 20, fontSize: "0.75rem",
-                  fontWeight: 700, color: "var(--verde-escuro)",
-                  display: "flex", alignItems: "center", gap: 4
-                }}>
-                  <Tag size={11} /> {post.categoria || "Sem categoria"}
-                </div>
+              <div style={{ position: "relative", width: "100%", paddingTop: "56.25%", background: "#000" }}>
+                <iframe
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0 }}
+                  src={`https://www.youtube.com/embed/${video.video_id}?rel=0`}
+                  title={video.titulo}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </div>
 
-              {/* Conteúdo do card */}
               <div style={{ padding: 20, flex: 1, display: "flex", flexDirection: "column" }}>
                 <h3 style={{
-                  fontSize: "1rem", color: "var(--verde-escuro)", margin: "0 0 10px 0",
-                  lineHeight: 1.4, fontWeight: 700
+                  fontSize: "1.1rem", color: "var(--verde-escuro)", margin: "0 0 8px 0",
+                  lineHeight: 1.4, fontWeight: 800
                 }}>
-                  {post.titulo}
+                  {video.titulo}
                 </h3>
-
+                
                 <p style={{
-                  fontSize: "0.83rem", color: "var(--cinza-texto)", margin: "0 0 16px 0",
-                  flex: 1, lineHeight: 1.6,
-                  display: "-webkit-box", WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical", overflow: "hidden"
-                } as React.CSSProperties}>
-                  {post.resumo || "Sem resumo."}
+                  fontSize: "0.85rem", color: "var(--cinza-texto)", margin: "0 0 16px 0",
+                  flex: 1,
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden"
+                }}>
+                  {video.descricao}
                 </p>
 
                 <div style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
                   borderTop: "1px solid #f1f3f5", paddingTop: 14, marginTop: "auto"
                 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "0.78rem", color: "#adb5bd" }}>
-                    <Calendar size={13} />
-                    {new Date(post.data).toLocaleDateString("pt-BR")}
+                  <div style={{ fontSize: "0.8rem", color: "var(--cinza-texto)", fontWeight: 600 }}>
+                    Ordem: {video.ordem}
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
                     <button
-                      onClick={() => togglePublish(post)}
-                      title={post.publicado ? "Despublicar/Ocultar do site" : "Publicar no site"}
+                      onClick={() => togglePublicado(video)}
+                      title={video.publicado ? "Despublicar" : "Publicar"}
                       style={{
                         padding: "4px 12px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 700,
                         border: "none", cursor: "pointer",
-                        background: post.publicado ? "#e8f5e9" : "#fff3cd",
-                        color: post.publicado ? "var(--verde-escuro)" : "#856404",
+                        background: video.publicado ? "#e8f5e9" : "#fff3cd",
+                        color: video.publicado ? "var(--verde-escuro)" : "#856404",
                       }}
                     >
-                      {post.publicado ? "Despublicar" : "Publicar"}
+                      {video.publicado ? "Despublicar" : "Publicar"}
                     </button>
                     <Link
-                      href={`/admin/blog/${post.id}`}
-                      title="Editar artigo"
+                      href={`/admin/videos/${video.id}`}
+                      title="Editar vídeo"
                       style={{
                         display: "flex", alignItems: "center", justifyContent: "center",
                         width: 34, height: 34, borderRadius: 8,
@@ -223,8 +191,8 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
                       <Edit2 size={15} />
                     </Link>
                     <button
-                      onClick={() => handleDeleteClick(post)}
-                      title="Excluir artigo"
+                      onClick={() => handleDeleteClick(video)}
+                      title="Excluir vídeo"
                       style={{
                         display: "flex", alignItems: "center", justifyContent: "center",
                         width: 34, height: 34, borderRadius: 8,
@@ -242,7 +210,7 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
         </div>
       )}
 
-      {/* Modal de Confirmação de Exclusão */}
+      {/* Modal de Exclusão */}
       {showModal && (
         <div
           style={{
@@ -261,7 +229,6 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Botão fechar */}
             <button
               onClick={cancelDelete}
               style={{
@@ -273,8 +240,6 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
             >
               <X size={16} />
             </button>
-
-            {/* Ícone */}
             <div style={{
               width: 64, height: 64, borderRadius: "50%",
               background: "#fee2e2", display: "flex", alignItems: "center",
@@ -282,45 +247,28 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
             }}>
               <AlertTriangle size={32} color="#dc2626" />
             </div>
-
-            {/* Título */}
             <h2 style={{
               textAlign: "center", margin: "0 0 12px 0",
               fontSize: "1.3rem", color: "#1a1a1a", fontWeight: 800
             }}>
-              Excluir artigo?
+              Excluir vídeo?
             </h2>
-
-            {/* Mensagem */}
-            <p style={{
-              textAlign: "center", color: "#6c757d",
-              lineHeight: 1.6, margin: "0 0 8px 0"
-            }}>
-              Você está prestes a excluir o artigo:
+            <p style={{ textAlign: "center", color: "#6c757d", margin: "0 0 8px 0" }}>
+              Você está prestes a excluir o vídeo:
             </p>
             <p style={{
-              textAlign: "center", color: "var(--verde-escuro)",
-              fontWeight: 700, fontSize: "0.95rem",
-              background: "#f8f9fa", borderRadius: 8,
-              padding: "10px 16px", margin: "0 0 28px 0"
+              textAlign: "center", color: "var(--verde-escuro)", fontWeight: 700,
+              background: "#f8f9fa", borderRadius: 8, padding: "10px 16px", margin: "0 0 28px 0"
             }}>
               "{deletingTitle}"
             </p>
-            <p style={{
-              textAlign: "center", color: "#dc2626",
-              fontSize: "0.85rem", margin: "0 0 32px 0"
-            }}>
-              ⚠️ Esta ação não poderá ser desfeita.
-            </p>
-
-            {/* Botões */}
             <div style={{ display: "flex", gap: 12 }}>
               <button
                 onClick={cancelDelete}
                 style={{
                   flex: 1, padding: "12px 0", borderRadius: 10,
                   border: "1px solid #dee2e6", background: "white",
-                  color: "#495057", fontWeight: 600, cursor: "pointer", fontSize: "0.95rem"
+                  color: "#495057", fontWeight: 600, cursor: "pointer"
                 }}
               >
                 Cancelar
@@ -331,11 +279,10 @@ export default function AdminBlogList({ initialPosts }: { initialPosts: BlogPost
                 style={{
                   flex: 1, padding: "12px 0", borderRadius: 10,
                   border: "none", background: loadingDelete ? "#f5c2c7" : "#dc2626",
-                  color: "white", fontWeight: 700, cursor: loadingDelete ? "not-allowed" : "pointer",
-                  fontSize: "0.95rem"
+                  color: "white", fontWeight: 700, cursor: loadingDelete ? "not-allowed" : "pointer"
                 }}
               >
-                {loadingDelete ? "Excluindo..." : "Sim, excluir"}
+                {loadingDelete ? "Excluindo..." : "Excluir"}
               </button>
             </div>
           </div>

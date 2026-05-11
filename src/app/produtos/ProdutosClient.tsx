@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AutoImageCarousel from "@/components/AutoImageCarousel";
-import { produtos, categorias } from "@/data/produtos";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const fadeInUp = {
@@ -12,10 +11,18 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
-export default function ProdutosPage() {
+interface ProdutosClientProps {
+  initialProdutos: any[];
+  categorias: any[];
+}
+
+export default function ProdutosClient({ initialProdutos, categorias }: ProdutosClientProps) {
   const { language } = useLanguage();
   const [catAtiva, setCatAtiva] = useState("todos");
-  const lista = catAtiva === "todos" ? produtos : produtos.filter((p) => p.categoria === catAtiva);
+  
+  // Apenas produtos disponíveis
+  const produtosDisponiveis = initialProdutos.filter(p => p.disponivel !== false);
+  const lista = catAtiva === "todos" ? produtosDisponiveis : produtosDisponiveis.filter((p) => p.categoria === catAtiva);
 
   return (
     <>

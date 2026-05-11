@@ -21,7 +21,7 @@ export default function RichEditor({ value, onChange, placeholder }: RichEditorP
       [{ 'header': [2, 3, 4, false] }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['link', 'clean']
+      ['link', 'image', 'clean']
     ],
   };
 
@@ -29,7 +29,7 @@ export default function RichEditor({ value, onChange, placeholder }: RichEditorP
     'header',
     'bold', 'italic', 'underline', 'strike',
     'list', 'bullet',
-    'link'
+    'link', 'image'
   ];
 
   return (

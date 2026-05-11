@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Image as ImageIcon, X, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import TagSelector from "@/components/admin/TagSelector";
+import CategorySelector from "@/components/admin/CategorySelector";
 import BlogPreview from "@/components/admin/BlogPreview";
 import RichEditor from "@/components/admin/RichEditor";
 
@@ -146,17 +147,10 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
           </div>
 
           {/* Categoria */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 20 }}>
-            <div>
-              <label style={labelStyle}>Categoria *</label>
-              <input
-                type="text" name="categoria" required
-                value={formData.categoria} onChange={handleChange}
-                placeholder="Ex: Manejo, Nutrição, Saúde..."
-                style={inputStyle}
-              />
-            </div>
-          </div>
+          <CategorySelector 
+            selectedCategory={formData.categoria} 
+            onChange={(val) => setFormData((prev) => ({ ...prev, categoria: val }))} 
+          />
 
           <TagSelector selectedTags={selectedTags} onChange={setSelectedTags} />
 
@@ -184,28 +178,14 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
 
         {/* Imagem de Capa */}
         <div style={{ background: "white", padding: 32, borderRadius: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-          <label style={{ ...labelStyle, fontSize: "1rem", marginBottom: 20 }}>Imagem de Capa</label>
+          <label style={{ ...labelStyle, fontSize: "1rem", marginBottom: 20 }}>Imagem de Capa (Upload)</label>
 
-          <div style={{ display: "flex", gap: 16, marginBottom: 20, alignItems: "flex-end", flexWrap: "wrap" }}>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <label style={{ ...labelStyle, fontWeight: 500, color: "#6c757d" }}>📁 Upload do computador</label>
-              <input
-                type="file" accept="image/*"
-                onChange={handleFileChange}
-                style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", cursor: "pointer" }}
-              />
-            </div>
-            <div style={{ color: "#adb5bd", fontWeight: 700, paddingBottom: 10 }}>ou</div>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <label style={{ ...labelStyle, fontWeight: 500, color: "#6c757d" }}>🔗 URL da imagem</label>
-              <input
-                type="text" name="imagem"
-                value={formData.imagem.startsWith("data:image") ? "" : formData.imagem}
-                onChange={handleChange}
-                placeholder="https://..."
-                style={inputStyle}
-              />
-            </div>
+          <div style={{ marginBottom: 20 }}>
+            <input
+              type="file" accept="image/*"
+              onChange={handleFileChange}
+              style={{ width: "100%", padding: 10, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", cursor: "pointer" }}
+            />
           </div>
 
           {/* Preview da imagem */}
@@ -237,7 +217,7 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
               <div style={{ textAlign: "center", color: "#adb5bd", padding: 40 }}>
                 <ImageIcon size={40} style={{ marginBottom: 12, opacity: 0.5 }} />
                 <p style={{ margin: 0, fontWeight: 600 }}>Nenhuma imagem selecionada</p>
-                <p style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>Faça upload ou cole uma URL acima</p>
+                <p style={{ margin: "4px 0 0", fontSize: "0.82rem" }}>Faça upload acima</p>
               </div>
             )}
           </div>

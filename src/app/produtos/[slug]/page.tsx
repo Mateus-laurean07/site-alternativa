@@ -1,15 +1,38 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProdutoBySlug, produtos } from "@/data/produtos";
+import { neon } from "@neondatabase/serverless";
 import ProdutoClient from "./ProdutoClient";
 
-export function generateStaticParams() {
-  return produtos.map((p) => ({ slug: p.slug }));
+export const dynamic = 'force-dynamic';
+
+async function getProduto(slug: string) {
+  try {
+    const sql = neon(process.env.DATABASE_URL!);
+    const result = await sql`SELECT * FROM produtos WHERE slug = ${slug}`;
+    if (result.length === 0) return null;
+    return result[0];
+  } catch (error) {
+    return null;
+  }
+}
+
+async function getRelacionados(categoria: string, slugOriginal: string) {
+  try {
+    const sql = neon(process.env.DATABASE_URL!);
+    const result = await sql`
+      SELECT * FROM produtos 
+      WHERE categoria = ${categoria} AND slug != ${slugOriginal} AND disponivel = true
+      LIMIT 3
+    `;
+    return result;
+  } catch (error) {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const produto = getProdutoBySlug(resolvedParams.slug);
+  const produto = await getProduto(resolvedParams.slug);
   
   if (!produto) return {};
 
@@ -33,10 +56,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProdutoPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const produto = getProdutoBySlug(resolvedParams.slug);
+  const produto = await getProduto(resolvedParams.slug);
+  
   if (!produto) notFound();
 
-  const relacionados = produtos.filter((p) => p.categoria === produto.categoria && p.slug !== produto.slug).slice(0, 3);
+  const relacionados = await getRelacionados(produto.categoria, produto.slug);
 
-  return <ProdutoClient produto={produto} relacionados={relacionados} />;
+  return <ProdutoClient produto={produto as any} relacionados={relacionados as any[]} />;
 }

@@ -2,7 +2,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { getProdutosDestaque } from "@/data/produtos";
 import AutoImageCarousel from "@/components/AutoImageCarousel";
 import { blogPosts } from "@/data/blog";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -19,7 +18,7 @@ const staggerContainer = {
   visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
 };
 
-export default function HomeContent() {
+export default function HomeContent({ produtosDestaque = [] }: { produtosDestaque?: any[] }) {
   const { language, t } = useLanguage();
 
   const stats = [
@@ -43,8 +42,6 @@ export default function HomeContent() {
     { nome: "Carlos Ribeiro", local: "Rondonópolis/MT", texto: language === "PT" ? "O Hidramax 1300 transformou o manejo de água da fazenda. Antes passávamos horas controlando o abastecimento, hoje é automático." : "The Hidramax 1300 transformed the farm's water management. We used to spend hours controlling the supply, today it's automatic.", stars: 5 },
     { nome: "Mariana Souza", local: "Cuiabá/MT", texto: language === "PT" ? "Uso os Multicochos no confinamento há 3 anos. Nunca tive problema, resistem ao impacto dos bois sem nenhuma avaria." : "I've been using Multicochos in the feedlot for 3 years. Never had a problem, they resist the impact of the cattle without any damage.", stars: 5 },
   ];
-
-  const produtosDestaque = getProdutosDestaque().slice(0, 6);
 
   return (
     <>
