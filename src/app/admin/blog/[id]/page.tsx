@@ -6,6 +6,7 @@ import { ArrowLeft, Save, Image as ImageIcon, X, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import TagSelector from "@/components/admin/TagSelector";
 import BlogPreview from "@/components/admin/BlogPreview";
+import RichEditor from "@/components/admin/RichEditor";
 
 export default function EditarArtigo({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -173,11 +174,10 @@ export default function EditarArtigo({ params }: { params: Promise<{ id: string 
           {/* Conteúdo */}
           <div>
             <label style={labelStyle}>Conteúdo Completo *</label>
-            <textarea
-              name="conteudo" required rows={14}
-              value={formData.conteudo} onChange={handleChange}
+            <RichEditor 
+              value={formData.conteudo}
+              onChange={(val) => setFormData((prev) => ({ ...prev, conteudo: val }))}
               placeholder="Escreva o conteúdo completo do artigo aqui..."
-              style={{ ...inputStyle, resize: "vertical", fontFamily: "monospace", fontSize: "0.9rem" }}
             />
           </div>
         </div>

@@ -14,17 +14,6 @@ interface BlogClientProps {
 export default function BlogClient({ post, outros }: BlogClientProps) {
   const { language } = useLanguage();
 
-  const renderMarkdown = (text: string) => {
-    const lines = text.split("\n");
-    return lines.map((line, i) => {
-      if (line.startsWith("## ")) return <h2 key={i} style={{ color: "var(--verde-escuro)", fontSize: "1.6rem", marginTop: 40, marginBottom: 16 }}>{line.slice(3)}</h2>;
-      if (line.startsWith("- ")) return <li key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginLeft: 20, marginBottom: 6 }}>{line.slice(2)}</li>;
-      if (line.match(/^\d+\./)) return <li key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginLeft: 20, marginBottom: 8 }}>{line.replace(/^\d+\. /, "")}</li>;
-      if (line.trim() === "") return <br key={i} />;
-      return <p key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginBottom: 16 }}>{line}</p>;
-    });
-  };
-
   return (
     <>
       <section style={{ position: "relative", paddingTop: 120, paddingBottom: 80, overflow: "hidden" }}>
@@ -73,7 +62,32 @@ export default function BlogClient({ post, outros }: BlogClientProps) {
                   priority
                 />
               </div>
-              <div>{renderMarkdown(language === "PT" ? post.conteudo : post.conteudo_en || post.conteudo)}</div>
+              <div 
+                className="rich-content" 
+                dangerouslySetInnerHTML={{ __html: language === "PT" ? post.conteudo : post.conteudo_en || post.conteudo }} 
+              />
+              <style jsx global>{`
+                .rich-content h1, .rich-content h2, .rich-content h3 {
+                  color: var(--verde-escuro);
+                  margin-top: 2rem;
+                  margin-bottom: 1rem;
+                }
+                .rich-content p {
+                  color: var(--cinza-texto);
+                  line-height: 1.8;
+                  margin-bottom: 1rem;
+                }
+                .rich-content ul, .rich-content ol {
+                  color: var(--cinza-texto);
+                  line-height: 1.8;
+                  margin-bottom: 1rem;
+                  padding-left: 2rem;
+                }
+                .rich-content a {
+                  color: var(--verde-medio);
+                  text-decoration: underline;
+                }
+              `}</style>
               <div style={{ marginTop: 40, paddingTop: 32, borderTop: "1px solid var(--cinza-medio)" }}>
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   <span style={{ fontSize: "0.875rem", color: "var(--cinza-texto)", fontWeight: 600 }}>Tags:</span>

@@ -37,66 +37,7 @@ export default function BlogPage() {
     setExpandedPosts((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const renderMarkdown = (text: string) => {
-    const lines = text.split("\n");
-    return lines.map((line, i) => {
-      if (line.startsWith("## "))
-        return (
-          <h4
-            key={i}
-            style={{
-              color: "var(--verde-escuro)",
-              fontSize: "1.2rem",
-              marginTop: 24,
-              marginBottom: 12,
-            }}
-          >
-            {line.slice(3)}
-          </h4>
-        );
-      if (line.startsWith("- "))
-        return (
-          <li
-            key={i}
-            style={{
-              color: "var(--cinza-texto)",
-              lineHeight: 1.8,
-              marginLeft: 20,
-              marginBottom: 6,
-            }}
-          >
-            {line.slice(2)}
-          </li>
-        );
-      if (line.match(/^\d+\./))
-        return (
-          <li
-            key={i}
-            style={{
-              color: "var(--cinza-texto)",
-              lineHeight: 1.8,
-              marginLeft: 20,
-              marginBottom: 8,
-            }}
-          >
-            {line.replace(/^\d+\. /, "")}
-          </li>
-        );
-      if (line.trim() === "") return <br key={i} />;
-      return (
-        <p
-          key={i}
-          style={{
-            color: "var(--cinza-texto)",
-            lineHeight: 1.8,
-            marginBottom: 16,
-          }}
-        >
-          {line}
-        </p>
-      );
-    });
-  };
+// Markdown rendering removido para suportar Rich Text HTML
 
   const categoriesMap: { [key: string]: string } = {
     "Saúde Animal": "Animal Health",
@@ -298,11 +239,12 @@ export default function BlogPage() {
                               paddingTop: 20,
                             }}
                           >
-                            {renderMarkdown(
-                              language === "PT"
-                                ? post.conteudo
-                                : post.conteudo_en || post.conteudo,
-                            )}
+                            <div 
+                              className="rich-content"
+                              dangerouslySetInnerHTML={{ 
+                                __html: language === "PT" ? post.conteudo : post.conteudo_en || post.conteudo 
+                              }}
+                            />
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -466,7 +408,29 @@ export default function BlogPage() {
             </motion.div>
           </div>
         </div>
-        <style>{`@media(max-width:768px){.section-padding .container > div {grid-template-columns:1fr!important;}}`}</style>
+        <style jsx global>{`
+          @media(max-width:768px){.section-padding .container > div {grid-template-columns:1fr!important;}}
+          .rich-content h1, .rich-content h2, .rich-content h3, .rich-content h4 {
+            color: var(--verde-escuro);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+          }
+          .rich-content p {
+            color: var(--cinza-texto);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+          }
+          .rich-content ul, .rich-content ol {
+            color: var(--cinza-texto);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+          }
+          .rich-content a {
+            color: var(--verde-medio);
+            text-decoration: underline;
+          }
+        `}</style>
       </section>
     </>
   );

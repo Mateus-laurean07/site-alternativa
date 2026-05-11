@@ -15,21 +15,7 @@ interface BlogPreviewProps {
   onClose: () => void;
 }
 
-const renderMarkdown = (text: string) => {
-  const lines = text.split("\n");
-  return lines.map((line, i) => {
-    if (line.startsWith("## "))
-      return <h2 key={i} style={{ color: "var(--verde-escuro)", fontSize: "1.5rem", marginTop: 36, marginBottom: 14, fontWeight: 800 }}>{line.slice(3)}</h2>;
-    if (line.startsWith("# "))
-      return <h3 key={i} style={{ color: "var(--verde-escuro)", fontSize: "1.2rem", marginTop: 28, marginBottom: 10, fontWeight: 700 }}>{line.slice(2)}</h3>;
-    if (line.startsWith("- "))
-      return <li key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginLeft: 20, marginBottom: 6 }}>{line.slice(2)}</li>;
-    if (line.match(/^\d+\./))
-      return <li key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginLeft: 20, marginBottom: 8 }}>{line.replace(/^\d+\. /, "")}</li>;
-    if (line.trim() === "") return <br key={i} />;
-    return <p key={i} style={{ color: "var(--cinza-texto)", lineHeight: 1.8, marginBottom: 16 }}>{line}</p>;
-  });
-};
+// Markdown rendering foi removido pois agora usamos Rich Text Editor (HTML)
 
 function PreviewContent({ formData, selectedTags, onClose }: BlogPreviewProps) {
   const hoje = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
@@ -121,7 +107,32 @@ function PreviewContent({ formData, selectedTags, onClose }: BlogPreviewProps) {
                     {formData.resumo}
                   </p>
                 )}
-                <div>{renderMarkdown(formData.conteudo || "O conteúdo do artigo aparecerá aqui...")}</div>
+                <div 
+                  className="rich-content"
+                  dangerouslySetInnerHTML={{ __html: formData.conteudo || "O conteúdo do artigo aparecerá aqui..." }}
+                />
+                <style jsx global>{`
+                  .rich-content h1, .rich-content h2, .rich-content h3 {
+                    color: var(--verde-escuro);
+                    margin-top: 2rem;
+                    margin-bottom: 1rem;
+                  }
+                  .rich-content p {
+                    color: var(--cinza-texto);
+                    line-height: 1.8;
+                    margin-bottom: 1rem;
+                  }
+                  .rich-content ul, .rich-content ol {
+                    color: var(--cinza-texto);
+                    line-height: 1.8;
+                    margin-bottom: 1rem;
+                    padding-left: 2rem;
+                  }
+                  .rich-content a {
+                    color: var(--verde-medio);
+                    text-decoration: underline;
+                  }
+                `}</style>
                 {selectedTags.length > 0 && (
                   <div style={{ marginTop: 40, paddingTop: 32, borderTop: "1px solid #e9ecef" }}>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>

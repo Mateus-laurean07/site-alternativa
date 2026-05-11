@@ -6,6 +6,7 @@ import { ArrowLeft, Save, Image as ImageIcon, X, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import TagSelector from "@/components/admin/TagSelector";
 import BlogPreview from "@/components/admin/BlogPreview";
+import RichEditor from "@/components/admin/RichEditor";
 
 export default function NovoArtigo() {
   const router = useRouter();
@@ -115,14 +116,10 @@ export default function NovoArtigo() {
             <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "var(--verde-escuro)", marginBottom: 8 }}>
               Conteúdo Completo *
             </label>
-            <textarea 
-              name="conteudo"
-              required
+            <RichEditor 
               value={formData.conteudo}
-              onChange={handleChange}
-              rows={12}
+              onChange={(val) => setFormData({ ...formData, conteudo: val })}
               placeholder="Escreva o conteúdo do seu artigo aqui..."
-              style={{ width: "100%", padding: "12px 16px", borderRadius: 8, border: "1px solid #ced4da", fontSize: "1rem", outline: "none", resize: "vertical" }}
             />
           </div>
 
