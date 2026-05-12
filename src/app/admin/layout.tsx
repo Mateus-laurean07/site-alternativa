@@ -1,7 +1,95 @@
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, FileText, LogOut, PlayCircle } from "lucide-react";
+import { ArrowLeft, FileText, LogOut, PlayCircle, Lock } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [login, setLogin] = useState("");
+  const [senha, setSenha] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const auth = sessionStorage.getItem("admin_auth");
+    if (auth === "true") {
+      setIsAuthenticated(true);
+    }
+    setLoading(false);
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (login === "naveo@gmail.com" && senha === "123456") {
+      sessionStorage.setItem("admin_auth", "true");
+      setIsAuthenticated(true);
+      setError("");
+    } else {
+      setError("Login ou senha incorretos.");
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("admin_auth");
+    setIsAuthenticated(false);
+  };
+
+  if (loading) return null;
+
+  if (!isAuthenticated) {
+    return (
+      <div style={{ display: "flex", minHeight: "100vh", background: "#f8f9fa", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <form onSubmit={handleLogin} style={{ background: "white", padding: 40, borderRadius: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.06)", width: "100%", maxWidth: 400 }}>
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <div style={{ width: 64, height: 64, background: "var(--verde-escuro)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", margin: "0 auto 16px" }}>
+              <Lock size={32} />
+            </div>
+            <h2 style={{ fontSize: "1.5rem", color: "var(--verde-escuro)", margin: "0 0 8px 0" }}>Acesso Restrito</h2>
+            <p style={{ color: "var(--cinza-texto)", margin: 0, fontSize: "0.9rem" }}>Painel Administrativo Alternativa</p>
+          </div>
+
+          {error && (
+            <div style={{ background: "#fee2e2", color: "#dc2626", padding: 12, borderRadius: 8, fontSize: "0.85rem", marginBottom: 24, textAlign: "center", fontWeight: 500 }}>
+              {error}
+            </div>
+          )}
+
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--verde-escuro)" }}>Login</label>
+            <input 
+              type="email" 
+              required
+              value={login}
+              onChange={(e) => setLogin(e.target.value)}
+              placeholder="E-mail"
+              style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", outline: "none", fontSize: "0.95rem" }}
+            />
+          </div>
+          
+          <div style={{ marginBottom: 32 }}>
+            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--verde-escuro)" }}>Senha</label>
+            <input 
+              type="password" 
+              required
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              placeholder="••••••••"
+              style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", outline: "none", fontSize: "0.95rem" }}
+            />
+          </div>
+
+          <button type="submit" style={{ width: "100%", padding: 14, borderRadius: 8, background: "var(--verde-escuro)", color: "white", border: "none", fontWeight: 600, cursor: "pointer", fontSize: "1rem" }}>
+            Entrar no Painel
+          </button>
+          
+          <div style={{ textAlign: "center", marginTop: 24 }}>
+            <Link href="/" style={{ color: "var(--cinza-texto)", fontSize: "0.85rem", textDecoration: "none" }}>&larr; Voltar ao site</Link>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#f8f9fa" }}>
       {/* Sidebar */}
@@ -45,7 +133,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content */}
       <main style={{ flex: 1, overflow: "auto" }}>
         <header style={{ background: "white", padding: "16px 32px", borderBottom: "1px solid #e9ecef", display: "flex", justifyContent: "flex-end" }}>
-          <button style={{ background: "none", border: "none", display: "flex", alignItems: "center", gap: 8, color: "var(--cinza-texto)", cursor: "pointer", fontSize: "0.9rem" }}>
+          <button onClick={handleLogout} style={{ background: "none", border: "none", display: "flex", alignItems: "center", gap: 8, color: "var(--cinza-texto)", cursor: "pointer", fontSize: "0.9rem" }}>
             <LogOut size={16} />
             Sair
           </button>
