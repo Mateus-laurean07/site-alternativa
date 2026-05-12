@@ -1,6 +1,9 @@
 "use client";
 
-const TAGS_DISPONIVEIS = [
+import { useState, useEffect } from "react";
+import { Plus } from "lucide-react";
+
+const TAGS_PADRAO = [
   "bovinos",
   "água limpa",
   "pecuária",
@@ -16,11 +19,54 @@ interface TagSelectorProps {
 }
 
 export default function TagSelector({ selectedTags, onChange }: TagSelectorProps) {
+  const [tagsDisponiveis, setTagsDisponiveis] = useState<string[]>(TAGS_PADRAO);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newTag, setNewTag] = useState("");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("admin_custom_tags");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setTagsDisponiveis((prev) => Array.from(new Set([...prev, ...parsed])));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
   const toggle = (tag: string) => {
     if (selectedTags.includes(tag)) {
       onChange(selectedTags.filter((t) => t !== tag));
     } else {
       onChange([...selectedTags, tag]);
+    }
+  };
+
+  const handleAdd = () => {
+    let trimmed = newTag.trim();
+    if (trimmed.startsWith('#')) trimmed = trimmed.substring(1);
+
+    if (trimmed && !tagsDisponiveis.includes(trimmed)) {
+      const updated = [...tagsDisponiveis, trimmed];
+      setTagsDisponiveis(updated);
+      
+      const custom = updated.filter(t => !TAGS_PADRAO.includes(t));
+      localStorage.setItem("admin_custom_tags", JSON.stringify(custom));
+      
+      if (!selectedTags.includes(trimmed)) {
+        onChange([...selectedTags, trimmed]);
+      }
+      setNewTag("");
+      setIsAdding(false);
+    } else if (tagsDisponiveis.includes(trimmed)) {
+      if (!selectedTags.includes(trimmed)) {
+        onChange([...selectedTags, trimmed]);
+      }
+      setNewTag("");
+      setIsAdding(false);
+    } else {
+      setIsAdding(false);
     }
   };
 
@@ -37,7 +83,7 @@ export default function TagSelector({ selectedTags, onChange }: TagSelectorProps
       </label>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-        {TAGS_DISPONIVEIS.map((tag) => {
+        {tagsDisponiveis.map((tag) => {
           const selected = selectedTags.includes(tag);
           return (
             <button
@@ -67,6 +113,47 @@ export default function TagSelector({ selectedTags, onChange }: TagSelectorProps
             </button>
           );
         })}
+
+        {isAdding ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <span style={{ color: "#adb5bd", fontWeight: 600, marginLeft: 4 }}>#</span>
+            <input 
+              type="text"
+              autoFocus
+              value={newTag}
+              onChange={e => setNewTag(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' ? (e.preventDefault(), handleAdd()) : null}
+              placeholder="Nova tag..."
+              style={{ padding: "6px 12px", borderRadius: 20, border: "1px solid #ced4da", outline: "none", fontSize: "0.875rem", width: 120 }}
+            />
+            <button type="button" onClick={handleAdd} style={{ padding: "6px 12px", borderRadius: 20, background: "var(--verde-escuro)", color: "white", border: "none", cursor: "pointer", fontSize: "0.875rem", fontWeight: 600 }}>
+              OK
+            </button>
+            <button type="button" onClick={() => setIsAdding(false)} style={{ padding: "6px 10px", borderRadius: 20, background: "#f1f3f5", color: "#495057", border: "none", cursor: "pointer", fontSize: "0.875rem" }}>
+              ✕
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsAdding(true)}
+            style={{
+              padding: "8px 16px",
+              borderRadius: 20,
+              border: "1px dashed #adb5bd",
+              background: "white",
+              color: "#495057",
+              fontWeight: 500,
+              fontSize: "0.875rem",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <Plus size={14} /> Criar Nova
+          </button>
+        )}
       </div>
 
       {selectedTags.length > 0 && (
