@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Produto } from "@/types";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AutoImageCarousel from "@/components/AutoImageCarousel";
-import { FileText, ClipboardList } from "lucide-react";
+import { FileText } from "lucide-react";
 
 interface ProdutoClientProps {
   produto: Produto;
@@ -53,7 +53,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
                 />
                 {produto.tag && (
                   <div style={{ position: "absolute", top: 16, left: 16, background: "var(--gradient-ouro)", color: "var(--preto)", padding: "6px 16px", borderRadius: 20, fontSize: "0.8rem", fontWeight: 700, zIndex: 10 }}>
-                    ⭐ {language === "PT" ? produto.tag : produto.tag_en || produto.tag}
+                    {language === "PT" ? produto.tag : produto.tag_en || produto.tag}
                   </div>
                 )}
               </div>
@@ -88,7 +88,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
 
               {/* Benefícios */}
               <div style={{ background: "var(--verde-suave)", borderRadius: 16, padding: 24, marginBottom: 32 }}>
-                <h4 style={{ color: "var(--verde-escuro)", marginBottom: 16 }}>✅ {language === "PT" ? "Benefícios" : "Benefits"}</h4>
+                <h4 style={{ color: "var(--verde-escuro)", marginBottom: 16 }}>{language === "PT" ? "Benefícios" : "Benefits"}</h4>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
                   {(language === "PT" ? produto.beneficios : produto.beneficios_en || produto.beneficios).map((b) => (
                     <li key={b} style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--verde-escuro)", fontWeight: 500 }}>
@@ -126,7 +126,7 @@ export default function ProdutoClient({ produto, relacionados }: ProdutoClientPr
 
           {/* ESPECIFICAÇÕES */}
           <div style={{ marginTop: 64, background: "var(--cinza-claro)", borderRadius: 20, padding: 40 }}>
-            <h3 style={{ color: "var(--verde-escuro)", marginBottom: 32, display: "flex", alignItems: "center", gap: 8 }}><ClipboardList size={24} /> {language === "PT" ? "Especificações Técnicas" : "Technical Specifications"}</h3>
+            <h3 style={{ color: "var(--verde-escuro)", marginBottom: 32 }}>{language === "PT" ? "Especificações Técnicas" : "Technical Specifications"}</h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
               {produto.especificacoes.map((e) => (
                 <div key={e.chave} style={{ background: "white", borderRadius: 12, padding: 20, border: "1px solid var(--cinza-medio)" }}>
