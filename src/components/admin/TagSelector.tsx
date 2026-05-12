@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 const TAGS_PADRAO = [
   "bovinos",
@@ -70,6 +70,19 @@ export default function TagSelector({ selectedTags, onChange }: TagSelectorProps
     }
   };
 
+  const handleDelete = (e: React.MouseEvent, tagToDelete: string) => {
+    e.stopPropagation();
+    const updated = tagsDisponiveis.filter(t => t !== tagToDelete);
+    setTagsDisponiveis(updated);
+    
+    const custom = updated.filter(t => !TAGS_PADRAO.includes(t));
+    localStorage.setItem("admin_custom_tags", JSON.stringify(custom));
+    
+    if (selectedTags.includes(tagToDelete)) {
+      onChange(selectedTags.filter((t) => t !== tagToDelete));
+    }
+  };
+
   return (
     <div>
       <label style={{
@@ -85,13 +98,15 @@ export default function TagSelector({ selectedTags, onChange }: TagSelectorProps
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         {tagsDisponiveis.map((tag) => {
           const selected = selectedTags.includes(tag);
+          const isCustom = !TAGS_PADRAO.includes(tag);
+          
           return (
             <button
               key={tag}
               type="button"
               onClick={() => toggle(tag)}
               style={{
-                padding: "8px 16px",
+                padding: isCustom ? "4px 8px 4px 16px" : "8px 16px",
                 borderRadius: 20,
                 border: selected ? "2px solid var(--verde-escuro)" : "2px solid #dee2e6",
                 background: selected ? "var(--verde-escuro)" : "white",
@@ -102,14 +117,36 @@ export default function TagSelector({ selectedTags, onChange }: TagSelectorProps
                 transition: "all 0.15s ease",
                 display: "flex",
                 alignItems: "center",
-                gap: 6,
+                gap: 8,
                 userSelect: "none",
               }}
             >
-              {selected && (
-                <span style={{ fontSize: "0.75rem", lineHeight: 1 }}>✓</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                {selected && (
+                  <span style={{ fontSize: "0.75rem", lineHeight: 1 }}>✓</span>
+                )}
+                #{tag}
+              </div>
+              
+              {isCustom && (
+                <div 
+                  onClick={(e) => handleDelete(e, tag)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 22,
+                    height: 22,
+                    borderRadius: "50%",
+                    background: selected ? "rgba(255,255,255,0.2)" : "#f1f3f5",
+                    color: selected ? "white" : "#adb5bd",
+                    marginLeft: 4,
+                  }}
+                  title="Excluir Tag"
+                >
+                  <X size={12} />
+                </div>
               )}
-              #{tag}
             </button>
           );
         })}
@@ -130,7 +167,7 @@ export default function TagSelector({ selectedTags, onChange }: TagSelectorProps
               OK
             </button>
             <button type="button" onClick={() => setIsAdding(false)} style={{ padding: "6px 10px", borderRadius: 20, background: "#f1f3f5", color: "#495057", border: "none", cursor: "pointer", fontSize: "0.875rem" }}>
-              ✕
+              <X size={16} />
             </button>
           </div>
         ) : (

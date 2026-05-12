@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 const CATEGORIAS_PADRAO = [
   "Saúde Animal",
@@ -54,6 +54,19 @@ export default function CategorySelector({ selectedCategory, onChange }: Categor
     }
   };
 
+  const handleDelete = (e: React.MouseEvent, categoryToDelete: string) => {
+    e.stopPropagation();
+    const updated = categories.filter(c => c !== categoryToDelete);
+    setCategories(updated);
+    
+    const custom = updated.filter(c => !CATEGORIAS_PADRAO.includes(c));
+    localStorage.setItem("admin_custom_categories", JSON.stringify(custom));
+    
+    if (selectedCategory === categoryToDelete) {
+      onChange("");
+    }
+  };
+
   return (
     <div>
       <label style={{
@@ -66,13 +79,15 @@ export default function CategorySelector({ selectedCategory, onChange }: Categor
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         {categories.map((cat) => {
           const selected = selectedCategory === cat;
+          const isCustom = !CATEGORIAS_PADRAO.includes(cat);
+          
           return (
             <button
               key={cat}
               type="button"
               onClick={() => onChange(cat)}
               style={{
-                padding: "8px 16px",
+                padding: isCustom ? "4px 8px 4px 16px" : "8px 16px",
                 borderRadius: 20,
                 border: selected ? "2px solid var(--verde-escuro)" : "2px solid #dee2e6",
                 background: selected ? "var(--verde-escuro)" : "white",
@@ -83,14 +98,36 @@ export default function CategorySelector({ selectedCategory, onChange }: Categor
                 transition: "all 0.15s ease",
                 display: "flex",
                 alignItems: "center",
-                gap: 6,
+                gap: 8,
                 userSelect: "none",
               }}
             >
-              {selected && (
-                <span style={{ fontSize: "0.75rem", lineHeight: 1 }}>✓</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                {selected && (
+                  <span style={{ fontSize: "0.75rem", lineHeight: 1 }}>✓</span>
+                )}
+                {cat}
+              </div>
+              
+              {isCustom && (
+                <div 
+                  onClick={(e) => handleDelete(e, cat)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 22,
+                    height: 22,
+                    borderRadius: "50%",
+                    background: selected ? "rgba(255,255,255,0.2)" : "#f1f3f5",
+                    color: selected ? "white" : "#adb5bd",
+                    marginLeft: 4,
+                  }}
+                  title="Excluir Categoria"
+                >
+                  <X size={12} />
+                </div>
               )}
-              {cat}
             </button>
           );
         })}
@@ -110,7 +147,7 @@ export default function CategorySelector({ selectedCategory, onChange }: Categor
               OK
             </button>
             <button type="button" onClick={() => setIsAdding(false)} style={{ padding: "6px 10px", borderRadius: 20, background: "#f1f3f5", color: "#495057", border: "none", cursor: "pointer", fontSize: "0.875rem" }}>
-              ✕
+              <X size={16} />
             </button>
           </div>
         ) : (
