@@ -155,27 +155,65 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
         <div style={{ background: "white", padding: 32, borderRadius: 16, border: "1px solid #e9ecef" }}>
           <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem" }}>Imagens e Mídia</h3>
           
-          <div style={{ marginBottom: 24 }}>
-            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Imagem Principal (URL) *</label>
-            <input required name="imagem" value={formData.imagem} onChange={handleChange} placeholder="/images/produtos/..." style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.95rem" }} />
+          <div style={{ marginBottom: 32 }}>
+            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Imagem Principal *</label>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setFormData(prev => ({ ...prev, imagem: reader.result as string }));
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa" }}
+              />
+              {formData.imagem && (
+                <div style={{ width: 80, height: 80, borderRadius: 8, overflow: "hidden", border: "1px solid #dee2e6", flexShrink: 0 }}>
+                  <img src={formData.imagem} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+              )}
+            </div>
           </div>
 
           <div>
-            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Imagens da Galeria (URLs)</label>
+            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Imagens da Galeria</label>
             {imagens.map((img, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-                <input value={img} onChange={(e) => {
-                  const newImgs = [...imagens];
-                  newImgs[i] = e.target.value;
-                  setImagens(newImgs);
-                }} style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa" }} />
-                <button type="button" onClick={() => setImagens(imagens.filter((_, idx) => idx !== i))} style={{ padding: "0 16px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 8, cursor: "pointer" }}>
+              <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "center" }}>
+                {img && (
+                  <div style={{ width: 48, height: 48, borderRadius: 6, overflow: "hidden", border: "1px solid #dee2e6", flexShrink: 0 }}>
+                    <img src={img} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </div>
+                )}
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const newImgs = [...imagens];
+                        newImgs[i] = reader.result as string;
+                        setImagens(newImgs);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} 
+                  style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa" }} 
+                />
+                <button type="button" onClick={() => setImagens(imagens.filter((_, idx) => idx !== i))} style={{ padding: "12px 16px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 8, cursor: "pointer", height: "100%" }}>
                   <Trash2 size={16} />
                 </button>
               </div>
             ))}
             <button type="button" onClick={() => setImagens([...imagens, ""])} style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 16px", borderRadius: 8, background: "#e9ecef", color: "var(--cinza-texto)", border: "none", cursor: "pointer", fontSize: "0.85rem", fontWeight: 600 }}>
-              <Plus size={16} /> Adicionar Imagem
+              <Plus size={16} /> Adicionar Imagem à Galeria
             </button>
           </div>
         </div>
