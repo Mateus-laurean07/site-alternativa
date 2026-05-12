@@ -38,54 +38,76 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!isAuthenticated) {
     return (
-      <div style={{ display: "flex", minHeight: "100vh", background: "#f8f9fa", alignItems: "center", justifyContent: "center", padding: 24 }}>
-        <form onSubmit={handleLogin} style={{ background: "white", padding: 40, borderRadius: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.06)", width: "100%", maxWidth: 400 }}>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ width: 64, height: 64, background: "var(--verde-escuro)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", margin: "0 auto 16px" }}>
-              <Lock size={32} />
-            </div>
-            <h2 style={{ fontSize: "1.5rem", color: "var(--verde-escuro)", margin: "0 0 8px 0" }}>Acesso Restrito</h2>
-            <p style={{ color: "var(--cinza-texto)", margin: 0, fontSize: "0.9rem" }}>Painel Administrativo Alternativa</p>
-          </div>
-
-          {error && (
-            <div style={{ background: "#fee2e2", color: "#dc2626", padding: 12, borderRadius: 8, fontSize: "0.85rem", marginBottom: 24, textAlign: "center", fontWeight: 500 }}>
-              {error}
-            </div>
-          )}
-
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--verde-escuro)" }}>Login</label>
-            <input 
-              type="email" 
-              required
-              value={login}
-              onChange={(e) => setLogin(e.target.value)}
-              placeholder="E-mail"
-              style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", outline: "none", fontSize: "0.95rem" }}
-            />
+      <div style={{ display: "flex", minHeight: "100vh", background: "#f8f9fa", overflow: "hidden" }}>
+        {/* Lado Esquerdo - Formulário e Boi Segurança */}
+        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, position: "relative" }}>
+          
+          {/* Imagem do Boi Segurança */}
+          <div style={{ position: "absolute", bottom: -20, left: -20, opacity: 0.9, zIndex: 5 }}>
+            <img src="/images/boi-seguranca.png" alt="Boi Segurança" style={{ height: 450, objectFit: "contain", filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.3))" }} />
           </div>
           
-          <div style={{ marginBottom: 32 }}>
-            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--verde-escuro)" }}>Senha</label>
-            <input 
-              type="password" 
-              required
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              placeholder="••••••••"
-              style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", outline: "none", fontSize: "0.95rem" }}
-            />
-          </div>
+          <form onSubmit={handleLogin} style={{ background: "white", padding: 40, borderRadius: 16, boxShadow: "0 10px 40px rgba(0,0,0,0.1)", width: "100%", maxWidth: 400, position: "relative", zIndex: 10 }}>
+            <div style={{ textAlign: "center", marginBottom: 32 }}>
+              <div style={{ width: 64, height: 64, background: "var(--verde-escuro)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", margin: "0 auto 16px" }}>
+                <Lock size={32} />
+              </div>
+              <h2 style={{ fontSize: "1.5rem", color: "var(--verde-escuro)", margin: "0 0 8px 0" }}>Acesso Restrito</h2>
+              <p style={{ color: "var(--cinza-texto)", margin: 0, fontSize: "0.9rem" }}>Painel Administrativo Alternativa</p>
+            </div>
 
-          <button type="submit" style={{ width: "100%", padding: 14, borderRadius: 8, background: "var(--verde-escuro)", color: "white", border: "none", fontWeight: 600, cursor: "pointer", fontSize: "1rem" }}>
-            Entrar no Painel
-          </button>
+            {error && (
+              <div style={{ background: "#fee2e2", color: "#dc2626", padding: 12, borderRadius: 8, fontSize: "0.85rem", marginBottom: 24, textAlign: "center", fontWeight: 500 }}>
+                {error}
+              </div>
+            )}
+
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--verde-escuro)" }}>Login</label>
+              <input 
+                type="email" 
+                required
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+                placeholder="E-mail"
+                style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", outline: "none", fontSize: "0.95rem" }}
+              />
+            </div>
+            
+            <div style={{ marginBottom: 32 }}>
+              <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--verde-escuro)" }}>Senha</label>
+              <input 
+                type="password" 
+                required
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                placeholder="••••••••"
+                style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", outline: "none", fontSize: "0.95rem" }}
+              />
+            </div>
+
+            <button type="submit" style={{ width: "100%", padding: 14, borderRadius: 8, background: "var(--verde-escuro)", color: "white", border: "none", fontWeight: 600, cursor: "pointer", fontSize: "1rem", transition: "all 0.2s ease" }}>
+              Entrar no Painel
+            </button>
+            
+            <div style={{ textAlign: "center", marginTop: 24 }}>
+              <Link href="/" style={{ color: "var(--cinza-texto)", fontSize: "0.85rem", textDecoration: "none" }}>&larr; Voltar ao site</Link>
+            </div>
+          </form>
+        </div>
+
+        {/* Lado Direito - Bois Curiosos */}
+        <div style={{ flex: 1, position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", padding: 40 }}>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "url('/images/bois_curiosos_bg.png')", backgroundSize: "cover", backgroundPosition: "center" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #f8f9fa 0%, transparent 15%, transparent 80%, rgba(0,0,0,0.6) 100%)" }} />
           
-          <div style={{ textAlign: "center", marginTop: 24 }}>
-            <Link href="/" style={{ color: "var(--cinza-texto)", fontSize: "0.85rem", textDecoration: "none" }}>&larr; Voltar ao site</Link>
+          <div style={{ position: "relative", zIndex: 10, background: "white", padding: "20px 30px", borderRadius: "30px 30px 30px 0", boxShadow: "0 10px 25px rgba(0,0,0,0.2)", maxWidth: 350, marginLeft: "10%", transform: "translateY(-50px)" }}>
+            <h3 style={{ margin: 0, color: "var(--verde-escuro)", fontSize: "1.4rem", fontWeight: 800 }}>Muuuu? 🤔🐮</h3>
+            <p style={{ margin: "8px 0 0", color: "var(--cinza-texto)", fontWeight: 500, fontSize: "1.05rem", lineHeight: 1.5 }}>
+              "Opa chefe, cê tá querendo mexer onde não deve? Bota a senha aí se for de casa, senão a gente chama o segurança ali do lado!"
+            </p>
           </div>
-        </form>
+        </div>
       </div>
     );
   }
