@@ -186,6 +186,32 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
             </div>
           </div>
 
+          {/* Manual PDF */}
+          <div style={{ marginBottom: 32 }}>
+            <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Manual em PDF (opcional)</label>
+            <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 8 }}>
+              <input
+                name="manual"
+                value={formData.manual.startsWith("data:") ? "" : formData.manual}
+                onChange={handleChange}
+                placeholder="Ex: /manuais/MANUAL PROTECOCHO 200.pdf"
+                style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.9rem" }}
+              />
+              {formData.manual && (
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, manual: "" }))}
+                  style={{ padding: "10px 16px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 600, fontSize: "0.85rem", whiteSpace: "nowrap" }}
+                >
+                  Remover
+                </button>
+              )}
+            </div>
+            <p style={{ fontSize: "0.78rem", color: "#888", margin: 0 }}>
+              Cole o caminho do arquivo (ex: <code>/manuais/MANUAL HIDRAMAX.pdf</code>). Os PDFs já estão na pasta <strong>public/manuais/</strong>.
+            </p>
+          </div>
+
           <div>
             <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Imagens da Galeria</label>
             {imagens.map((img, i) => (

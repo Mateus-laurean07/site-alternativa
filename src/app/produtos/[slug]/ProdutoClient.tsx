@@ -310,6 +310,7 @@ export default function ProdutoClient({
                 {produto.manual && (
                   <a
                     href={produto.manual}
+                    download={`Manual-${produto.slug || produto.nome}.pdf`}
                     target="_blank"
                     rel="noreferrer"
                     style={{
