@@ -76,24 +76,60 @@ export default function AdminVideosList({ initialVideos }: { initialVideos: Vide
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
-        <div>
-          <h1 style={{ fontSize: "2rem", color: "var(--verde-escuro)", margin: "0 0 8px 0", fontWeight: 800 }}>
-            Vídeos
-          </h1>
-          <p style={{ color: "var(--cinza-texto)", margin: 0 }}>
+      <div className="admin-list-header">
+        <style jsx>{`
+          .admin-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            gap: 16px;
+          }
+          .admin-list-title h1 {
+            font-size: 2rem;
+            color: var(--verde-escuro);
+            margin: 0 0 8px 0;
+            font-weight: 800;
+          }
+          .admin-list-title p {
+            color: var(--cinza-texto);
+            margin: 0;
+          }
+          .btn-new-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            background: var(--verde-escuro);
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            white-space: nowrap;
+          }
+
+          @media (max-width: 640px) {
+            .admin-list-header {
+              flex-direction: column;
+              align-items: flex-start;
+            }
+            .admin-list-title h1 {
+              font-size: 1.5rem;
+            }
+            .btn-new-item {
+              width: 100%;
+              justify-content: center;
+            }
+          }
+        `}</style>
+        <div className="admin-list-title">
+          <h1>Vídeos</h1>
+          <p>
             {videos.length} {videos.length === 1 ? "vídeo cadastrado" : "vídeos cadastrados"}
           </p>
         </div>
-        <Link
-          href="/admin/videos/novo"
-          style={{
-            display: "flex", alignItems: "center", gap: 8,
-            padding: "12px 24px", borderRadius: 8, fontWeight: 600,
-            background: "var(--verde-escuro)", color: "white",
-            textDecoration: "none", fontSize: "0.95rem",
-          }}
-        >
+        <Link href="/admin/videos/novo" className="btn-new-item">
           <Plus size={20} />
           Novo Vídeo
         </Link>
@@ -119,7 +155,7 @@ export default function AdminVideosList({ initialVideos }: { initialVideos: Vide
           </p>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
           {videos.map((video) => (
             <div
               key={video.id}

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, FileText, LogOut, PlayCircle, Lock } from "lucide-react";
+import { ArrowLeft, FileText, LogOut, PlayCircle, Lock, Menu, X } from "lucide-react";
 
 export default function AdminLayout({
   children,
@@ -14,9 +14,9 @@ export default function AdminLayout({
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Avoid synchronous setState within effect to prevent cascading renders warning
     const timeoutId = setTimeout(() => {
       const auth = sessionStorage.getItem("admin_auth");
       if (auth === "true") {
@@ -41,48 +41,97 @@ export default function AdminLayout({
   const handleLogout = () => {
     sessionStorage.removeItem("admin_auth");
     setIsAuthenticated(false);
+    setIsMenuOpen(false);
   };
 
   if (loading) return null;
 
   if (!isAuthenticated) {
     return (
-      <div
-        style={{
-          display: "flex",
-          minHeight: "100vh",
-          background: "#ffffff",
-          overflow: "hidden",
-        }}
-      >
-        {/* Lado Esquerdo - Boi Segurança (Fundo Branco) */}
-        <div
-          style={{
-            flex: "0 0 30%",
-            position: "relative",
-            backgroundColor: "#ffffff",
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "center",
-            zIndex: 5,
-            overflow: "visible",
-          }}
-        >
-            {/* Caixa de fala estilo balão de quadrinhos */}
-            <div style={{
-              position: "absolute",
-              top: "18%",
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "rgba(255,255,255,0.9)",
-              color: "#333",
-              padding: "16px 20px",
-              borderRadius: "12px",
-              boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
-              fontWeight: 600,
-              fontSize: "1.2rem",
-              zIndex: 10,
-            }}>
+      <div className="admin-login-container">
+        <style jsx>{`
+          .admin-login-container {
+            display: flex;
+            minHeight: 100vh;
+            background: #ffffff;
+            overflow-x: hidden;
+            width: 100%;
+          }
+          .login-side-decoration {
+            flex: 0 0 30%;
+            position: relative;
+            background-color: #ffffff;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 5;
+          }
+          .login-speech-bubble {
+            position: absolute;
+            top: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 16px 20px;
+            borderRadius: 12px;
+            boxShadow: 0 4px 10px rgba(0,0,0,0.15);
+            fontWeight: 600;
+            fontSize: 1.2rem;
+            zIndex: 10;
+            white-space: nowrap;
+          }
+          .login-form-container {
+            flex: 0 0 35%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            position: relative;
+            z-index: 10;
+            padding: 24px;
+          }
+          .login-right-side {
+            flex: 1 1 35%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            overflow: hidden;
+          }
+          .mobile-login-header {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: var(--verde-escuro);
+            color: white;
+            width: 100%;
+          }
+
+          @media (max-width: 1024px) {
+            .admin-login-container {
+              flex-direction: column;
+              align-items: center;
+            }
+            .login-side-decoration, .login-right-side {
+              display: none;
+            }
+            .login-form-container {
+              flex: 1;
+              width: 100%;
+              padding: 20px;
+              min-height: 100vh;
+            }
+            .mobile-login-header {
+              display: block;
+            }
+          }
+        `}</style>
+
+        {/* Lado Esquerdo - Boi Segurança (Fundo Branco) - Escondido no Mobile */}
+        <div className="login-side-decoration">
+            <div className="login-speech-bubble">
               Opa chefe, Tudo bem? Qual a senha?
               <div style={{
                 position: "absolute",
@@ -96,34 +145,25 @@ export default function AdminLayout({
                 borderTop: "10px solid rgba(255,255,255,0.9)",
               }} />
             </div>
-          <Image
-            src="/images/boi-seguranca.png"
-            alt="Boi Segurança"
-            fill
-            sizes="30vw"
-            style={{
-              objectFit: "contain",
-              objectPosition: "center bottom",
-              pointerEvents: "none",
-              zIndex: 5,
-            }}
-            priority
-          />
+          <div style={{ position: "relative", width: "100%", height: "80vh" }}>
+            <Image
+              src="/images/boi-seguranca.png"
+              alt="Boi Segurança"
+              fill
+              sizes="30vw"
+              style={{
+                objectFit: "contain",
+                objectPosition: "center bottom",
+                pointerEvents: "none",
+                zIndex: 5,
+              }}
+              priority
+            />
+          </div>
         </div>
 
         {/* Meio - Formulário de Login */}
-        <div
-          style={{
-            flex: "0 0 35%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#ffffff",
-            position: "relative",
-            zIndex: 10,
-            padding: 24,
-          }}
-        >
+        <div className="login-form-container">
           <form
             onSubmit={handleLogin}
             style={{
@@ -220,10 +260,6 @@ export default function AdminLayout({
                   transition: "border-color 0.2s",
                   backgroundColor: "#f8f9fa",
                 }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "var(--verde-escuro)")
-                }
-                onBlur={(e) => (e.target.style.borderColor = "#e9ecef")}
               />
             </div>
 
@@ -255,10 +291,6 @@ export default function AdminLayout({
                   transition: "border-color 0.2s",
                   backgroundColor: "#f8f9fa",
                 }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = "var(--verde-escuro)")
-                }
-                onBlur={(e) => (e.target.style.borderColor = "#e9ecef")}
               />
             </div>
 
@@ -277,12 +309,6 @@ export default function AdminLayout({
                 transition: "all 0.2s ease",
                 boxShadow: "0 8px 15px rgba(10, 60, 30, 0.2)",
               }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.transform = "translateY(-2px)")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.transform = "translateY(0)")
-              }
             >
               Entrar no Painel
             </button>
@@ -295,12 +321,7 @@ export default function AdminLayout({
                   fontSize: "0.85rem",
                   textDecoration: "none",
                   fontWeight: 500,
-                  transition: "color 0.2s",
                 }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.color = "var(--verde-escuro)")
-                }
-                onMouseOut={(e) => (e.currentTarget.style.color = "#adb5bd")}
               >
                 &larr; Voltar ao site
               </Link>
@@ -308,18 +329,8 @@ export default function AdminLayout({
           </form>
         </div>
 
-        {/* Lado Direito - Bois Curiosos */}
-        <div
-          style={{
-            flex: "1 1 35%",
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            padding: 40,
-            overflow: "hidden",
-          }}
-        >
+        {/* Lado Direito - Bois Curiosos - Escondido no Mobile */}
+        <div className="login-right-side">
           <div
             style={{
               position: "absolute",
@@ -385,35 +396,105 @@ export default function AdminLayout({
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#f8f9fa" }}>
+    <div className="admin-dashboard-container">
+      <style jsx>{`
+        .admin-dashboard-container {
+          display: flex;
+          min-height: 100vh;
+          background: #f8f9fa;
+          position: relative;
+        }
+        .admin-sidebar {
+          width: 260px;
+          background: var(--verde-escuro);
+          color: white;
+          padding: 24px 0;
+          display: flex;
+          flex-direction: column;
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          transition: transform 0.3s ease;
+          z-index: 100;
+        }
+        .admin-main {
+          flex: 1;
+          overflow: auto;
+          display: flex;
+          flex-direction: column;
+        }
+        .admin-header {
+          background: white;
+          padding: 16px 32px;
+          borderBottom: 1px solid #e9ecef;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          position: sticky;
+          top: 0;
+          z-index: 50;
+        }
+        .mobile-menu-btn {
+          display: none;
+          background: none;
+          border: none;
+          color: var(--verde-escuro);
+          cursor: pointer;
+        }
+        .admin-content {
+          padding: 32px;
+          flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+          .admin-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            transform: ${isMenuOpen ? "translateX(0)" : "translateX(-100%)"};
+            box-shadow: ${isMenuOpen ? "10px 0 30px rgba(0,0,0,0.2)" : "none"};
+          }
+          .mobile-menu-btn {
+            display: block;
+          }
+          .admin-header {
+            padding: 12px 20px;
+          }
+          .admin-content {
+            padding: 20px 16px;
+          }
+          .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: ${isMenuOpen ? "block" : "none"};
+            z-index: 90;
+          }
+        }
+      `}</style>
+
+      {/* Sidebar Overlay for Mobile */}
+      <div className="sidebar-overlay" onClick={() => setIsMenuOpen(false)} />
+
       {/* Sidebar */}
-      <aside
-        style={{
-          width: 260,
-          background: "var(--verde-escuro)",
-          color: "white",
-          padding: "24px 0",
-          display: "flex",
-          flexDirection: "column",
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-        }}
-      >
-        <div style={{ padding: "0 24px", marginBottom: 40 }}>
-          <h2
-            style={{
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              margin: 0,
-              color: "var(--ouro)",
-            }}
+      <aside className="admin-sidebar">
+        <div style={{ padding: "0 24px", marginBottom: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: "var(--ouro)" }}>
+              Alternativa Admin
+            </h2>
+            <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)" }}>
+              Painel de Controle
+            </span>
+          </div>
+          <button 
+            className="mobile-menu-btn" 
+            onClick={() => setIsMenuOpen(false)}
+            style={{ color: 'white' }}
           >
-            Alternativa Admin
-          </h2>
-          <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.6)" }}>
-            Painel de Controle
-          </span>
+            <X size={24} />
+          </button>
         </div>
 
         <nav style={{ flex: 1 }}>
@@ -421,6 +502,7 @@ export default function AdminLayout({
             <li>
               <Link
                 href="/admin"
+                onClick={() => setIsMenuOpen(false)}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -438,6 +520,7 @@ export default function AdminLayout({
             <li>
               <Link
                 href="/admin/produtos"
+                onClick={() => setIsMenuOpen(false)}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -445,7 +528,6 @@ export default function AdminLayout({
                   padding: "12px 24px",
                   color: "white",
                   textDecoration: "none",
-                  background: "rgba(255,255,255,0.05)",
                   marginTop: 4,
                 }}
               >
@@ -471,13 +553,15 @@ export default function AdminLayout({
             <li>
               <Link
                 href="/admin/videos"
+                onClick={() => setIsMenuOpen(false)}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 12,
                   padding: "12px 24px",
-                  color: "rgba(255,255,255,0.6)",
+                  color: "white",
                   textDecoration: "none",
+                  marginTop: 4,
                 }}
               >
                 <PlayCircle size={20} />
@@ -506,35 +590,41 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, overflow: "auto" }}>
-        <header
-          style={{
-            background: "white",
-            padding: "16px 32px",
-            borderBottom: "1px solid #e9ecef",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <button
-            onClick={handleLogout}
-            style={{
-              background: "none",
-              border: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              color: "var(--cinza-texto)",
-              cursor: "pointer",
-              fontSize: "0.9rem",
-            }}
-          >
-            <LogOut size={16} />
-            Sair
+      <main className="admin-main">
+        <header className="admin-header">
+          <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(true)}>
+            <Menu size={24} />
           </button>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+             <button
+              onClick={handleLogout}
+              style={{
+                background: "none",
+                border: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                color: "var(--cinza-texto)",
+                cursor: "pointer",
+                fontSize: "0.9rem",
+              }}
+            >
+              <LogOut size={16} />
+              <span className="hide-mobile">Sair</span>
+            </button>
+          </div>
         </header>
-        <div style={{ padding: 32 }}>{children}</div>
+        <div className="admin-content">{children}</div>
       </main>
+      
+      <style jsx global>{`
+        @media (max-width: 640px) {
+          .hide-mobile {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }

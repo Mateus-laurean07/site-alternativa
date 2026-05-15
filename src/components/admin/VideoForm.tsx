@@ -83,8 +83,77 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
+    <div className="admin-form-container">
+      <style jsx>{`
+        .admin-form-container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 0 16px;
+        }
+        .form-header {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 32px;
+        }
+        .form-header h1 {
+          font-size: 1.8rem;
+          color: var(--verde-escuro);
+          margin: 0 0 4px 0;
+          font-weight: 800;
+        }
+        .form-card {
+          background: white;
+          border-radius: 16px;
+          padding: 32px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+          border: 1px solid #f1f3f5;
+        }
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+          .form-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          .form-header h1 {
+            font-size: 1.5rem;
+          }
+          .form-card {
+            padding: 24px;
+          }
+          .form-actions {
+            flex-direction: column;
+            gap: 12px;
+          }
+          .form-actions button, .form-actions a {
+            width: 100%;
+            justify-content: center;
+            padding: 16px;
+            font-size: 1.1rem;
+          }
+          .btn-cancel {
+            order: 2;
+          }
+          .btn-save {
+            order: 1;
+          }
+          .responsive-row {
+            flex-direction: column;
+            gap: 20px !important;
+          }
+          .responsive-row > div {
+            max-width: 100% !important;
+          }
+        }
+      `}</style>
+
+      <div className="form-header">
         <Link
           href="/admin/videos"
           style={{
@@ -96,7 +165,7 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
           <ArrowLeft size={20} />
         </Link>
         <div>
-          <h1 style={{ fontSize: "1.8rem", color: "var(--verde-escuro)", margin: "0 0 4px 0", fontWeight: 800 }}>
+          <h1>
             {isEdit ? "Editar Vídeo" : "Novo Vídeo"}
           </h1>
           <p style={{ color: "var(--cinza-texto)", margin: 0, fontSize: "0.9rem" }}>
@@ -106,8 +175,8 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
       </div>
 
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        <div style={{ background: "white", borderRadius: 16, padding: 32, boxShadow: "0 4px 12px rgba(0,0,0,0.03)", border: "1px solid #f1f3f5" }}>
-          <h2 style={{ fontSize: "1.2rem", color: "var(--verde-escuro)", marginBottom: 24, borderBottom: "1px solid #f1f3f5", paddingBottom: 12 }}>
+        <div className="form-card">
+          <h2 style={{ fontSize: "1.2rem", color: "var(--verde-escuro)", marginBottom: 24, borderBottom: "1px solid #f1f3f5", paddingBottom: 12, fontWeight: 700 }}>
             Informações do Vídeo
           </h2>
 
@@ -171,8 +240,8 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
               />
             </div>
 
-            <div style={{ display: "flex", gap: 16 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 200 }}>
+            <div style={{ display: "flex", gap: 16 }} className="responsive-row">
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 200, width: '100%' }}>
                 <label style={{ fontWeight: 600, color: "#495057", fontSize: "0.95rem" }}>
                   Ordem de exibição
                 </label>
@@ -185,11 +254,11 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
                 />
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, width: '100%' }}>
                 <label style={{ fontWeight: 600, color: "#495057", fontSize: "0.95rem" }}>
                   Status
                 </label>
-                <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "12px 16px", background: formData.publicado ? "#e8f5e9" : "#fff3cd", borderRadius: 8, border: "1px solid #dee2e6" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "12px 16px", background: formData.publicado ? "#e8f5e9" : "#fff3cd", borderRadius: 8, border: "1px solid #dee2e6", justifyContent: 'center' }}>
                   <input
                     type="checkbox"
                     name="publicado"
@@ -206,12 +275,14 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 16 }}>
+        <div className="form-actions">
           <Link
             href="/admin/videos"
+            className="btn-cancel"
             style={{
               padding: "14px 24px", borderRadius: 8, fontWeight: 600, color: "#495057",
-              background: "white", border: "1px solid #dee2e6", textDecoration: "none"
+              background: "white", border: "1px solid #dee2e6", textDecoration: "none",
+              display: 'flex', alignItems: 'center'
             }}
           >
             Cancelar
@@ -219,6 +290,7 @@ export default function VideoForm({ initialData, isEdit = false }: { initialData
           <button
             type="submit"
             disabled={loading}
+            className="btn-save"
             style={{
               display: "flex", alignItems: "center", gap: 8,
               padding: "14px 32px", borderRadius: 8, fontWeight: 600, color: "white",

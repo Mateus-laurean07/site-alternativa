@@ -51,18 +51,78 @@ export default function NovoArtigo() {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
+    <div className="admin-form-container">
+      <style jsx>{`
+        .admin-form-container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 0 16px;
+        }
+        .form-header {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 32px;
+        }
+        .form-header h1 {
+          font-size: 1.8rem;
+          color: var(--verde-escuro);
+          margin: 0;
+        }
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 16px;
+          margin-top: 16px;
+          margin-bottom: 40px;
+        }
+        .form-actions button, .form-actions a {
+          flex: 1;
+          justify-content: center;
+          text-align: center;
+        }
+
+        @media (max-width: 640px) {
+          .form-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+          }
+          .form-header h1 {
+            font-size: 1.5rem;
+          }
+          .form-actions {
+            flex-direction: column;
+            gap: 12px;
+          }
+          .form-actions button, .form-actions a {
+            width: 100%;
+            padding: 14px;
+          }
+          .btn-preview {
+            order: 2;
+          }
+          .btn-cancel {
+            order: 3;
+          }
+          .btn-save {
+            order: 1;
+            font-size: 1.1rem;
+          }
+        }
+      `}</style>
+      
+      <div className="form-header">
         <Link href="/admin" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: "50%", background: "white", color: "var(--verde-escuro)", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
           <ArrowLeft size={20} />
         </Link>
-        <h1 style={{ fontSize: "1.8rem", color: "var(--verde-escuro)", margin: 0 }}>Escrever Novo Artigo</h1>
+        <h1>Escrever Novo Artigo</h1>
       </div>
 
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         
         {/* Painel Principal */}
-        <div style={{ background: "white", padding: 32, borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.05)", display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ background: "white", padding: "24px", borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.05)", display: "flex", flexDirection: "column", gap: 20 }}>
           
           <div>
             <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "var(--verde-escuro)", marginBottom: 8 }}>
@@ -115,7 +175,7 @@ export default function NovoArtigo() {
         </div>
 
         {/* Imagem de Capa */}
-        <div style={{ background: "white", padding: 32, borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
+        <div style={{ background: "white", padding: "24px", borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
           <label style={{ display: "block", fontSize: "1rem", fontWeight: 700, color: "var(--verde-escuro)", marginBottom: 16 }}>
             Imagem de Capa (Upload)
           </label>
@@ -161,14 +221,24 @@ export default function NovoArtigo() {
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 16, marginTop: 16, marginBottom: 40 }}>
-          <button type="button" onClick={() => setShowPreview(true)} className="btn-secondary" style={{ background: "#f8f9fa", color: "var(--verde-escuro)", border: "1px solid #ced4da" }}>
-            Ver Prévia
+        <div className="form-actions">
+          <button 
+            type="button" 
+            onClick={() => setShowPreview(true)} 
+            className="btn-secondary btn-preview" 
+            style={{ background: "#f8f9fa", color: "var(--verde-escuro)", border: "1px solid #ced4da", display: 'flex', alignItems: 'center', gap: 8 }}
+          >
+            <Eye size={18} /> Ver Prévia
           </button>
-          <Link href="/admin" className="btn-secondary" style={{ background: "white" }}>
+          <Link href="/admin" className="btn-secondary btn-cancel" style={{ background: "white", display: 'flex', alignItems: 'center', gap: 8 }}>
             Cancelar
           </Link>
-          <button type="submit" disabled={loading} className="btn-verde" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <button 
+            type="submit" 
+            disabled={loading} 
+            className="btn-verde btn-save" 
+            style={{ display: "flex", alignItems: "center", gap: 8 }}
+          >
             <Save size={20} />
             {loading ? "Salvando..." : "Salvar Artigo"}
           </button>

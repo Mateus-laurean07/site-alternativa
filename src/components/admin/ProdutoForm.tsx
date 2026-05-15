@@ -88,17 +88,103 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
   };
 
   return (
-    <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+    <div className="admin-form-container">
+      <style jsx>{`
+        .admin-form-container {
+          max-width: 1000px;
+          margin: 0 auto;
+          padding: 0 16px;
+        }
+        .form-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 32px;
+          gap: 16px;
+        }
+        .form-header-title {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        .form-header h1 {
+          font-size: 1.8rem;
+          color: var(--verde-escuro);
+          margin: 0;
+          font-weight: 800;
+        }
+        .btn-save-top {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 24px;
+          border-radius: 8px;
+          background: var(--verde-escuro);
+          color: white;
+          font-weight: 600;
+          border: none;
+          cursor: pointer;
+        }
+        .form-grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
+          margin-bottom: 24px;
+        }
+        .form-card {
+          background: white;
+          padding: 32px;
+          border-radius: 16px;
+          border: 1px solid #e9ecef;
+        }
+        .responsive-flex {
+          display: flex;
+          gap: 16px;
+          align-items: flex-start;
+        }
+
+        @media (max-width: 768px) {
+          .form-header {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .btn-save-top {
+            width: 100%;
+            justify-content: center;
+            order: -1;
+            padding: 16px;
+            font-size: 1.1rem;
+          }
+          .form-grid-2 {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .form-card {
+            padding: 20px;
+          }
+          .responsive-flex {
+            flex-direction: column;
+          }
+          .responsive-flex > label {
+            width: 100%;
+          }
+          .visibility-container {
+            flex-direction: column;
+            gap: 16px !important;
+          }
+        }
+      `}</style>
+
+      <div className="form-header">
+        <div className="form-header-title">
           <Link href="/admin/produtos" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: "50%", background: "white", color: "var(--cinza-texto)", border: "1px solid #e9ecef" }}>
             <ArrowLeft size={20} />
           </Link>
-          <h1 style={{ fontSize: "1.8rem", color: "var(--verde-escuro)", margin: 0, fontWeight: 800 }}>
+          <h1>
             {isEdit ? "Editar Produto" : "Novo Produto"}
           </h1>
         </div>
-        <button onClick={handleSubmit} disabled={loading} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 8, background: "var(--verde-escuro)", color: "white", fontWeight: 600, border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+        <button onClick={handleSubmit} disabled={loading} className="btn-save-top">
           <Save size={20} />
           {loading ? "Salvando..." : "Salvar Produto"}
         </button>
@@ -107,10 +193,10 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
       <form onSubmit={handleSubmit} style={{ display: "grid", gap: 32 }}>
         
         {/* Info Principal */}
-        <div style={{ background: "white", padding: 32, borderRadius: 16, border: "1px solid #e9ecef" }}>
-          <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem" }}>Informações Básicas</h3>
+        <div className="form-card">
+          <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem", fontWeight: 700 }}>Informações Básicas</h3>
           
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 24 }}>
+          <div className="form-grid-2">
             <div>
               <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Nome do Produto *</label>
               <input required name="nome" value={formData.nome} onChange={handleChange} onBlur={handleSlugify} placeholder="Ex: Protecocho 200" style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.95rem" }} />
@@ -121,7 +207,7 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 24 }}>
+          <div className="form-grid-2">
             <div>
               <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Categoria *</label>
               <select required name="categoria" value={formData.categoria} onChange={handleChange} style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.95rem" }}>
@@ -139,7 +225,7 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          <div className="form-grid-2" style={{ marginBottom: 0 }}>
             <div>
               <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Resumo (Curto) *</label>
               <textarea required name="descricao" value={formData.descricao} onChange={handleChange} placeholder="Resumo para o card..." rows={3} style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.95rem", resize: "vertical" }} />
@@ -152,13 +238,13 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
         </div>
 
         {/* Imagens */}
-        <div style={{ background: "white", padding: 32, borderRadius: 16, border: "1px solid #e9ecef" }}>
-          <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem" }}>Imagens e Mídia</h3>
+        <div className="form-card">
+          <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem", fontWeight: 700 }}>Imagens e Mídia</h3>
           
           <div style={{ marginBottom: 32 }}>
             <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Imagem Principal *</label>
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
-              <label style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: 16, borderRadius: 8, border: "2px dashed #dee2e6", background: "#f8f9fa", cursor: "pointer", color: "var(--verde-escuro)", fontWeight: 600, transition: "all 0.2s ease" }}>
+            <div className="responsive-flex">
+              <label style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: 16, borderRadius: 8, border: "2px dashed #dee2e6", background: "#f8f9fa", cursor: "pointer", color: "var(--verde-escuro)", fontWeight: 600, transition: "all 0.2s ease", width: '100%' }}>
                 <Plus size={20} />
                 {formData.imagem ? "Trocar Imagem Principal" : "Fazer Upload da Imagem"}
                 <input 
@@ -189,13 +275,13 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
           {/* Manual PDF */}
           <div style={{ marginBottom: 32 }}>
             <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Manual em PDF (opcional)</label>
-            <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 8 }}>
+            <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 8, flexDirection: 'row', flexWrap: 'wrap' }}>
               <input
                 name="manual"
                 value={formData.manual.startsWith("data:") ? "" : formData.manual}
                 onChange={handleChange}
                 placeholder="Ex: /manuais/MANUAL PROTECOCHO 200.pdf"
-                style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.9rem" }}
+                style={{ flex: 1, minWidth: '200px', padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", fontSize: "0.9rem" }}
               />
               {formData.manual && (
                 <button
@@ -228,7 +314,7 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
                 
                 <label style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: 12, borderRadius: 8, border: "1px solid #ced4da", background: "white", cursor: "pointer", color: "var(--cinza-texto)", fontWeight: 500 }}>
                   <Plus size={16} />
-                  {img ? "Trocar Imagem" : "Selecionar Arquivo"}
+                  <span className="hide-mobile">{img ? "Trocar Imagem" : "Selecionar Arquivo"}</span>
                   <input 
                     type="file" 
                     accept="image/*"
@@ -260,8 +346,8 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
         </div>
 
         {/* Arrays: Benefícios e Especificações */}
-        <div style={{ background: "white", padding: 32, borderRadius: 16, border: "1px solid #e9ecef" }}>
-          <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem" }}>Especificações e Benefícios</h3>
+        <div className="form-card">
+          <h3 style={{ margin: "0 0 24px 0", color: "var(--verde-escuro)", fontSize: "1.1rem", fontWeight: 700 }}>Especificações e Benefícios</h3>
           
           <div style={{ marginBottom: 32 }}>
             <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Benefícios (Tópicos)</label>
@@ -285,18 +371,18 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
           <div>
             <label style={{ display: "block", marginBottom: 8, fontSize: "0.85rem", fontWeight: 600, color: "var(--cinza-texto)" }}>Especificações (Chave / Valor)</label>
             {especificacoes.map((esp, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+              <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, flexDirection: 'row' }} className="responsive-flex">
                 <input value={esp.chave} onChange={(e) => {
                   const newEsp = [...especificacoes];
                   newEsp[i].chave = e.target.value;
                   setEspecificacoes(newEsp);
-                }} placeholder="Chave (ex: Material)" style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa" }} />
+                }} placeholder="Chave (ex: Material)" style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", width: '100%' }} />
                 <input value={esp.valor} onChange={(e) => {
                   const newEsp = [...especificacoes];
                   newEsp[i].valor = e.target.value;
                   setEspecificacoes(newEsp);
-                }} placeholder="Valor (ex: Polietileno)" style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa" }} />
-                <button type="button" onClick={() => setEspecificacoes(especificacoes.filter((_, idx) => idx !== i))} style={{ padding: "0 16px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 8, cursor: "pointer" }}>
+                }} placeholder="Valor (ex: Polietileno)" style={{ flex: 1, padding: 12, borderRadius: 8, border: "1px solid #dee2e6", background: "#f8f9fa", width: '100%' }} />
+                <button type="button" onClick={() => setEspecificacoes(especificacoes.filter((_, idx) => idx !== i))} style={{ padding: "12px 16px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 8, cursor: "pointer", height: '100%' }}>
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -308,20 +394,28 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
         </div>
 
         {/* Visibilidade */}
-        <div style={{ background: "white", padding: 32, borderRadius: 16, border: "1px solid #e9ecef", display: "flex", gap: 32 }}>
-          <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer", padding: "12px 16px", background: formData.disponivel ? "#e8f5e9" : "#fff3cd", borderRadius: 8, border: "1px solid #dee2e6" }}>
+        <div className="form-card visibility-container" style={{ display: "flex", gap: 32 }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer", padding: "12px 16px", background: formData.disponivel ? "#e8f5e9" : "#fff3cd", borderRadius: 8, border: "1px solid #dee2e6", flex: 1, justifyContent: 'center' }}>
             <input type="checkbox" name="disponivel" checked={formData.disponivel} onChange={handleChange} style={{ width: 20, height: 20 }} />
             <span style={{ fontWeight: 600, color: formData.disponivel ? "var(--verde-escuro)" : "#856404" }}>
               {formData.disponivel ? "Publicado no site" : "Não Publicar"}
             </span>
           </label>
-          <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer", padding: "12px 16px", background: "#f8f9fa", borderRadius: 8, border: "1px solid #dee2e6", flex: 1, justifyContent: 'center' }}>
             <input type="checkbox" name="destaque" checked={formData.destaque} onChange={handleChange} style={{ width: 20, height: 20 }} />
             <span style={{ fontWeight: 600, color: "var(--verde-escuro)" }}>Destacar na Home</span>
           </label>
         </div>
 
       </form>
+      
+      <style jsx global>{`
+        @media (max-width: 640px) {
+          .hide-mobile {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }
