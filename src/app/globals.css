@@ -699,77 +699,222 @@ img {
   border-radius: var(--radius-sm);
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE — TABLET (até 1024px) ===== */
+@media (max-width: 1024px) {
+  /* Grids inline de 4 colunas viram 2 em tablet */
+  [style*="repeat(4,1fr)"],
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  /* Grids inline de 3 colunas viram 2 em tablet */
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+  /* Navbar dropdown — limitar largura no tablet */
+  nav [style*="minWidth: 720"],
+  nav [style*="min-width: 720"] {
+    min-width: 90vw !important;
+    max-width: 600px !important;
+  }
+}
+
+/* ===== RESPONSIVE — MOBILE (até 768px) ===== */
 @media (max-width: 768px) {
-  .section-padding {
-    padding: 64px 0;
-  }
+  /* ----- Tipografia mais compacta ----- */
+  html { font-size: 15px; }
 
-  .section-padding-sm {
-    padding: 40px 0;
-  }
+  /* ----- Espaçamentos ----- */
+  .section-padding { padding: 56px 0; }
+  .section-padding-sm { padding: 36px 0; }
+  .container { padding: 0 16px; }
 
-  .container {
-    padding: 0 16px;
-  }
-
+  /* ----- Botões com hit target adequado (>= 44px de área) ----- */
   .btn-primary, .btn-secondary, .btn-ouro {
-    padding: 12px 24px;
+    padding: 13px 26px;
     font-size: 0.875rem;
+    min-height: 44px;
   }
+  .btn-whatsapp { padding: 13px 26px; min-height: 44px; }
 
+  /* ----- WhatsApp Float ----- */
   .whatsapp-float {
-    bottom: 20px;
-    right: 20px;
+    bottom: 18px;
+    right: 18px;
     width: 52px;
     height: 52px;
   }
+  .whatsapp-float svg { width: 28px; height: 28px; }
+
+  /* ----- Grids: 4 -> 2 cols ----- */
+  [style*="repeat(4,1fr)"],
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+  /* ----- Grids: 3 -> 1 col ----- */
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  /* ----- Grids: 2 cols ("1fr 1fr") -> 1 col ----- */
+  [style*="grid-template-columns: 1fr 1fr;"],
+  [style*="grid-template-columns:1fr 1fr;"],
+  [style*="grid-template-columns: 1fr 1fr\""],
+  [style*="grid-template-columns:1fr 1fr\""] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* ----- Reduzir gaps muito grandes ----- */
+  [style*="gap: 64"],
+  [style*="gap:64"] { gap: 32px !important; }
+  [style*="gap: 48"],
+  [style*="gap:48"] { gap: 28px !important; }
+
+  /* ----- Reduzir padding interno de cards/sections grandes ----- */
+  [style*="padding: 48"],
+  [style*="padding:48"] { padding: 28px !important; }
+
+  /* ----- Cards de produto: ajustar altura da imagem ----- */
+  .produto-card-image { height: 220px; }
+  .produto-card-body { padding: 18px; }
+  .feature-card { padding: 24px; }
+  .testimonial-card { padding: 26px; }
+
+  /* ----- Stat numbers menores ----- */
+  .stat-number { font-size: 2.25rem; }
+  .stat-card { padding: 20px 12px; }
+
+  /* ----- Mapa não pode ter altura fixa muito grande ----- */
+  iframe[title*="Localização"],
+  iframe[src*="google.com/maps"] { height: 320px !important; }
+
+  /* ----- Hero: ajustar altura e padding ----- */
+  section[style*="height: \"100vh\""],
+  section[style*="height:100vh"] {
+    min-height: 520px !important;
+    height: auto !important;
+    padding: 96px 0 64px !important;
+  }
+  /* Indicador "Role para baixo" - esconder em mobile */
+  section [style*="writing-mode: vertical-lr"],
+  section [style*="writingMode"] { display: none !important; }
+
+  /* ----- Navbar: logo menor + padding menor ----- */
+  nav img[alt*="Alternativa"] { height: 48px !important; }
+  .navbar > div[style*="padding: \"0 24px\""],
+  .navbar > div[style*="padding:0 24px"] { padding: 0 12px !important; }
+  /* Reduz altura da linha principal do menu */
+  .navbar [style*="height: 88"] { height: 64px !important; }
+
+  /* ----- Headers internos em flex que devem virar coluna ----- */
+  [style*="justify-content: space-between"][style*="align-items: flex-end"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+  }
+
+  /* ----- Section CTA com padding lateral ----- */
+  section[style*="padding: \"80px 24px\""] { padding: 56px 16px !important; }
+  section[style*="padding: \"64px 24px\""] { padding: 40px 16px !important; }
+
+  /* ----- Form inputs: maior área de toque ----- */
+  .form-input { padding: 13px 16px; font-size: 16px; /* evita zoom no iOS */ }
 }
 
-/* ===== UTILITIES ===== */
-.text-verde { color: var(--verde-medio); }
-.text-verde-escuro { color: var(--verde-escuro); }
-.text-ouro { color: var(--ouro); }
-.bg-verde { background-color: var(--verde-escuro); }
-.bg-verde-suave { background-color: var(--verde-suave); }
-.bg-cinza { background-color: var(--cinza-claro); }
+/* ===== RESPONSIVE — TELAS PEQUENAS (até 480px) ===== */
+@media (max-width: 480px) {
+  /* Stats: pode forçar mais compacto */
+  .stat-number { font-size: 1.85rem; }
 
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-.relative { position: relative; }
-.absolute { position: absolute; }
-.overflow-hidden { overflow: hidden; }
+  /* Grids 4 cols agora viram 1 col em mobile pequeno */
+  [style*="repeat(4,1fr)"],
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
 
-/* Aspect ratios */
-.aspect-video { aspect-ratio: 16/9; }
-.aspect-square { aspect-ratio: 1; }
-.aspect-product { aspect-ratio: 4/3; }
+  /* Hero indicadores menores */
+  section [style*="bottom: 40"][style*="left: \"50%\""] {
+    bottom: 20px !important;
+  }
 
-/* ===== SWIPER CUSTOM ===== */
-.swiper-pagination-bullet {
-  background: rgba(255,255,255,0.5) !important;
-  opacity: 1 !important;
-  width: 10px !important;
-  height: 10px !important;
+  /* WhatsApp float mais compacto */
+  .whatsapp-float {
+    bottom: 14px;
+    right: 14px;
+    width: 48px;
+    height: 48px;
+  }
+  .whatsapp-float svg { width: 24px; height: 24px; }
+
+  /* Container ainda mais apertado */
+  .container { padding: 0 14px; }
 }
 
-.swiper-pagination-bullet-active {
-  background: var(--ouro) !important;
-  width: 32px !important;
-  border-radius: 5px !important;
+/* ===== TICKER: comportamento mobile ===== */
+@media (max-width: 640px) {
+  /* Reduz altura e fontes do ticker */
+  nav > div:first-child [style*="height: 32"] {
+    height: 28px !important;
+  }
 }
 
-.swiper-button-next,
-.swiper-button-prev {
-  color: white !important;
-  background: rgba(26,58,31,0.7) !important;
-  width: 48px !important;
-  height: 48px !important;
-  border-radius: 50% !important;
-  padding: 10px !important;
-}
+/* ===== GRIDS ESPECIAIS DE PÁGINAS INTERNAS ===== */
+@media (max-width: 768px) {
+  /* Página de Produto: galeria + info (5fr 7fr / 7fr 5fr) */
+  [style*="5fr 7fr"],
+  [style*="7fr 5fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
 
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 1rem !important;
-}
+  /* Página de Blog: posts + sidebar (2fr 1fr / 1fr 2fr) */
+  [style*="2fr 1fr"],
+  [style*="1fr 2fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Página de Representantes: mapa + painel (1fr 320px / 1fr 280px) */
+  [style*="1fr 320px"],
+  [style*="320px 1fr"],
+  [style*="1fr 280px"],
+  [style*="280px 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Página de Produto: H1 grande (2.4rem) reduzido em mobile */
+  h1[style*="2.4rem"],
+  h1[style*="2.5rem"],
+  h1[style*="2.6rem"],
+  h1[style*="2.8rem"] {
+    font-size: 1.65rem !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Especificações: container grande */
+  [style*="padding: \"36px 40px\""],
+  [style*="padding:36px 40px"] {
+    padding: 22px 18px !important;
+  }
+  [style*="padding: \"40px"],
+  [style*="padding:40px"] {
+    padding: 24px !important;
+  }
+  [style*="padding: 32px"]:not([style*="padding: 32px 0"]) {
+    padding: 20px !important;
+  }
+
+  /* Footer dos cards de blog (data + botão) - permitir wrap */
+  .blog-card [style*="justify-content: space-between"] {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  /* Hero das páginas internas */
+  section[style*="paddingTop: 120"] {
+    pad

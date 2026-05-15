@@ -1,6 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import SiteLayout from "@/components/SiteLayout";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#1a3a1f",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://alternativamt.com.br"),

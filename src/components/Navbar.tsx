@@ -287,56 +287,59 @@ export default function Navbar() {
               {t("nav.quote")}
             </Link>
           </div>
-        </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          style={{
-            display: "none",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: 8,
-            color: "white",
-          }}
-          className="mobile-menu-btn"
-          aria-label="Menu"
-        >
-          <div
+          {/* Mobile Menu Button (DENTRO do flex pra ficar alinhado com o logo) */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
             style={{
-              width: 24,
-              height: 2,
-              background: "white",
-              marginBottom: 5,
-              transition: "all 0.3s",
-              transform: menuOpen
-                ? "rotate(45deg) translate(5px, 5px)"
-                : "none",
+              display: "none",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 8,
+              color: "white",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
             }}
-          />
-          <div
-            style={{
-              width: 24,
-              height: 2,
-              background: "white",
-              marginBottom: 5,
-              opacity: menuOpen ? 0 : 1,
-              transition: "all 0.3s",
-            }}
-          />
-          <div
-            style={{
-              width: 24,
-              height: 2,
-              background: "white",
-              transition: "all 0.3s",
-              transform: menuOpen
-                ? "rotate(-45deg) translate(5px, -5px)"
-                : "none",
-            }}
-          />
-        </button>
+            className="mobile-menu-btn"
+            aria-label="Menu"
+          >
+            <div
+              style={{
+                width: 24,
+                height: 2,
+                background: "white",
+                marginBottom: 5,
+                transition: "all 0.3s",
+                transform: menuOpen
+                  ? "rotate(45deg) translate(5px, 5px)"
+                  : "none",
+              }}
+            />
+            <div
+              style={{
+                width: 24,
+                height: 2,
+                background: "white",
+                marginBottom: 5,
+                opacity: menuOpen ? 0 : 1,
+                transition: "all 0.3s",
+              }}
+            />
+            <div
+              style={{
+                width: 24,
+                height: 2,
+                background: "white",
+                transition: "all 0.3s",
+                transform: menuOpen
+                  ? "rotate(-45deg) translate(5px, -5px)"
+                  : "none",
+              }}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -482,9 +485,9 @@ export default function Navbar() {
       )}
 
       <style>{`
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .desktop-nav { display: none !important; }
-          .mobile-menu-btn { display: block !important; }
+          .mobile-menu-btn { display: flex !important; }
         }
       `}</style>
     </nav>

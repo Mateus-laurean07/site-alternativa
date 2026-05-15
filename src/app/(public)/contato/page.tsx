@@ -91,7 +91,7 @@ export default function ContatoPage() {
       {/* CONTATOS RÁPIDOS */}
       <section style={{ background: "white", marginTop: -1 }}>
         <div className="container" style={{ paddingTop: 0 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, borderRadius: "0 0 20px 20px", overflow: "hidden", boxShadow: "var(--shadow-lg)" }}>
+          <div className="contato-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, borderRadius: "0 0 20px 20px", overflow: "hidden", boxShadow: "var(--shadow-lg)" }}>
             {contatos.map((c, i) => (
               <motion.a key={c.titulo} href={c.link} target={c.link.startsWith("http") ? "_blank" : "_self"} rel="noreferrer"
                 whileHover={{ y: -5, backgroundColor: "#f9fcf9" }}
@@ -104,7 +104,10 @@ export default function ContatoPage() {
             ))}
           </div>
         </div>
-        <style>{`@media(max-width:768px){.contato-grid{grid-template-columns:repeat(2,1fr)!important;}}`}</style>
+        <style>{`
+          @media(max-width:768px){.contato-grid{grid-template-columns:repeat(2,1fr)!important;}}
+          @media(max-width:480px){.contato-grid{grid-template-columns:1fr!important;}.contato-grid > a{border-right:none!important;border-bottom:1px solid var(--cinza-medio)!important;}}
+        `}</style>
       </section>
 
       {/* FORMULÁRIO + MAPA */}
