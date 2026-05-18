@@ -3,20 +3,21 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { MapPin, Smartphone, Mail, Camera } from "lucide-react";
+import { MapPin, Smartphone, Mail, Camera, Phone } from "lucide-react";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ContatoPage() {
   const { language } = useLanguage();
-  const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "", interesse: "geral" });
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "", cidade: "", mensagem: "", interesse: "geral" });
   const [enviado, setEnviado] = useState(false);
   const [enviando, setEnviando] = useState(false);
 
   const contatos = [
     { icon: <MapPin size={24} />, titulo: language === "PT" ? "Endereço" : "Address", valor: "Lucas do Rio Verde / MT", link: "https://www.google.com/maps/dir/?api=1&destination=Alternativa+Cochos+Plásticos,+Lucas+do+Rio+Verde+-+MT" },
-    { icon: <Smartphone size={24} />, titulo: "WhatsApp", valor: "(65) 99990-2024", link: "https://wa.me/5565999902024" },
-    { icon: <Mail size={24} />, titulo: "E-mail", valor: "contato@alternativamt.com.br", link: "mailto:contato@alternativamt.com.br" },
+    { icon: <Phone size={24} />, titulo: language === "PT" ? "Telefone Fixo" : "Landline", valor: "(65) 3549-4354", link: "tel:+556535494354" },
+    { icon: <Smartphone size={24} />, titulo: "WhatsApp / SAC", valor: "(65) 99990-2024", link: "https://wa.me/5565999902024" },
+    { icon: <Mail size={24} />, titulo: "E-mail", valor: "atendimento@alternativamt.com.br", link: "mailto:atendimento@alternativamt.com.br" },
     { icon: <Camera size={24} />, titulo: "Instagram", valor: "@alternativaplasticos", link: "https://www.instagram.com/alternativaplasticos/" }
   ];
 
@@ -91,11 +92,11 @@ export default function ContatoPage() {
       {/* CONTATOS RÁPIDOS */}
       <section style={{ background: "white", marginTop: -1 }}>
         <div className="container" style={{ paddingTop: 0 }}>
-          <div className="contato-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, borderRadius: "0 0 20px 20px", overflow: "hidden", boxShadow: "var(--shadow-lg)" }}>
+          <div className="contato-grid" style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 0, borderRadius: "0 0 20px 20px", overflow: "hidden", boxShadow: "var(--shadow-lg)" }}>
             {contatos.map((c, i) => (
               <motion.a key={c.titulo} href={c.link} target={c.link.startsWith("http") ? "_blank" : "_self"} rel="noreferrer"
                 whileHover={{ y: -5, backgroundColor: "#f9fcf9" }}
-                style={{ background: i % 2 === 0 ? "white" : "var(--verde-suave)", padding: "28px 24px", display: "block", borderRight: i < 3 ? "1px solid var(--cinza-medio)" : "none", transition: "all 0.2s", textDecoration: "none", cursor: "pointer" }}
+                style={{ background: i % 2 === 0 ? "white" : "var(--verde-suave)", padding: "28px 24px", display: "block", borderRight: i < 4 ? "1px solid var(--cinza-medio)" : "none", transition: "all 0.2s", textDecoration: "none", cursor: "pointer" }}
               >
                 <div style={{ fontSize: "1.8rem", marginBottom: 8 }}>{c.icon}</div>
                 <div style={{ fontSize: "0.75rem", color: "var(--cinza-texto)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>{c.titulo}</div>
@@ -105,7 +106,8 @@ export default function ContatoPage() {
           </div>
         </div>
         <style>{`
-          @media(max-width:768px){.contato-grid{grid-template-columns:repeat(2,1fr)!important;}}
+          @media(max-width:1024px){.contato-grid{grid-template-columns:repeat(3,1fr)!important;}.contato-grid > a{border-right:1px solid var(--cinza-medio)!important;}}
+          @media(max-width:768px){.contato-grid{grid-template-columns:repeat(2,1fr)!important;}.contato-grid > a{border-right:1px solid var(--cinza-medio)!important;}}
           @media(max-width:480px){.contato-grid{grid-template-columns:1fr!important;}.contato-grid > a{border-right:none!important;border-bottom:1px solid var(--cinza-medio)!important;}}
         `}</style>
       </section>
@@ -128,7 +130,7 @@ export default function ContatoPage() {
                   <div style={{ fontSize: "4rem", marginBottom: 20 }}>✅</div>
                   <h3 style={{ color: "var(--verde-escuro)", marginBottom: 12 }}>{language === "PT" ? "Mensagem Enviada!" : "Message Sent!"}</h3>
                   <p style={{ color: "var(--cinza-texto)", marginBottom: 24 }}>{language === "PT" ? "Nossa equipe entrará em contato em até 24 horas." : "Our team will contact you within 24 hours."}</p>
-                  <button onClick={() => { setEnviado(false); setForm({ nome: "", email: "", telefone: "", mensagem: "", interesse: "geral" }); }} className="btn-primary">
+                  <button onClick={() => { setEnviado(false); setForm({ nome: "", email: "", telefone: "", cidade: "", mensagem: "", interesse: "geral" }); }} className="btn-primary">
                     {language === "PT" ? "Enviar Outra Mensagem" : "Send Another Message"}
                   </button>
                 </div>
@@ -147,6 +149,10 @@ export default function ContatoPage() {
                       <label className="form-label">{language === "PT" ? "Telefone / WhatsApp" : "Phone / WhatsApp"}</label>
                       <input className="form-input" type="tel" name="telefone" value={form.telefone} onChange={handlePhoneChange} maxLength={15} placeholder="(65) 99999-9999" />
                     </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">{language === "PT" ? "Cidade / UF" : "City / State"}</label>
+                    <input className="form-input" type="text" name="cidade" value={form.cidade} onChange={handleChange} required placeholder={language === "PT" ? "Sua cidade e estado" : "Your city and state"} />
                   </div>
                   <div className="form-group">
                     <label className="form-label">{language === "PT" ? "Interesse" : "Interest"}</label>
@@ -198,7 +204,9 @@ export default function ContatoPage() {
               </div>
               <div style={{ marginTop: 20, background: "var(--verde-suave)", borderRadius: 16, padding: 20 }}>
                 <h4 style={{ color: "var(--verde-escuro)", marginBottom: 8 }}>⌚ {language === "PT" ? "Horário de Atendimento" : "Business Hours"}</h4>
-                <p style={{ color: "var(--cinza-texto)", fontSize: "0.9rem" }}>{language === "PT" ? "Segunda a Sexta: 7h30 às 17h30" : "Monday to Friday: 7:30 AM to 5:30 PM"}<br />{language === "PT" ? "Sábado: 7h30 às 12h00" : "Saturday: 7:30 AM to 12:00 PM"}</p>
+                <p style={{ color: "var(--cinza-texto)", fontSize: "0.9rem" }}>
+                  {language === "PT" ? "Segunda a Sexta: 7h30 às 17h30 (Fuso Horário Cuiabá)" : "Monday to Friday: 7:30 AM to 5:30 PM (Cuiabá Time)"}
+                </p>
               </div>
             </motion.div>
           </div>

@@ -75,54 +75,354 @@ export default function AdminVideosList({ initialVideos }: { initialVideos: Vide
   };
 
   return (
-    <>
-      <div className="admin-list-header">
-        <style jsx>{`
+    <div className="admin-list-container">
+      <style jsx>{`
+        .admin-list-container {
+          animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-list-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 32px;
+          gap: 16px;
+        }
+        .admin-list-title h1 {
+          font-size: 2.2rem;
+          color: #1a3a1f;
+          margin: 0 0 8px 0;
+          font-weight: 850;
+          letter-spacing: -0.5px;
+        }
+        .admin-list-title p {
+          color: #64748b;
+          margin: 0;
+          font-weight: 500;
+          font-size: 0.95rem;
+        }
+        .btn-new-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 28px;
+          border-radius: 12px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #1a3a1f 0%, #2e5c35 100%);
+          color: white;
+          text-decoration: none;
+          font-size: 0.95rem;
+          white-space: nowrap;
+          box-shadow: 0 10px 25px rgba(26,58,31,0.2);
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-new-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 15px 30px rgba(26,58,31,0.3);
+          background: linear-gradient(135deg, #2e5c35 0%, #1a3a1f 100%);
+        }
+
+        .empty-state-card {
+          background: white;
+          border-radius: 24px;
+          padding: 80px 40px;
+          text-align: center;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+          border: 1px solid rgba(0,0,0,0.04);
+        }
+        .empty-state-icon {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background: #f8fafc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 24px;
+          color: #94a3b8;
+        }
+        .empty-state-title {
+          color: #1a3a1f;
+          margin-bottom: 12px;
+          font-size: 1.4rem;
+          font-weight: 800;
+        }
+        .empty-state-desc {
+          color: #64748b;
+          margin-bottom: 32px;
+          font-size: 1rem;
+        }
+
+        .grid-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 28px;
+        }
+        .video-card {
+          background: white;
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+          border: 1px solid rgba(0,0,0,0.03);
+          display: flex;
+          flex-direction: column;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          position: relative;
+        }
+        .video-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+          border-color: rgba(26,58,31,0.1);
+        }
+        .video-card-image-container {
+          position: relative;
+          width: 100%;
+          padding-top: 56.25%; /* 16:9 Aspect Ratio */
+          background: #000;
+          flex-shrink: 0;
+        }
+        .video-card-image-container iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 0;
+        }
+        .video-card-content {
+          padding: 24px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+        }
+        .video-card-title {
+          font-size: 1.15rem;
+          color: #1a3a1f;
+          margin: 0 0 12px 0;
+          line-height: 1.4;
+          font-weight: 800;
+        }
+        .video-card-summary {
+          font-size: 0.9rem;
+          color: #64748b;
+          margin: 0 0 20px 0;
+          flex: 1;
+          line-height: 1.6;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .video-card-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-top: 1px solid #f1f5f9;
+          padding-top: 16px;
+          margin-top: auto;
+        }
+        .video-card-order {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.85rem;
+          color: #94a3b8;
+          font-weight: 700;
+          background: #f8fafc;
+          padding: 6px 12px;
+          border-radius: 8px;
+        }
+        .video-card-actions {
+          display: flex;
+          gap: 8px;
+        }
+        .btn-action {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 36px;
+          border-radius: 10px;
+          border: none;
+          cursor: pointer;
+          font-weight: 700;
+          font-size: 0.8rem;
+          transition: all 0.2s ease;
+          text-decoration: none;
+        }
+        .btn-publish {
+          padding: 0 16px;
+        }
+        .btn-publish.published {
+          background: #ecfdf5;
+          color: #059669;
+        }
+        .btn-publish.published:hover {
+          background: #d1fae5;
+        }
+        .btn-publish.draft {
+          background: #fef3c7;
+          color: #d97706;
+        }
+        .btn-publish.draft:hover {
+          background: #fde68a;
+        }
+        .btn-icon {
+          width: 36px;
+          padding: 0;
+        }
+        .btn-edit {
+          background: #f1f5f9;
+          color: #475569;
+        }
+        .btn-edit:hover {
+          background: #e2e8f0;
+          color: #1e293b;
+        }
+        .btn-delete {
+          background: #fef2f2;
+          color: #ef4444;
+        }
+        .btn-delete:hover {
+          background: #fee2e2;
+          color: #b91c1c;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          animation: fadeIn 0.2s ease-out;
+        }
+        .modal-content {
+          background: white;
+          border-radius: 24px;
+          padding: 40px;
+          width: 100%;
+          maxWidth: 440px;
+          box-shadow: 0 32px 64px rgba(0,0,0,0.2);
+          position: relative;
+          transform: scale(0.95);
+          animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes scaleIn {
+          to { transform: scale(1); }
+        }
+        .modal-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background: #f8fafc;
+          border: none;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #64748b;
+          transition: background 0.2s;
+        }
+        .modal-close:hover {
+          background: #f1f5f9;
+        }
+        .modal-icon {
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: #fef2f2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 24px;
+          color: #ef4444;
+        }
+        .modal-title {
+          text-align: center;
+          margin: 0 0 12px 0;
+          font-size: 1.5rem;
+          color: #0f172a;
+          font-weight: 800;
+        }
+        .modal-desc {
+          text-align: center;
+          color: #64748b;
+          line-height: 1.6;
+          margin: 0 0 12px 0;
+        }
+        .modal-target {
+          text-align: center;
+          color: #1a3a1f;
+          font-weight: 700;
+          font-size: 1rem;
+          background: #f8fafc;
+          border-radius: 12px;
+          padding: 12px 16px;
+          margin: 0 0 24px 0;
+        }
+        .modal-actions {
+          display: flex;
+          gap: 12px;
+        }
+        .btn-modal {
+          flex: 1;
+          padding: 14px 0;
+          border-radius: 12px;
+          font-weight: 700;
+          cursor: pointer;
+          font-size: 0.95rem;
+          border: none;
+          transition: all 0.2s;
+        }
+        .btn-modal-cancel {
+          background: #f1f5f9;
+          color: #475569;
+        }
+        .btn-modal-cancel:hover {
+          background: #e2e8f0;
+        }
+        .btn-modal-confirm {
+          background: #ef4444;
+          color: white;
+          box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+        .btn-modal-confirm:hover {
+          background: #dc2626;
+          box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+        }
+        .btn-modal-confirm:disabled {
+          background: #fca5a5;
+          cursor: not-allowed;
+          box-shadow: none;
+        }
+
+        @media (max-width: 640px) {
           .admin-list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            gap: 16px;
+            flex-direction: column;
+            align-items: flex-start;
           }
           .admin-list-title h1 {
-            font-size: 2rem;
-            color: var(--verde-escuro);
-            margin: 0 0 8px 0;
-            font-weight: 800;
-          }
-          .admin-list-title p {
-            color: var(--cinza-texto);
-            margin: 0;
+            font-size: 1.8rem;
           }
           .btn-new-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            background: var(--verde-escuro);
-            color: white;
-            text-decoration: none;
-            font-size: 0.95rem;
-            white-space: nowrap;
+            width: 100%;
+            justify-content: center;
           }
+        }
+      `}</style>
 
-          @media (max-width: 640px) {
-            .admin-list-header {
-              flex-direction: column;
-              align-items: flex-start;
-            }
-            .admin-list-title h1 {
-              font-size: 1.5rem;
-            }
-            .btn-new-item {
-              width: 100%;
-              justify-content: center;
-            }
-          }
-        `}</style>
+      {/* Cabeçalho */}
+      <div className="admin-list-header">
         <div className="admin-list-title">
           <h1>Vídeos</h1>
           <p>
@@ -136,38 +436,24 @@ export default function AdminVideosList({ initialVideos }: { initialVideos: Vide
       </div>
 
       {videos.length === 0 ? (
-        <div style={{
-          background: "white", borderRadius: 16, padding: 64,
-          textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.05)"
-        }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: "50%", background: "#f1f3f5",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            margin: "0 auto 24px", color: "var(--cinza-texto)"
-          }}>
-            <Video size={32} />
+        <div className="empty-state-card">
+          <div className="empty-state-icon">
+            <Video size={36} />
           </div>
-          <h3 style={{ color: "var(--verde-escuro)", marginBottom: 12, fontSize: "1.2rem" }}>
-            Nenhum vídeo cadastrado
-          </h3>
-          <p style={{ color: "var(--cinza-texto)", marginBottom: 24 }}>
+          <h3 className="empty-state-title">Nenhum vídeo cadastrado</h3>
+          <p className="empty-state-desc">
             Adicione vídeos do YouTube para exibir na galeria do site.
           </p>
+          <Link href="/admin/videos/novo" className="btn-new-item" style={{ display: 'inline-flex', width: 'auto' }}>
+            <Plus size={20} /> Adicionar Vídeo
+          </Link>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
+        <div className="grid-container">
           {videos.map((video) => (
-            <div
-              key={video.id}
-              style={{
-                background: "white", borderRadius: 16, overflow: "hidden",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.06)", border: "1px solid #f1f3f5",
-                display: "flex", flexDirection: "column",
-              }}
-            >
-              <div style={{ position: "relative", width: "100%", paddingTop: "56.25%", background: "#000" }}>
+            <div key={video.id} className="video-card">
+              <div className="video-card-image-container">
                 <iframe
-                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0 }}
                   src={`https://www.youtube.com/embed/${video.video_id}?rel=0`}
                   title={video.titulo}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -175,68 +461,35 @@ export default function AdminVideosList({ initialVideos }: { initialVideos: Vide
                 />
               </div>
 
-              <div style={{ padding: 20, flex: 1, display: "flex", flexDirection: "column" }}>
-                <h3 style={{
-                  fontSize: "1.1rem", color: "var(--verde-escuro)", margin: "0 0 8px 0",
-                  lineHeight: 1.4, fontWeight: 800
-                }}>
-                  {video.titulo}
-                </h3>
-                
-                <p style={{
-                  fontSize: "0.85rem", color: "var(--cinza-texto)", margin: "0 0 16px 0",
-                  flex: 1,
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden"
-                }}>
-                  {video.descricao}
-                </p>
+              <div className="video-card-content">
+                <h3 className="video-card-title">{video.titulo}</h3>
+                <p className="video-card-summary">{video.descricao}</p>
 
-                <div style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  borderTop: "1px solid #f1f3f5", paddingTop: 14, marginTop: "auto"
-                }}>
-                  <div style={{ fontSize: "0.8rem", color: "var(--cinza-texto)", fontWeight: 600 }}>
+                <div className="video-card-footer">
+                  <div className="video-card-order">
                     Ordem: {video.ordem}
                   </div>
-                  <div style={{ display: "flex", gap: 8 }}>
+                  <div className="video-card-actions">
                     <button
                       onClick={() => togglePublicado(video)}
                       title={video.publicado ? "Despublicar" : "Publicar"}
-                      style={{
-                        padding: "4px 12px", borderRadius: 8, fontSize: "0.75rem", fontWeight: 700,
-                        border: "none", cursor: "pointer",
-                        background: video.publicado ? "#e8f5e9" : "#fff3cd",
-                        color: video.publicado ? "var(--verde-escuro)" : "#856404",
-                      }}
+                      className={`btn-action btn-publish ${video.publicado ? 'published' : 'draft'}`}
                     >
                       {video.publicado ? "Despublicar" : "Publicar"}
                     </button>
                     <Link
                       href={`/admin/videos/${video.id}`}
                       title="Editar vídeo"
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        width: 34, height: 34, borderRadius: 8,
-                        background: "#e8f5e9", color: "var(--verde-escuro)",
-                        textDecoration: "none"
-                      }}
+                      className="btn-action btn-icon btn-edit"
                     >
-                      <Edit2 size={15} />
+                      <Edit2 size={16} />
                     </Link>
                     <button
                       onClick={() => handleDeleteClick(video)}
                       title="Excluir vídeo"
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        width: 34, height: 34, borderRadius: 8,
-                        background: "#fee2e2", color: "#dc2626",
-                        border: "none", cursor: "pointer"
-                      }}
+                      className="btn-action btn-icon btn-delete"
                     >
-                      <Trash2 size={15} />
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </div>
@@ -248,82 +501,32 @@ export default function AdminVideosList({ initialVideos }: { initialVideos: Vide
 
       {/* Modal de Exclusão */}
       {showModal && (
-        <div
-          style={{
-            position: "fixed", inset: 0, zIndex: 9999,
-            background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
-            display: "flex", alignItems: "center", justifyContent: "center", padding: 24
-          }}
-          onClick={cancelDelete}
-        >
-          <div
-            style={{
-              background: "white", borderRadius: 20, padding: "40px 36px",
-              width: "100%", maxWidth: 440,
-              boxShadow: "0 32px 64px rgba(0,0,0,0.25)",
-              position: "relative"
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={cancelDelete}
-              style={{
-                position: "absolute", top: 16, right: 16,
-                background: "#f1f3f5", border: "none", borderRadius: "50%",
-                width: 32, height: 32, cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center", color: "#6c757d"
-              }}
-            >
-              <X size={16} />
+        <div className="modal-overlay" onClick={cancelDelete}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={cancelDelete}>
+              <X size={18} />
             </button>
-            <div style={{
-              width: 64, height: 64, borderRadius: "50%",
-              background: "#fee2e2", display: "flex", alignItems: "center",
-              justifyContent: "center", margin: "0 auto 24px"
-            }}>
-              <AlertTriangle size={32} color="#dc2626" />
+            <div className="modal-icon">
+              <AlertTriangle size={36} />
             </div>
-            <h2 style={{
-              textAlign: "center", margin: "0 0 12px 0",
-              fontSize: "1.3rem", color: "#1a1a1a", fontWeight: 800
-            }}>
-              Excluir vídeo?
-            </h2>
-            <p style={{ textAlign: "center", color: "#6c757d", margin: "0 0 8px 0" }}>
-              Você está prestes a excluir o vídeo:
-            </p>
-            <p style={{
-              textAlign: "center", color: "var(--verde-escuro)", fontWeight: 700,
-              background: "#f8f9fa", borderRadius: 8, padding: "10px 16px", margin: "0 0 28px 0"
-            }}>
-              "{deletingTitle}"
-            </p>
-            <div style={{ display: "flex", gap: 12 }}>
-              <button
-                onClick={cancelDelete}
-                style={{
-                  flex: 1, padding: "12px 0", borderRadius: 10,
-                  border: "1px solid #dee2e6", background: "white",
-                  color: "#495057", fontWeight: 600, cursor: "pointer"
-                }}
-              >
+            <h2 className="modal-title">Excluir vídeo?</h2>
+            <p className="modal-desc">Você está prestes a excluir o vídeo:</p>
+            <p className="modal-target">"{deletingTitle}"</p>
+            <div className="modal-actions">
+              <button onClick={cancelDelete} className="btn-modal btn-modal-cancel">
                 Cancelar
               </button>
               <button
                 onClick={confirmDelete}
                 disabled={loadingDelete}
-                style={{
-                  flex: 1, padding: "12px 0", borderRadius: 10,
-                  border: "none", background: loadingDelete ? "#f5c2c7" : "#dc2626",
-                  color: "white", fontWeight: 700, cursor: loadingDelete ? "not-allowed" : "pointer"
-                }}
+                className="btn-modal btn-modal-confirm"
               >
-                {loadingDelete ? "Excluindo..." : "Excluir"}
+                {loadingDelete ? "Excluindo..." : "Sim, excluir"}
               </button>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

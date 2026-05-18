@@ -32,7 +32,7 @@ export const representantesPorEstado: EstadoRepresentantes[] = [
     ],
   },
   { id: "CE", nome: "Ceará", representantes: [direcionamentoGeral] },
-  { id: "DF", nome: "Distrito Federal", representantes: [direcionamentoGeral] },
+  { id: "DF", nome: "Distrito Federal", representantes: [{ nome: "Garcia Rural (Cleomys)", telefone: "(62) 98650-9940", detalhe: "Distrito Federal" }] },
   {
     id: "ES",
     nome: "Espírito Santo",
@@ -44,7 +44,7 @@ export const representantesPorEstado: EstadoRepresentantes[] = [
     id: "GO",
     nome: "Goiás",
     representantes: [
-      { nome: "Garcia Rural", telefone: "(62) 98650-9940", detalhe: "Centro Norte de Goiás" },
+      { nome: "Garcia Rural (Cleomys)", telefone: "(62) 98650-9940", detalhe: "Centro Norte de Goiás" },
       { nome: "Isaac Lucas", telefone: "(64) 99300-6207", detalhe: "Sul de Goiás" },
     ],
   },
@@ -129,6 +129,16 @@ export const representantesPorEstado: EstadoRepresentantes[] = [
     representantes: [
       { nome: "Garcia Rural", telefone: "(62) 98650-9940", detalhe: "Tocantins" },
     ],
+  },
+  {
+    id: "BO",
+    nome: "Bolívia",
+    representantes: [direcionamentoGeral],
+  },
+  {
+    id: "PY",
+    nome: "Paraguai",
+    representantes: [direcionamentoGeral],
   },
 ];
 

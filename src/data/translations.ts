@@ -19,6 +19,7 @@ export const translations: Translations = {
     "hero.title": "A Evolução do Manejo Começa Aqui",
     "hero.subtitle": "Cochos e bebedouros de alta resistência que garantem o máximo aproveitamento e saúde para o seu rebanho.",
     "hero.cta": "Conhecer Produtos",
+    "brand.name": "Cochos Plásticos",
   },
   EN: {
     "nav.home": "Home",
@@ -32,6 +33,7 @@ export const translations: Translations = {
     "hero.title": "The Evolution of Management Starts Here",
     "hero.subtitle": "High-resistance troughs and drinkers that ensure maximum utilization and health for your herd.",
     "hero.cta": "View Products",
+    "brand.name": "Plastic Feeders",
   },
   ES: {
     "nav.home": "Inicio",
@@ -43,7 +45,8 @@ export const translations: Translations = {
     "nav.reps": "Representantes",
     "nav.quote": "Solicitar Presupuesto",
     "hero.title": "La Evolución del Manejo Comienza Aquí",
-    "hero.subtitle": "Comederos y bebederos de alta resistencia que garantizan el máximo aprovechamiento y salud para su rebaño.",
+    "hero.subtitle": "Comederos y bebederos de alta resistência que garantizan el máximo aprovechamiento y salud para su rebaño.",
     "hero.cta": "Conocer Productos",
+    "brand.name": "Comederos Plásticos",
   },
 };

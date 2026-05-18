@@ -10,7 +10,7 @@ export default function Hero() {
   const heroSlides = [
     {
       bg: "linear-gradient(135deg, rgba(15,26,16,0.85) 0%, rgba(26,58,31,0.72) 100%), url('/images/hero/hero-1.webp') center/cover no-repeat",
-      tag: language === "PT" ? "Desde 2011" : "Since 2011",
+      tag: language === "PT" ? "Mais de 14 anos" : "Over 14 years",
       titulo: language === "PT" ? "A Solução Completa para seu Rebanho" : "The Complete Solution for Your Herd",
       sub: language === "PT" ? "Cochos e bebedouros de alta resistência para maximizar a produtividade do seu gado." : "High-resistance troughs and drinkers to maximize your cattle's productivity.",
     },

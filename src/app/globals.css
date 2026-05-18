@@ -794,7 +794,7 @@ img {
   section [style*="writing-mode: vertical-lr"] { display: none !important; }
 
   /* Navbar: logo e padding menores */
-  nav img[alt*="Alternativa"] { height: 48px !important; }
+  nav img[alt*="Alternativa"] { height: 64px !important; }
   .navbar > div[style*="padding:0 24px"],
   .navbar > div[style*="padding: 0 24px"] { padding: 0 12px !important; }
   .navbar [style*="height:88"],

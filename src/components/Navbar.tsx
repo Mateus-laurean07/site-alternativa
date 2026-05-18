@@ -43,7 +43,7 @@ export default function Navbar() {
   const logoMap: Record<string, string> = {
     PT: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
     EN: "/images/logo/Alternativa Comederos - Horizontal branca1.png",
-    ES: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
+    ES: "/images/logo/Alternativa Comederos - ESP.png",
   };
   const logoSrc = logoMap[language] || logoMap.PT;
 
@@ -75,9 +75,9 @@ export default function Navbar() {
           >
             <img
               src={logoSrc}
-              alt="Alternativa Cochos e Bebedouros"
+              alt={t("brand.name")}
             style={{
-              height: "64px",
+              height: "90px",
               width: "auto",
               objectFit: "contain",
             }}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Cotacao {
   nome: string;
@@ -16,30 +17,10 @@ interface Cotacao {
 let _cotacoesCache: Cotacao[] = [];
 
 export default function NavbarTicker() {
+  const { language: lang } = useLanguage();
   // Lazy initializer: se já temos cache, usa direto — sem setState no efeito
   const [cotacoes, setCotacoes] = useState<Cotacao[]>(() => _cotacoesCache);
   const [hora, setHora] = useState("");
-  const [lang, setLang] = useState<"PT" | "EN" | "ES">("PT");
-
-  // Efeito 1: Detecção de idioma
-  useEffect(() => {
-    const detectLang = () => {
-      const saved = localStorage.getItem("language");
-      setLang(saved === "EN" ? "EN" : saved === "ES" ? "ES" : "PT");
-    };
-    detectLang();
-
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === "language") detectLang();
-    };
-    window.addEventListener("storage", onStorage);
-    const langPoll = setInterval(detectLang, 500);
-
-    return () => {
-      window.removeEventListener("storage", onStorage);
-      clearInterval(langPoll);
-    };
-  }, []);
 
   // Efeito 2: Busca cotações (sem setCotacoes síncrono — cache já está no lazy init)
   useEffect(() => {

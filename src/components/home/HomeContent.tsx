@@ -23,8 +23,8 @@ export default function HomeContent({ produtosDestaque = [] }: { produtosDestaqu
 
   const stats = [
     { num: "14+", label: language === "PT" ? "Anos de experiência" : "Years of experience" },
-    { num: "50k+", label: language === "PT" ? "Produtos vendidos" : "Products sold" },
-    { num: "100%", label: language === "PT" ? "Cobertura nacional" : "National coverage" },
+    { num: "+300 mil", label: language === "PT" ? "metros lineares vendidos" : "linear meters sold" },
+    { num: "100%", label: language === "PT" ? "das regiões atendidas" : "of regions served" },
     { num: "5★", label: language === "PT" ? "Satisfação dos clientes" : "Customer satisfaction" },
   ];
 
@@ -480,8 +480,8 @@ export default function HomeContent({ produtosDestaque = [] }: { produtosDestaqu
               </span>
               <h2 style={{ color: "white", marginTop: 16, marginBottom: 16 }}>
                 {language === "PT"
-                  ? "Desde 2011, Parceiro Ideal dos Criadores"
-                  : "Since 2011, the Ideal Partner for Breeders"}
+                  ? "Mais de 14 Anos de Evolução no Agronegócio"
+                  : "Over 14 Years of Evolution in Agribusiness"}
               </h2>
               <div className="divider-ouro" />
               <p
@@ -503,8 +503,8 @@ export default function HomeContent({ produtosDestaque = [] }: { produtosDestaqu
                 }}
               >
                 {language === "PT"
-                  ? "Pioneira em cochos plásticos de alta resistência, acompanhamos a evolução do agronegócio por mais de 14 anos, atendendo produtores em todo o Brasil."
-                  : "Pioneer in high-resistance plastic troughs, we have followed the evolution of agribusiness for over 14 years, serving producers throughout Brazil."}
+                  ? "Pioneira em produtos plásticos de alta resistência, acompanhamos a evolução do agronegócio por mais de 14 anos, atendendo produtores em todo o Brasil, Bolívia e Paraguai."
+                  : "Pioneer in high-resistance plastic products, we have followed the evolution of agribusiness for over 14 years, serving producers throughout Brazil, Bolivia, and Paraguay."}
               </p>
               <Link href="/sobre" className="btn-ouro">
                 {language === "PT"

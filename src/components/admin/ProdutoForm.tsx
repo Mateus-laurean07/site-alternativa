@@ -215,7 +215,6 @@ export default function ProdutoForm({ initialData, isEdit = false }: ProdutoForm
                 <option value="Hidramax">Hidramax</option>
                 <option value="Multicocho">Multicocho</option>
                 <option value="Nutrisilo">Nutrisilo</option>
-                <option value="Creep Feeding">Creep Feeding</option>
                 <option value="Suínos">Suínos</option>
               </select>
             </div>

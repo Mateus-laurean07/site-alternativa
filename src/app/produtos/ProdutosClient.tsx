@@ -153,6 +153,66 @@ export default function ProdutosClient({ initialProdutos, categorias }: Produtos
         </div>
       </section>
 
+      {/* MODELOS MAIORES (Protecocho 400+, 600, 750) — só aparece ao filtrar Protecocho */}
+      {catAtiva === "Protecocho" && (
+        <section style={{ background: "var(--cinza-claro)", padding: "64px 0" }}>
+          <div className="container">
+            <div style={{ textAlign: "center", marginBottom: 40 }}>
+              <span className="badge">{language === "PT" ? "Linhas Especiais" : "Special Lines"}</span>
+              <h2 className="section-title" style={{ marginTop: 16, marginBottom: 12 }}>
+                {language === "PT" ? "Modelos maiores sob consulta" : "Larger models on request"}
+              </h2>
+              <p className="section-subtitle" style={{ margin: "0 auto 24px" }}>
+                {language === "PT"
+                  ? "Para modelos maiores, entre em contato conosco — fabricamos sob demanda e atendemos propriedades de todos os portes."
+                  : "For larger models, contact us — we manufacture on demand and serve properties of all sizes."}
+              </p>
+            </div>
+            <div
+              className="modelos-maiores-grid"
+              style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 24 }}
+            >
+              {[
+                { src: "/images/protecocho-maiores/protecocho-400-alta.webp", label: "Protecocho 400" },
+                { src: "/images/protecocho-maiores/protecocho-600.webp", label: "Protecocho 600" },
+                { src: "/images/protecocho-maiores/protecocho-750.webp", label: "Protecocho 750" },
+              ].map((m) => (
+                <div
+                  key={m.label}
+                  style={{
+                    background: "white",
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    boxShadow: "var(--shadow-sm)",
+                    border: "1px solid var(--cinza-medio)",
+                  }}
+                >
+                  <div style={{ position: "relative", width: "100%", aspectRatio: "4/3", background: "var(--cinza-claro)" }}>
+                    <Image src={m.src} alt={m.label} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover" }} />
+                  </div>
+                  <div style={{ padding: "16px 20px", textAlign: "center" }}>
+                    <h4 style={{ color: "var(--verde-escuro)", margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>
+                      {m.label}
+                    </h4>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ textAlign: "center", marginTop: 32 }}>
+              <a
+                href="https://wa.me/5565999902024?text=Ol%C3%A1!%20Gostaria%20de%20saber%20sobre%20modelos%20maiores%20de%20Protecocho."
+                target="_blank"
+                rel="noreferrer"
+                className="btn-whatsapp"
+                style={{ display: "inline-flex" }}
+              >
+                {language === "PT" ? "Solicitar Orçamento Personalizado" : "Request Custom Quote"}
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* CTA */}
       <section style={{ background: "var(--verde-suave)", padding: "64px 24px", textAlign: "center" }}>
         <div className="container">

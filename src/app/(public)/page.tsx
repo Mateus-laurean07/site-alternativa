@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Pioneira em cochos plásticos de alta resistência para bovinos. Protecochos, Hidramax, Multicochos, Nutrisilo e Creep Feeding. Soluções completas para o agronegócio.",
   openGraph: {
     title: "Alternativa Cochos e Bebedouros | Soluções em Pecuária",
-    description: "Pioneira em cochos plásticos de alta resistência. Desde 2011, parceiro ideal dos criadores.",
+    description: "Pioneira em cochos plásticos de alta resistência. Mais de 14 anos como o parceiro ideal dos criadores.",
     images: [{ url: "/images/seo/og-image.jpg", width: 1200, height: 630, alt: "Alternativa Cochos e Bebedouros" }],
   },
 };
