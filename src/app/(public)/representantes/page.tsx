@@ -4,12 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { representantesPorEstado, getRepresentantesByEstado } from "@/data/representantes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import {
-  departamentosParaguai,
-  capitalParaguai,
-  departamentosBolivia,
-  capitaisBolivia,
-} from "@/data/mapas-internacionais";
+// Importações de mapas desativadas em favor das imagens premium de mapas enviadas pelo cliente
 
 type Estado = {
   id: string;
@@ -53,7 +48,7 @@ export default function RepresentantesPage() {
   const { language } = useLanguage();
   const [estadoSelecionado, setEstadoSelecionado] = useState<string | null>(null);
   const [paisSelecionado, setPaisSelecionado] = useState<"Brasil" | "Paraguai" | "Bolívia">("Brasil");
-  const [hoveredDep, setHoveredDep] = useState<string | null>(null);
+  // Estado hoveredDep removido por não ser mais necessário com os mapas de imagem premium.
 
   const dadosEstado = estadoSelecionado ? getRepresentantesByEstado(estadoSelecionado) : null;
   const dadosInternacionais = paisSelecionado === "Paraguai"
@@ -103,22 +98,22 @@ export default function RepresentantesPage() {
 
   const instrucoes = {
     "Brasil": [
-      { icon: "1️⃣", text: "Localize seu estado no mapa" },
-      { icon: "2️⃣", text: "Clique no estado (verde escuro)" },
-      { icon: "3️⃣", text: "Veja os nomes dos representantes" },
-      { icon: "4️⃣", text: "Entre em contato diretamente" },
+      { text: "Localize seu estado no mapa" },
+      { text: "Clique no estado (verde escuro)" },
+      { text: "Veja os nomes dos representantes" },
+      { text: "Entre em contato diretamente" },
     ],
     "Paraguai": [
-      { icon: "1️⃣", text: "Visualize o mapa de cobertura" },
-      { icon: "2️⃣", text: "Confira o representante local" },
-      { icon: "3️⃣", text: "Veja as informações de contato" },
-      { icon: "4️⃣", text: "Entre em contato via WhatsApp" },
+      { text: "Visualize o mapa de cobertura" },
+      { text: "Confira o representante local" },
+      { text: "Veja as informações de contato" },
+      { text: "Entre em contato via WhatsApp" },
     ],
     "Bolívia": [
-      { icon: "1️⃣", text: "Visualize o mapa de cobertura" },
-      { icon: "2️⃣", text: "Confira o representante local" },
-      { icon: "3️⃣", text: "Veja as informações de contato" },
-      { icon: "4️⃣", text: "Entre em contato via WhatsApp" },
+      { text: "Visualize o mapa de cobertura" },
+      { text: "Confira o representante local" },
+      { text: "Veja as informações de contato" },
+      { text: "Entre em contato via WhatsApp" },
     ]
   }[paisSelecionado];
 
@@ -506,7 +501,7 @@ export default function RepresentantesPage() {
                 /* Split-View Internacional para Paraguai / Bolívia */
                 <div className="intl-split-view">
                   
-                  {/* Lado Esquerdo: Desenho Artístico do País no SVG */}
+                  {/* Lado Esquerdo: Imagem premium estilizada do mapa do país */}
                   <div style={{ 
                     position: "relative",
                     textAlign: "center", 
@@ -514,160 +509,29 @@ export default function RepresentantesPage() {
                     borderRadius: 16, 
                     padding: 24, 
                     border: "1px solid rgba(46,125,50,0.12)",
-                    boxShadow: "inset 0 2px 8px rgba(0,0,0,0.02)"
+                    boxShadow: "inset 0 2px 8px rgba(0,0,0,0.02)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: 380
                   }}>
-                    {/* Floating Tooltip para os departamentos */}
-                    {hoveredDep && (
-                      <div style={{
-                        position: "absolute",
-                        top: 16,
-                        left: 16,
-                        background: "rgba(30, 80, 40, 0.95)",
-                        color: "white",
-                        padding: "6px 12px",
-                        borderRadius: 8,
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        pointerEvents: "none",
-                        zIndex: 10,
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        fontFamily: "Inter, sans-serif",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6
-                      }}>
-                        <span>📌</span> {
-                          (paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia)
-                            .find(d => d.id === hoveredDep)?.nome
-                        }
-                      </div>
-                    )}
-                    <svg viewBox="0 0 500 500" style={{ width: "100%", maxHeight: 360, overflow: "visible" }}>
-                      <defs>
-                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(46,125,50,0.06)" strokeWidth="1" />
-                        </pattern>
-                        <filter id="countryShadow" x="-20%" y="-20%" width="140%" height="140%">
-                          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#2e7d32" floodOpacity="0.25" />
-                        </filter>
-                      </defs>
-                      <rect width="100%" height="100%" fill="url(#grid)" rx="10" />
-
-                      {/* Rosa dos Ventos premium no topo direito */}
-                      <g transform="translate(450, 55) scale(0.65)" opacity="0.8" style={{ pointerEvents: "none" }}>
-                        <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(46,125,50,0.2)" strokeWidth="1.5" />
-                        <circle cx="0" cy="0" r="24" fill="none" stroke="rgba(46,125,50,0.1)" strokeWidth="1" strokeDasharray="2,2" />
-                        {/* Pontas principais */}
-                        <path d="M 0,0 L 0,-25 L 4,-4 L 0,0" fill="#c9a84c" />
-                        <path d="M 0,0 L 0,-25 L -4,-4 L 0,0" fill="#9e7b28" />
-                        <path d="M 0,0 L 0,25 L -4,4 L 0,0" fill="#c9a84c" />
-                        <path d="M 0,0 L 0,25 L 4,4 L 0,0" fill="#9e7b28" />
-                        <path d="M 0,0 L 25,0 L 4,-4 L 0,0" fill="#c9a84c" />
-                        <path d="M 0,0 L 25,0 L 4,4 L 0,0" fill="#9e7b28" />
-                        <path d="M 0,0 L -25,0 L -4,4 L 0,0" fill="#c9a84c" />
-                        <path d="M 0,0 L -25,0 L -4,-4 L 0,0" fill="#9e7b28" />
-                        {/* Pontas secundárias */}
-                        <path d="M 0,0 L 14,-14 L 3,-2 L 0,0" fill="#2e7d32" opacity="0.8" />
-                        <path d="M 0,0 L -14,14 L -3,2 L 0,0" fill="#2e7d32" opacity="0.8" />
-                        <path d="M 0,0 L -14,-14 L -2,-3 L 0,0" fill="#2e7d32" opacity="0.8" />
-                        <path d="M 0,0 L 14,14 L 2,3 L 0,0" fill="#2e7d32" opacity="0.8" />
-                        <text x="0" y="-32" textAnchor="middle" style={{ fill: "#c9a84c", fontSize: "9px", fontWeight: "bold", fontFamily: "Inter, sans-serif" }}>N</text>
-                      </g>
-
-                      {/* Escala Gráfica Realista no canto inferior esquerdo */}
-                      <g transform="translate(30, 460)" opacity="0.75" style={{ pointerEvents: "none" }}>
-                        <rect x="0" y="0" width="80" height="3" fill="#2e7d32" rx="1.5" />
-                        <rect x="40" y="0" width="40" height="3" fill="#c9a84c" rx="1.5" />
-                        <line x1="0" y1="0" x2="0" y2="6" stroke="#2e7d32" strokeWidth="1.5" />
-                        <line x1="40" y1="0" x2="40" y2="6" stroke="#2e7d32" strokeWidth="1.5" />
-                        <line x1="80" y1="0" x2="80" y2="6" stroke="#c9a84c" strokeWidth="1.5" />
-                        <text x="0" y="-5" style={{ fill: "#2e7d32", fontSize: "7px", fontWeight: 700, fontFamily: "Inter, sans-serif" }}>0</text>
-                        <text x="40" y="-5" style={{ fill: "#2e7d32", fontSize: "7px", fontWeight: 700, fontFamily: "Inter, sans-serif" }}>150</text>
-                        <text x="80" y="-5" style={{ fill: "#c9a84c", fontSize: "7px", fontWeight: 700, fontFamily: "Inter, sans-serif" }}>300 km</text>
-                      </g>
-
-                      {/* Departamentos como paths individuais */}
-                      <g filter="url(#countryShadow)">
-                        {(paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia).map((dep) => (
-                          <path
-                            key={dep.id}
-                            d={dep.path}
-                            fill={hoveredDep === dep.id ? "#388e3c" : "#2e7d32"}
-                            stroke="white"
-                            strokeWidth={hoveredDep === dep.id ? "2.2" : "1.8"}
-                            strokeLinejoin="round"
-                            style={{
-                              cursor: "pointer",
-                              transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                              filter: hoveredDep === dep.id ? "brightness(1.1) drop-shadow(0 2px 6px rgba(0,0,0,0.15))" : "none"
-                            }}
-                            onMouseEnter={() => setHoveredDep(dep.id)}
-                            onMouseLeave={() => setHoveredDep(null)}
-                          >
-                            <title>{dep.nome}</title>
-                          </path>
-                        ))}
-                      </g>
-
-                      {/* Labels dos departamentos */}
-                      {(paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia).map((dep) => (
-                        <text
-                          key={`label-${dep.id}`}
-                          x={dep.labelX}
-                          y={dep.labelY}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                          style={{
-                            fill: "white",
-                            fontSize: "8px",
-                            fontWeight: 700,
-                            fontFamily: "Inter, sans-serif",
-                            pointerEvents: "none",
-                            userSelect: "none",
-                            textShadow: "0 1px 2px rgba(0,0,0,0.3)",
-                          }}
-                        >
-                          {dep.id}
-                        </text>
-                      ))}
-
-                      {/* Pin(s) das capitais */}
-                      {paisSelecionado === "Paraguai" ? (
-                        <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                          <title>{capitalParaguai.nome}</title>
-                          <circle cx={capitalParaguai.x} cy={capitalParaguai.y} r="14" fill="none" stroke="#c9a84c" strokeWidth="2" opacity="0.6" />
-                          <circle cx={capitalParaguai.x} cy={capitalParaguai.y} r="7" fill="#c9a84c" />
-                          <circle cx={capitalParaguai.x} cy={capitalParaguai.y} r="3" fill="white" />
-                          <text
-                            x={capitalParaguai.x}
-                            y={capitalParaguai.y + 22}
-                            textAnchor="middle"
-                            style={{ fill: "#c9a84c", fontSize: "9px", fontWeight: 800, fontFamily: "Inter, sans-serif", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
-                          >
-                            ★ {capitalParaguai.nome}
-                          </text>
-                        </g>
-                      ) : (
-                        capitaisBolivia.map((cap) => (
-                          <g key={cap.nome} className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <title>{cap.nome}</title>
-                            <circle cx={cap.x} cy={cap.y} r="14" fill="none" stroke="#c9a84c" strokeWidth="2" opacity="0.6" />
-                            <circle cx={cap.x} cy={cap.y} r="7" fill="#c9a84c" />
-                            <circle cx={cap.x} cy={cap.y} r="3" fill="white" />
-                            <text
-                              x={cap.x}
-                              y={cap.y + 22}
-                              textAnchor="middle"
-                              style={{ fill: "#c9a84c", fontSize: "9px", fontWeight: 800, fontFamily: "Inter, sans-serif", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
-                            >
-                              ★ {cap.nome}
-                            </text>
-                          </g>
-                        ))
-                      )}
-                    </svg>
-                    <div style={{ marginTop: 16, fontSize: "0.85rem", color: "var(--verde-escuro)", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                    <motion.img 
+                      key={paisSelecionado}
+                      src={paisSelecionado === "Paraguai" ? "/images/mapa-paraguay.png" : "/images/mapa-bolivia.png"}
+                      alt={`Mapa do ${paisSelecionado}`}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4 }}
+                      style={{ 
+                        maxWidth: "100%", 
+                        maxHeight: 310, 
+                        objectFit: "contain",
+                        borderRadius: 12,
+                        filter: "drop-shadow(0 8px 24px rgba(46,125,50,0.18))"
+                      }}
+                    />
+                    <div style={{ marginTop: 20, fontSize: "0.85rem", color: "var(--verde-escuro)", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
                       <span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#c9a84c" }} />
                       Atendimento ativo no {paisSelecionado}
                     </div>
@@ -756,13 +620,27 @@ export default function RepresentantesPage() {
                 background: "linear-gradient(135deg, #1a3a1f, #2e7d32)",
                 padding: "20px 24px",
               }}>
-                <div style={{ fontSize: "1.4rem", marginBottom: 8 }}>🗺️</div>
+
                 <h3 style={{ color: "white", margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>Como funciona</h3>
               </div>
               <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
                 {instrucoes.map((step, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                    <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{step.icon}</span>
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ 
+                      width: 22, 
+                      height: 22, 
+                      borderRadius: "50%", 
+                      background: "rgba(46,125,50,0.08)", 
+                      color: "#2e7d32", 
+                      display: "flex", 
+                      alignItems: "center", 
+                      justifyContent: "center", 
+                      fontSize: "0.78rem", 
+                      fontWeight: 700, 
+                      flexShrink: 0 
+                    }}>
+                      {i + 1}
+                    </span>
                     <span style={{ fontSize: "0.88rem", color: "var(--cinza-texto)", lineHeight: 1.5 }}>{step.text}</span>
                   </div>
                 ))}
