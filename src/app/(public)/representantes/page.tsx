@@ -554,6 +554,39 @@ export default function RepresentantesPage() {
                       </defs>
                       <rect width="100%" height="100%" fill="url(#grid)" rx="10" />
 
+                      {/* Rosa dos Ventos premium no topo direito */}
+                      <g transform="translate(450, 55) scale(0.65)" opacity="0.8" style={{ pointerEvents: "none" }}>
+                        <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(46,125,50,0.2)" strokeWidth="1.5" />
+                        <circle cx="0" cy="0" r="24" fill="none" stroke="rgba(46,125,50,0.1)" strokeWidth="1" strokeDasharray="2,2" />
+                        {/* Pontas principais */}
+                        <path d="M 0,0 L 0,-25 L 4,-4 L 0,0" fill="#c9a84c" />
+                        <path d="M 0,0 L 0,-25 L -4,-4 L 0,0" fill="#9e7b28" />
+                        <path d="M 0,0 L 0,25 L -4,4 L 0,0" fill="#c9a84c" />
+                        <path d="M 0,0 L 0,25 L 4,4 L 0,0" fill="#9e7b28" />
+                        <path d="M 0,0 L 25,0 L 4,-4 L 0,0" fill="#c9a84c" />
+                        <path d="M 0,0 L 25,0 L 4,4 L 0,0" fill="#9e7b28" />
+                        <path d="M 0,0 L -25,0 L -4,4 L 0,0" fill="#c9a84c" />
+                        <path d="M 0,0 L -25,0 L -4,-4 L 0,0" fill="#9e7b28" />
+                        {/* Pontas secundárias */}
+                        <path d="M 0,0 L 14,-14 L 3,-2 L 0,0" fill="#2e7d32" opacity="0.8" />
+                        <path d="M 0,0 L -14,14 L -3,2 L 0,0" fill="#2e7d32" opacity="0.8" />
+                        <path d="M 0,0 L -14,-14 L -2,-3 L 0,0" fill="#2e7d32" opacity="0.8" />
+                        <path d="M 0,0 L 14,14 L 2,3 L 0,0" fill="#2e7d32" opacity="0.8" />
+                        <text x="0" y="-32" textAnchor="middle" style={{ fill: "#c9a84c", fontSize: "9px", fontWeight: "bold", fontFamily: "Inter, sans-serif" }}>N</text>
+                      </g>
+
+                      {/* Escala Gráfica Realista no canto inferior esquerdo */}
+                      <g transform="translate(30, 460)" opacity="0.75" style={{ pointerEvents: "none" }}>
+                        <rect x="0" y="0" width="80" height="3" fill="#2e7d32" rx="1.5" />
+                        <rect x="40" y="0" width="40" height="3" fill="#c9a84c" rx="1.5" />
+                        <line x1="0" y1="0" x2="0" y2="6" stroke="#2e7d32" strokeWidth="1.5" />
+                        <line x1="40" y1="0" x2="40" y2="6" stroke="#2e7d32" strokeWidth="1.5" />
+                        <line x1="80" y1="0" x2="80" y2="6" stroke="#c9a84c" strokeWidth="1.5" />
+                        <text x="0" y="-5" style={{ fill: "#2e7d32", fontSize: "7px", fontWeight: 700, fontFamily: "Inter, sans-serif" }}>0</text>
+                        <text x="40" y="-5" style={{ fill: "#2e7d32", fontSize: "7px", fontWeight: 700, fontFamily: "Inter, sans-serif" }}>150</text>
+                        <text x="80" y="-5" style={{ fill: "#c9a84c", fontSize: "7px", fontWeight: 700, fontFamily: "Inter, sans-serif" }}>300 km</text>
+                      </g>
+
                       {/* Departamentos como paths individuais */}
                       <g filter="url(#countryShadow)">
                         {(paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia).map((dep) => (
