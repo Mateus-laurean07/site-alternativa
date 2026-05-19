@@ -392,7 +392,7 @@ export default function RepresentantesPage() {
                       const estado = estados.find(e => e.id === estadoSelecionado);
                       if (!estado) return null;
                       const nReps = dadosEstado.representantes.length;
-                      const popupW = 200;
+                      const popupW = 220;
                       const popupH = 40 + nReps * 55 + 12;
                       const px = Math.min(Math.max(estado.labelX - popupW / 2, 4), 613 - popupW - 4);
                       const py = estado.labelY - popupH - 12;
@@ -475,7 +475,7 @@ export default function RepresentantesPage() {
                                         target="_blank"
                                         rel="noreferrer"
                                         className="tel-link"
-                                        style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c", textDecoration: "none", display: "inline-block" }}
+                                        style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}
                                       >
                                         {rep.telefone}
                                       </a>
@@ -520,7 +520,7 @@ export default function RepresentantesPage() {
                       {paisSelecionado === "Paraguai" ? (
                         <>
                           <path
-                            d="M 120,120 L 220,100 L 220,135 L 270,135 L 295,170 L 315,200 L 320,235 L 300,270 L 270,305 L 230,320 L 185,310 L 180,250 L 155,230 L 130,200 L 115,170 L 100,140 Z"
+                            d="M 115,80 L 230,70 L 230,110 L 270,112 L 282,150 L 310,180 L 305,225 L 318,255 L 305,295 L 285,320 L 260,335 L 230,342 L 200,325 L 182,305 L 180,260 L 155,230 L 130,200 L 115,160 L 98,135 Z"
                             fill="#2e7d32"
                             stroke="white"
                             strokeWidth="3"
@@ -528,15 +528,15 @@ export default function RepresentantesPage() {
                           />
                           {/* Pulsing Pin em Asunción */}
                           <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <circle cx="180" cy="250" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
-                            <circle cx="180" cy="250" r="7" fill="#c9a84c" />
-                            <circle cx="180" cy="250" r="3" fill="white" />
+                            <circle cx="180" cy="260" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
+                            <circle cx="180" cy="260" r="7" fill="#c9a84c" />
+                            <circle cx="180" cy="260" r="3" fill="white" />
                           </g>
                         </>
                       ) : (
                         <>
                           <path
-                            d="M 100,90 L 160,105 L 200,130 L 250,170 L 290,175 L 310,195 L 305,240 L 320,270 L 290,300 L 250,300 L 220,330 L 185,330 L 155,335 L 125,325 L 95,305 L 85,255 L 85,205 L 100,175 L 90,130 Z"
+                            d="M 80,95 L 110,105 L 150,85 L 170,120 L 205,145 L 245,170 L 280,180 L 300,195 L 295,230 L 305,255 L 300,290 L 270,290 L 250,295 L 220,320 L 185,320 L 165,330 L 135,320 L 110,315 L 95,295 L 92,250 L 85,210 L 100,180 L 92,150 L 102,120 Z"
                             fill="#2e7d32"
                             stroke="white"
                             strokeWidth="3"
@@ -544,9 +544,9 @@ export default function RepresentantesPage() {
                           />
                           {/* Pulsing Pin em Santa Cruz de la Sierra */}
                           <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <circle cx="220" cy="225" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
-                            <circle cx="220" cy="225" r="7" fill="#c9a84c" />
-                            <circle cx="220" cy="225" r="3" fill="white" />
+                            <circle cx="210" cy="220" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
+                            <circle cx="210" cy="220" r="7" fill="#c9a84c" />
+                            <circle cx="210" cy="220" r="3" fill="white" />
                           </g>
                         </>
                       )}
@@ -606,11 +606,12 @@ export default function RepresentantesPage() {
                               fontWeight: 700,
                               textDecoration: "none",
                               boxShadow: "0 4px 12px rgba(37,211,102,0.25)",
-                              transition: "transform 0.2s ease"
+                              transition: "transform 0.2s ease",
+                              whiteSpace: "nowrap"
                             }}
                             className="tel-link"
                           >
-                            <span>💬</span> Falar no WhatsApp: {rep.telefone}
+                            <span>💬</span> WhatsApp: {rep.telefone}
                           </a>
                         )}                      </div>
                     ))}
