@@ -46,13 +46,74 @@ const estados: Estado[] = [
 export default function RepresentantesPage() {
   const { language } = useLanguage();
   const [estadoSelecionado, setEstadoSelecionado] = useState<string | null>(null);
+  const [paisSelecionado, setPaisSelecionado] = useState<"Brasil" | "Paraguai" | "Bolívia">("Brasil");
 
   const dadosEstado = estadoSelecionado ? getRepresentantesByEstado(estadoSelecionado) : null;
+  const dadosInternacionais = paisSelecionado === "Paraguai"
+    ? getRepresentantesByEstado("PY")
+    : paisSelecionado === "Bolívia"
+      ? getRepresentantesByEstado("BO")
+      : null;
+
   const temRepresentantes = (id: string) => {
     const estado = getRepresentantesByEstado(id);
     if (!estado) return false;
     return estado.representantes.some((r) => r.nome !== "Matriz (Direcionamentos)");
   };
+
+  const bannerInfo = {
+    "Brasil": {
+      badge: "REDE NACIONAL",
+      titulo: language === "PT" ? "Nossos Representantes" : "Our Representatives",
+      desc: "Presente em todo o Brasil. Encontre o representante mais próximo de você e garanta a melhor solução para sua propriedade.",
+      stats: [
+        { valor: `${representantesPorEstado.filter(e => e.id !== "BO" && e.id !== "PY").length}`, label: "Estados" },
+        { valor: "14+", label: "Representantes" },
+        { valor: "100%", label: "Nacional" },
+      ]
+    },
+    "Paraguai": {
+      badge: "ATENDIMENTO INTERNACIONAL",
+      titulo: "Representantes no Paraguai",
+      desc: "Leve as melhores soluções em cochos e bebedouros para sua propriedade no Paraguai com atendimento especializado local.",
+      stats: [
+        { valor: "Paraguai", label: "País" },
+        { valor: "1", label: "Representante" },
+        { valor: "100%", label: "Cobertura" },
+      ]
+    },
+    "Bolívia": {
+      badge: "ATENDIMENTO INTERNACIONAL",
+      titulo: "Representantes na Bolívia",
+      desc: "Leve as melhores soluções em cochos e bebedouros para sua propriedade na Bolívia com atendimento especializado local.",
+      stats: [
+        { valor: "Bolívia", label: "País" },
+        { valor: "1", label: "Representante" },
+        { valor: "100%", label: "Cobertura" },
+      ]
+    }
+  }[paisSelecionado];
+
+  const instrucoes = {
+    "Brasil": [
+      { icon: "1️⃣", text: "Localize seu estado no mapa" },
+      { icon: "2️⃣", text: "Clique no estado (verde escuro)" },
+      { icon: "3️⃣", text: "Veja os nomes dos representantes" },
+      { icon: "4️⃣", text: "Entre em contato diretamente" },
+    ],
+    "Paraguai": [
+      { icon: "1️⃣", text: "Visualize o mapa de cobertura" },
+      { icon: "2️⃣", text: "Confira o representante local" },
+      { icon: "3️⃣", text: "Veja as informações de contato" },
+      { icon: "4️⃣", text: "Entre em contato via WhatsApp" },
+    ],
+    "Bolívia": [
+      { icon: "1️⃣", text: "Visualize o mapa de cobertura" },
+      { icon: "2️⃣", text: "Confira o representante local" },
+      { icon: "3️⃣", text: "Veja as informações de contato" },
+      { icon: "4️⃣", text: "Entre em contato via WhatsApp" },
+    ]
+  }[paisSelecionado];
 
   return (
     <>
@@ -78,6 +139,14 @@ export default function RepresentantesPage() {
           fill: #c9a84c;
           filter: drop-shadow(0 4px 12px rgba(201,168,76,0.5));
         }
+        @keyframes pulsing {
+          0% { transform: scale(0.95); opacity: 0.8; }
+          50% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .pulse-pin {
+          animation: pulsing 2s infinite ease-in-out;
+        }
         @keyframes submenuIn {
           from { opacity: 0; transform: translateY(-8px) scale(0.95); }
           to   { opacity: 1; transform: translateY(0)    scale(1); }
@@ -89,7 +158,7 @@ export default function RepresentantesPage() {
           transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
         }
         .tel-link:hover {
-          transform: scale(1.05) translateX(2px);
+          transform: scale(1.03) translateX(2px);
           color: #b59543 !important;
         }
       `}</style>
@@ -110,15 +179,20 @@ export default function RepresentantesPage() {
             <span style={{ color: "rgba(255,255,255,0.75)" }}>Representantes</span>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div 
+            key={paisSelecionado}
+            initial={{ opacity: 0, y: 15 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.4 }}
+          >
             <span className="badge badge-ouro" style={{ marginBottom: 20, display: "inline-block", letterSpacing: "0.08em", padding: "6px 14px" }}>
-              REDE NACIONAL
+              {bannerInfo.badge}
             </span>
             <h1 style={{ color: "white", marginBottom: 20, fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800 }}>
-              {language === "PT" ? "Nossos Representantes" : "Our Representatives"}
+              {bannerInfo.titulo}
             </h1>
             <p style={{ color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: "0 0 40px 0", fontSize: "1.05rem", lineHeight: 1.75 }}>
-              Presente em todo o Brasil. Encontre o representante mais próximo de você e garanta a melhor solução para sua propriedade.
+              {bannerInfo.desc}
             </p>
 
             {/* Stats */}
@@ -129,11 +203,7 @@ export default function RepresentantesPage() {
               borderRadius: 16, padding: "6px",
               backdropFilter: "blur(8px)",
             }}>
-              {[
-                { valor: `${representantesPorEstado.length}`, label: "Estados" },
-                { valor: "14+", label: "Representantes" },
-                { valor: "100%", label: "Nacional" },
-              ].map((item, i) => (
+              {bannerInfo.stats.map((item, i) => (
                 <div key={i} style={{
                   flex: 1, padding: "14px 20px",
                   borderRight: i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none",
@@ -152,23 +222,73 @@ export default function RepresentantesPage() {
       <section style={{ background: "var(--cinza-claro)", padding: "60px 0 80px" }}>
         <div className="container">
 
-          {/* Título da seção + Legenda */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16, marginBottom: 40 }}>
+          {/* Título da seção + Seletor de País + Legenda */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20, marginBottom: 40 }}>
             <div>
               <h2 style={{ margin: 0, fontSize: "1.5rem", color: "var(--verde-escuro)" }}>Mapa de Representantes</h2>
-              <p style={{ margin: "6px 0 0", color: "var(--cinza-texto)", fontSize: "0.9rem" }}>Clique em um estado para ver os contatos</p>
+              <p style={{ margin: "6px 0 0", color: "var(--cinza-texto)", fontSize: "0.9rem" }}>
+                {paisSelecionado === "Brasil" 
+                  ? "Clique em um estado para ver os contatos" 
+                  : `Contatos dos representantes oficiais na nação: ${paisSelecionado}`}
+              </p>
             </div>
-            {/* Legenda — apenas 2 itens */}
-            <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 14, height: 14, borderRadius: 3, background: "#2e7d32" }} />
-                <span style={{ fontSize: "0.82rem", color: "var(--cinza-texto)" }}>Com representante</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 14, height: 14, borderRadius: 3, background: "#93c47d" }} />
-                <span style={{ fontSize: "0.82rem", color: "var(--cinza-texto)" }}>Sem representante</span>
-              </div>
+
+            {/* SELETOR DE PAÍS (Botões conforme marcação vermelha na imagem) */}
+            <div style={{
+              display: "flex",
+              gap: 6,
+              background: "rgba(0,0,0,0.05)",
+              padding: "5px",
+              borderRadius: "14px",
+              border: "1px solid rgba(0,0,0,0.08)",
+              boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)"
+            }}>
+              {(["Brasil", "Paraguai", "Bolívia"] as const).map((pais) => {
+                const active = paisSelecionado === pais;
+                return (
+                  <button
+                    key={pais}
+                    onClick={() => {
+                      setPaisSelecionado(pais);
+                      setEstadoSelecionado(null);
+                    }}
+                    style={{
+                      padding: "8px 18px",
+                      borderRadius: "10px",
+                      border: "none",
+                      background: active ? "var(--verde-escuro)" : "transparent",
+                      color: active ? "white" : "var(--cinza-texto)",
+                      fontWeight: 700,
+                      fontSize: "0.85rem",
+                      cursor: "pointer",
+                      transition: "all 0.25s ease",
+                      boxShadow: active ? "0 4px 10px rgba(46,125,50,0.25)" : "none",
+                    }}
+                  >
+                    {pais}
+                  </button>
+                );
+              })}
             </div>
+
+            {/* Legenda — muda conforme país */}
+            {paisSelecionado === "Brasil" ? (
+              <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: "#2e7d32" }} />
+                  <span style={{ fontSize: "0.82rem", color: "var(--cinza-texto)" }}>Com representante</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 14, height: 14, borderRadius: 3, background: "#93c47d" }} />
+                  <span style={{ fontSize: "0.82rem", color: "var(--cinza-texto)" }}>Sem representante</span>
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#c9a84c", boxShadow: "0 0 8px #c9a84c" }} />
+                <span style={{ fontSize: "0.82rem", color: "var(--cinza-texto)", fontWeight: 600 }}>Parceiro Autorizado</span>
+              </div>
+            )}
           </div>
 
           {/* Grid: Mapa | Painel */}
@@ -176,7 +296,8 @@ export default function RepresentantesPage() {
 
           {/* MAPA */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            key={paisSelecionado}
+            initial={{ opacity: 0, x: -15 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
           >
@@ -186,160 +307,288 @@ export default function RepresentantesPage() {
               boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
               padding: "28px 28px 16px",
             }}>
-                <svg
-                  viewBox="0 0 613 639"
-                  style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}
-                  aria-label="Mapa do Brasil"
-                  onClick={(e) => {
-                    if ((e.target as SVGElement).tagName !== "path") setEstadoSelecionado(null);
-                  }}
-                >
-                  {/* Passagem 1: todos os paths e labels */}
-                  {estados.map((estado) => {
-                    const comRep = temRepresentantes(estado.id);
-                    const ativo = estadoSelecionado === estado.id;
-                    return (
-                      <g key={estado.id}>
-                        <path
-                          d={estado.path}
-                          className={`estado-path ${comRep ? "com-rep" : "sem-rep"} ${ativo ? "ativo" : ""}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEstadoSelecionado(ativo ? null : estado.id);
-                          }}
-                        >
-                          <title>{estado.nome}</title>
-                        </path>
-                        <text
-                          x={estado.labelX}
-                          y={estado.labelY}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                          style={{
-                            fill: "white",
-                            fontSize: estado.id === "DF" ? "5px"
-                              : ["SE","AL","RN","PB","ES","RJ"].includes(estado.id) ? "7px"
-                              : "9px",
-                            fontWeight: 700,
-                            fontFamily: "Inter, sans-serif",
-                            pointerEvents: "none",
-                            userSelect: "none",
-                          }}
-                        >
-                          {estado.id}
-                        </text>
-                      </g>
-                    );
-                  })}
-
-                  {/* Passagem 2: popup SEMPRE por cima de tudo */}
-                  {(() => {
-                    if (!estadoSelecionado || !dadosEstado) return null;
-                    const estado = estados.find(e => e.id === estadoSelecionado);
-                    if (!estado) return null;
-                    const nReps = dadosEstado.representantes.length;
-                    const popupW = 200;
-                    const popupH = 40 + nReps * 55 + 12;
-                    const px = Math.min(Math.max(estado.labelX - popupW / 2, 4), 613 - popupW - 4);
-                    const py = estado.labelY - popupH - 12;
-                    return (
-                      <foreignObject
-                        key="popup"
-                        x={px}
-                        y={py}
-                        width={popupW}
-                        height={popupH + 20}
-                        style={{ overflow: "visible", zIndex: 9999 }}
-                      >
-                        <div
-                          className="submenu-popup"
-                          style={{
-                            background: "white",
-                            borderRadius: 10,
-                            boxShadow: "0 8px 32px rgba(0,0,0,0.28)",
-                            border: "2px solid #c9a84c",
-                            overflow: "hidden",
-                            fontFamily: "Inter, sans-serif",
-                            width: popupW,
-                          }}
-                        >
-                          <div style={{
-                            background: "linear-gradient(135deg,#1a3a1f,#2e7d32)",
-                            padding: "7px 12px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            gap: 4,
-                          }}>
-                            <span style={{
-                              color: "#c9a84c",
-                              fontSize: 9,
+              {paisSelecionado === "Brasil" ? (
+                <>
+                  <svg
+                    viewBox="0 0 613 639"
+                    style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}
+                    aria-label="Mapa do Brasil"
+                    onClick={(e) => {
+                      if ((e.target as SVGElement).tagName !== "path") setEstadoSelecionado(null);
+                    }}
+                  >
+                    {/* Passagem 1: todos os paths e labels */}
+                    {estados.map((estado) => {
+                      const comRep = temRepresentantes(estado.id);
+                      const ativo = estadoSelecionado === estado.id;
+                      return (
+                        <g key={estado.id}>
+                          <path
+                            d={estado.path}
+                            className={`estado-path ${comRep ? "com-rep" : "sem-rep"} ${ativo ? "ativo" : ""}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEstadoSelecionado(ativo ? null : estado.id);
+                            }}
+                          >
+                            <title>{estado.nome}</title>
+                          </path>
+                          <text
+                            x={estado.labelX}
+                            y={estado.labelY}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            style={{
+                              fill: "white",
+                              fontSize: estado.id === "DF" ? "5px"
+                                : ["SE","AL","RN","PB","ES","RJ"].includes(estado.id) ? "7px"
+                                : "9px",
                               fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em",
+                              fontFamily: "Inter, sans-serif",
+                              pointerEvents: "none",
+                              userSelect: "none",
+                            }}
+                          >
+                            {estado.id}
+                          </text>
+                        </g>
+                      );
+                    })}
+
+                    {/* Passagem 2: popup SEMPRE por cima de tudo */}
+                    {(() => {
+                      if (!estadoSelecionado || !dadosEstado) return null;
+                      const estado = estados.find(e => e.id === estadoSelecionado);
+                      if (!estado) return null;
+                      const nReps = dadosEstado.representantes.length;
+                      const popupW = 200;
+                      const popupH = 40 + nReps * 55 + 12;
+                      const px = Math.min(Math.max(estado.labelX - popupW / 2, 4), 613 - popupW - 4);
+                      const py = estado.labelY - popupH - 12;
+                      return (
+                        <foreignObject
+                          key="popup"
+                          x={px}
+                          y={py}
+                          width={popupW}
+                          height={popupH + 20}
+                          style={{ overflow: "visible", zIndex: 9999 }}
+                        >
+                          <div
+                            className="submenu-popup"
+                            style={{
+                              background: "white",
+                              borderRadius: 10,
+                              boxShadow: "0 8px 32px rgba(0,0,0,0.28)",
+                              border: "2px solid #c9a84c",
+                              overflow: "hidden",
+                              fontFamily: "Inter, sans-serif",
+                              width: popupW,
+                            }}
+                          >
+                            <div style={{
+                              background: "linear-gradient(135deg,#1a3a1f,#2e7d32)",
+                              padding: "7px 12px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              gap: 4,
                             }}>
-                              {dadosEstado.nome}
-                            </span>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); setEstadoSelecionado(null); }}
-                              style={{
-                                background: "rgba(255,255,255,0.18)",
-                                border: "none",
-                                borderRadius: 4,
-                                width: 18,
-                                height: 18,
-                                cursor: "pointer",
-                                color: "white",
-                                fontSize: 10,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                flexShrink: 0,
-                              }}
-                            >✕</button>
-                          </div>
-                          <div style={{ padding: "4px 0" }}>
-                            {dadosEstado.representantes.map((rep, i) => (
-                              <div
-                                key={i}
+                              <span style={{
+                                color: "#c9a84c",
+                                fontSize: 9,
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.05em",
+                              }}>
+                                {dadosEstado.nome}
+                              </span>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); setEstadoSelecionado(null); }}
                                 style={{
-                                  padding: "8px 12px",
-                                  borderBottom: i < dadosEstado.representantes.length - 1
-                                    ? "1px solid #f0f4f0" : "none",
+                                  background: "rgba(255,255,255,0.18)",
+                                  border: "none",
+                                  borderRadius: 4,
+                                  width: 18,
+                                  height: 18,
+                                  cursor: "pointer",
+                                  color: "white",
+                                  fontSize: 10,
                                   display: "flex",
-                                  alignItems: "flex-start",
-                                  gap: 8,
-                                  lineHeight: 1.4,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexShrink: 0,
                                 }}
-                              >
-                                <span style={{ color: "#2e7d32", fontSize: 8, flexShrink: 0, marginTop: 3 }}>●</span>
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                  <span style={{ fontSize: 11, fontWeight: 700, color: "#1a3a1f" }}>{rep.nome}</span>
-                                  {rep.telefone && (
-                                    <a 
-                                      href={`https://wa.me/55${rep.telefone.replace(/\D/g, '')}`}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="tel-link"
-                                      style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c", textDecoration: "none", display: "inline-block" }}
-                                    >
-                                      {rep.telefone}
-                                    </a>
-                                  )}
-                                  {rep.cidade && <span style={{ fontSize: 9, color: "#666" }}>{rep.cidade}</span>}
-                                  {rep.detalhe && <span style={{ fontSize: 9, color: "#888", fontStyle: "italic" }}>{rep.detalhe}</span>}
+                              >✕</button>
+                            </div>
+                            <div style={{ padding: "4px 0" }}>
+                              {dadosEstado.representantes.map((rep, i) => (
+                                <div
+                                  key={i}
+                                  style={{
+                                    padding: "8px 12px",
+                                    borderBottom: i < dadosEstado.representantes.length - 1
+                                      ? "1px solid #f0f4f0" : "none",
+                                    display: "flex",
+                                    alignItems: "flex-start",
+                                    gap: 8,
+                                    lineHeight: 1.4,
+                                  }}
+                                >
+                                  <span style={{ color: "#2e7d32", fontSize: 8, flexShrink: 0, marginTop: 3 }}>●</span>
+                                  <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <span style={{ fontSize: 11, fontWeight: 700, color: "#1a3a1f" }}>{rep.nome}</span>
+                                    {rep.telefone && (
+                                      <a 
+                                        href={`https://wa.me/55${rep.telefone.replace(/\D/g, '')}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="tel-link"
+                                        style={{ fontSize: 10, fontWeight: 600, color: "#c9a84c", textDecoration: "none", display: "inline-block" }}
+                                      >
+                                        {rep.telefone}
+                                      </a>
+                                    )}
+                                    {rep.cidade && <span style={{ fontSize: 9, color: "#666" }}>{rep.cidade}</span>}
+                                    {rep.detalhe && <span style={{ fontSize: 9, color: "#888", fontStyle: "italic" }}>{rep.detalhe}</span>}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
+                        </foreignObject>
+                      );
+                    })()}
+                  </svg>
+                  <p style={{ textAlign: "center", fontSize: "0.78rem", color: "var(--cinza-texto)", marginTop: 10 }}>
+                    👆 Clique em um estado <strong style={{ color: "#2e7d32" }}>verde</strong> para ver os representantes
+                  </p>
+                </>
+              ) : (
+                /* Split-View Internacional para Paraguai / Bolívia */
+                <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 32, alignItems: "center", minHeight: 400 }}>
+                  
+                  {/* Lado Esquerdo: Desenho Artístico do País no SVG */}
+                  <div style={{ 
+                    textAlign: "center", 
+                    background: "radial-gradient(circle, #f4fbf4 0%, #ebf5eb 100%)", 
+                    borderRadius: 16, 
+                    padding: 24, 
+                    border: "1px solid rgba(46,125,50,0.12)",
+                    boxShadow: "inset 0 2px 8px rgba(0,0,0,0.02)"
+                  }}>
+                    <svg viewBox="0 0 400 400" style={{ width: "100%", maxHeight: 280, overflow: "visible" }}>
+                      <defs>
+                        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(46,125,50,0.06)" strokeWidth="1" />
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#grid)" rx="10" />
+                      
+                      {/* Outline do País Geométrico Simples */}
+                      {paisSelecionado === "Paraguai" ? (
+                        <>
+                          <path
+                            d="M 180,100 L 250,120 L 300,180 L 320,240 L 280,310 L 230,350 L 160,330 L 110,230 L 120,160 Z"
+                            fill="#2e7d32"
+                            stroke="white"
+                            strokeWidth="3"
+                            style={{ filter: "drop-shadow(0 6px 16px rgba(46,125,50,0.3))" }}
+                          />
+                          {/* Pulsing Pin em Asunción */}
+                          <g className="pulse-pin" style={{ cursor: "pointer" }}>
+                            <circle cx="150" cy="210" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
+                            <circle cx="150" cy="210" r="7" fill="#c9a84c" />
+                            <circle cx="150" cy="210" r="3" fill="white" />
+                          </g>
+                        </>
+                      ) : (
+                        <>
+                          <path
+                            d="M 160,110 L 240,90 L 300,140 L 290,230 L 240,320 L 160,300 L 110,200 L 120,140 Z"
+                            fill="#2e7d32"
+                            stroke="white"
+                            strokeWidth="3"
+                            style={{ filter: "drop-shadow(0 6px 16px rgba(46,125,50,0.3))" }}
+                          />
+                          {/* Pulsing Pin em Santa Cruz de la Sierra */}
+                          <g className="pulse-pin" style={{ cursor: "pointer" }}>
+                            <circle cx="230" cy="210" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
+                            <circle cx="230" cy="210" r="7" fill="#c9a84c" />
+                            <circle cx="230" cy="210" r="3" fill="white" />
+                          </g>
+                        </>
+                      )}
+                    </svg>
+                    <div style={{ marginTop: 16, fontSize: "0.85rem", color: "var(--verde-escuro)", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                      <span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#c9a84c" }} />
+                      Atendimento ativo no {paisSelecionado}
+                    </div>
+                  </div>
+
+                  {/* Lado Direito: Informações do Representante Oficial */}
+                  <div>
+                    <span className="badge badge-ouro" style={{ marginBottom: 12, display: "inline-block", fontSize: "0.7rem", padding: "4px 10px" }}>
+                      PARCEIRO EXCLUSIVO
+                    </span>
+                    <h3 style={{ margin: "0 0 8px", color: "var(--verde-escuro)", fontSize: "1.35rem", fontWeight: 800 }}>
+                      Representação Autorizada
+                    </h3>
+                    <p style={{ color: "var(--cinza-texto)", fontSize: "0.88rem", margin: "0 0 20px", lineHeight: 1.5 }}>
+                      Produtor rural no {paisSelecionado}, entre em contato diretamente com o nosso representante oficial para cotações, visitas técnicas e informações sobre frete.
+                    </p>
+
+                    {dadosInternacionais?.representantes.map((rep, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          background: "#f9fbf9",
+                          border: "1px solid rgba(46,125,50,0.12)",
+                          borderRadius: 16,
+                          padding: 20,
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 16
+                        }}
+                      >
+                        <div>
+                          <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "#1a3a1f" }}>{rep.nome}</div>
+                          {rep.cidade && <div style={{ fontSize: "0.88rem", color: "#555", marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>📍 {rep.cidade}</div>}
+                          {rep.detalhe && <div style={{ fontSize: "0.85rem", color: "#888", fontStyle: "italic", marginTop: 4 }}>{rep.detalhe}</div>}
                         </div>
-                      </foreignObject>
-                    );
-                  })()}
-                </svg>
-              <p style={{ textAlign: "center", fontSize: "0.78rem", color: "var(--cinza-texto)", marginTop: 10 }}>
-                👆 Clique em um estado <strong style={{ color: "#2e7d32" }}>verde</strong> para ver os representantes
-              </p>
+
+                        {rep.telefone && (
+                          <a
+                            href={`https://wa.me/${rep.telefone.replace(/\D/g, '')}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: 10,
+                              background: "linear-gradient(135deg, #25d366, #20ba5a)",
+                              color: "white",
+                              padding: "14px 20px",
+                              borderRadius: 10,
+                              fontSize: "0.95rem",
+                              fontWeight: 700,
+                              textDecoration: "none",
+                              boxShadow: "0 4px 12px rgba(37,211,102,0.25)",
+                              transition: "transform 0.2s ease"
+                            }}
+                            className="tel-link"
+                          >
+                            <span>💬</span> Falar no WhatsApp: {rep.telefone}
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -365,12 +614,7 @@ export default function RepresentantesPage() {
                 <h3 style={{ color: "white", margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>Como funciona</h3>
               </div>
               <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
-                {[
-                  { icon: "1️⃣", text: "Localize seu estado no mapa" },
-                  { icon: "2️⃣", text: "Clique no estado (verde escuro)" },
-                  { icon: "3️⃣", text: "Veja os nomes dos representantes" },
-                  { icon: "4️⃣", text: "Entre em contato diretamente" },
-                ].map((step, i) => (
+                {instrucoes.map((step, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
                     <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{step.icon}</span>
                     <span style={{ fontSize: "0.88rem", color: "var(--cinza-texto)", lineHeight: 1.5 }}>{step.text}</span>
@@ -386,9 +630,13 @@ export default function RepresentantesPage() {
               padding: "24px",
               boxShadow: "0 4px 24px rgba(46,125,50,0.25)",
             }}>
-              <h4 style={{ color: "#c9a84c", margin: "0 0 8px", fontSize: "1rem" }}>Não encontrou seu estado?</h4>
+              <h4 style={{ color: "#c9a84c", margin: "0 0 8px", fontSize: "1rem" }}>
+                {paisSelecionado === "Brasil" ? "Não encontrou seu estado?" : "Dúvidas ou importação?"}
+              </h4>
               <p style={{ color: "rgba(255,255,255,0.75)", margin: "0 0 20px", fontSize: "0.85rem", lineHeight: 1.6 }}>
-                Fale conosco e indicamos o representante mais próximo da sua região.
+                {paisSelecionado === "Brasil" 
+                  ? "Fale conosco e indicamos o representante mais próximo da sua região."
+                  : "Entre em contato direto com a nossa matriz no Brasil para suporte com exportação, frete e distribuições regionais."}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 <Link href="/contato" className="btn-ouro" style={{ textAlign: "center", padding: "10px 16px", fontSize: "0.88rem" }}>
@@ -406,7 +654,7 @@ export default function RepresentantesPage() {
                     textDecoration: "none",
                   }}
                 >
-                  <span>💬</span> WhatsApp
+                  <span>💬</span> WhatsApp Matriz
                 </a>
               </div>
             </div>
@@ -420,9 +668,18 @@ export default function RepresentantesPage() {
               borderLeft: "4px solid #c9a84c",
             }}>
               <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--cinza-texto)", lineHeight: 1.6 }}>
-                <strong style={{ color: "var(--verde-escuro)" }}>Alternativa Cochos</strong> possui representantes em
-                {" "}<strong>{representantesPorEstado.length} estados</strong> brasileiros, com atendimento especializado
-                para produtores rurais em todo o território nacional.
+                {paisSelecionado === "Brasil" ? (
+                  <>
+                    <strong style={{ color: "var(--verde-escuro)" }}>Alternativa Cochos</strong> possui representantes em
+                    {" "}<strong>{representantesPorEstado.filter(e => e.id !== "BO" && e.id !== "PY").length} estados</strong> brasileiros, com atendimento especializado
+                    para produtores rurais em todo o território nacional.
+                  </>
+                ) : (
+                  <>
+                    <strong style={{ color: "var(--verde-escuro)" }}>Alternativa Cochos</strong> expande suas fronteiras e oferece atendimento especializado com representantes locais no
+                    {" "}<strong>{paisSelecionado}</strong>, levando tecnologia e durabilidade para a pecuária internacional.
+                  </>
+                )}
               </p>
             </div>
           </motion.div>
