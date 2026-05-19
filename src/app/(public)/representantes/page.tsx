@@ -526,6 +526,13 @@ export default function RepresentantesPage() {
                             strokeWidth="3"
                             style={{ filter: "drop-shadow(0 6px 16px rgba(46,125,50,0.3))" }}
                           />
+                          {/* Divisões de Estados/Departamentos (Linhas Internas) */}
+                          <path
+                            d="M 230,110 L 180,210 M 155,145 L 230,110 M 115,160 L 180,210 M 180,210 L 305,225 M 230,220 L 255,280 M 180,260 L 230,220 L 282,150 M 200,325 L 230,270 L 305,295 M 230,270 L 260,335 M 180,260 L 200,325"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.32)"
+                            strokeWidth="1.2"
+                          />
                           {/* Pulsing Pin em Asunción */}
                           <g className="pulse-pin" style={{ cursor: "pointer" }}>
                             <circle cx="180" cy="260" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
@@ -541,6 +548,13 @@ export default function RepresentantesPage() {
                             stroke="white"
                             strokeWidth="3"
                             style={{ filter: "drop-shadow(0 6px 16px rgba(46,125,50,0.3))" }}
+                          />
+                          {/* Divisões de Estados/Departamentos (Linhas Internas) */}
+                          <path
+                            d="M 102,120 L 150,140 M 150,140 L 205,175 L 245,170 M 150,140 L 135,220 M 135,220 L 92,250 M 95,295 L 135,280 M 135,280 L 165,330 M 135,220 L 185,240 L 185,290 M 185,290 L 300,290 M 135,320 L 185,290 M 205,175 L 200,220 L 295,230"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.32)"
+                            strokeWidth="1.2"
                           />
                           {/* Pulsing Pin em Santa Cruz de la Sierra */}
                           <g className="pulse-pin" style={{ cursor: "pointer" }}>
