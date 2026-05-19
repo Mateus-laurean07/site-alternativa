@@ -104,7 +104,7 @@ export default function SobrePage() {
                 {[
                   { num: "14+", label: language === "PT" ? "Anos de mercado" : "Years in the market" },
                   { num: "5k+", label: language === "PT" ? "Clientes ativos" : "Active customers" },
-                  { num: "100%", label: language === "PT" ? "Território nacional" : "National territory" },
+                  { num: "100%", label: language === "PT" ? "das regiões atendidas" : "of regions served" },
                   { num: "12+", label: language === "PT" ? "Produtos na linha" : "Products in line" },
                 ].map((s) => (
                   <div key={s.label} style={{ background: "var(--verde-suave)", borderRadius: 12, padding: "20px 16px", textAlign: "center" }}>
