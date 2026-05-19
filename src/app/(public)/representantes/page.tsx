@@ -4,6 +4,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { representantesPorEstado, getRepresentantesByEstado } from "@/data/representantes";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  departamentosParaguai,
+  capitalParaguai,
+  departamentosBolivia,
+  capitaisBolivia,
+} from "@/data/mapas-internacionais";
 
 type Estado = {
   id: string;
@@ -47,6 +53,7 @@ export default function RepresentantesPage() {
   const { language } = useLanguage();
   const [estadoSelecionado, setEstadoSelecionado] = useState<string | null>(null);
   const [paisSelecionado, setPaisSelecionado] = useState<"Brasil" | "Paraguai" | "Bolívia">("Brasil");
+  const [hoveredDep, setHoveredDep] = useState<string | null>(null);
 
   const dadosEstado = estadoSelecionado ? getRepresentantesByEstado(estadoSelecionado) : null;
   const dadosInternacionais = paisSelecionado === "Paraguai"
@@ -501,6 +508,7 @@ export default function RepresentantesPage() {
                   
                   {/* Lado Esquerdo: Desenho Artístico do País no SVG */}
                   <div style={{ 
+                    position: "relative",
                     textAlign: "center", 
                     background: "radial-gradient(circle, #f4fbf4 0%, #ebf5eb 100%)", 
                     borderRadius: 16, 
@@ -508,61 +516,122 @@ export default function RepresentantesPage() {
                     border: "1px solid rgba(46,125,50,0.12)",
                     boxShadow: "inset 0 2px 8px rgba(0,0,0,0.02)"
                   }}>
-                    <svg viewBox="0 0 400 400" style={{ width: "100%", maxHeight: 280, overflow: "visible" }}>
+                    {/* Floating Tooltip para os departamentos */}
+                    {hoveredDep && (
+                      <div style={{
+                        position: "absolute",
+                        top: 16,
+                        left: 16,
+                        background: "rgba(30, 80, 40, 0.95)",
+                        color: "white",
+                        padding: "6px 12px",
+                        borderRadius: 8,
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        pointerEvents: "none",
+                        zIndex: 10,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        fontFamily: "Inter, sans-serif",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6
+                      }}>
+                        <span>📌</span> {
+                          (paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia)
+                            .find(d => d.id === hoveredDep)?.nome
+                        }
+                      </div>
+                    )}
+                    <svg viewBox="0 0 500 500" style={{ width: "100%", maxHeight: 360, overflow: "visible" }}>
                       <defs>
                         <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
                           <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(46,125,50,0.06)" strokeWidth="1" />
                         </pattern>
+                        <filter id="countryShadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#2e7d32" floodOpacity="0.25" />
+                        </filter>
                       </defs>
                       <rect width="100%" height="100%" fill="url(#grid)" rx="10" />
-                      
-                      {/* Outline do País Geométrico Realista */}
+
+                      {/* Departamentos como paths individuais */}
+                      <g filter="url(#countryShadow)">
+                        {(paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia).map((dep) => (
+                          <path
+                            key={dep.id}
+                            d={dep.path}
+                            fill={hoveredDep === dep.id ? "#388e3c" : "#2e7d32"}
+                            stroke="white"
+                            strokeWidth={hoveredDep === dep.id ? "2.2" : "1.8"}
+                            strokeLinejoin="round"
+                            style={{
+                              cursor: "pointer",
+                              transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                              filter: hoveredDep === dep.id ? "brightness(1.1) drop-shadow(0 2px 6px rgba(0,0,0,0.15))" : "none"
+                            }}
+                            onMouseEnter={() => setHoveredDep(dep.id)}
+                            onMouseLeave={() => setHoveredDep(null)}
+                          >
+                            <title>{dep.nome}</title>
+                          </path>
+                        ))}
+                      </g>
+
+                      {/* Labels dos departamentos */}
+                      {(paisSelecionado === "Paraguai" ? departamentosParaguai : departamentosBolivia).map((dep) => (
+                        <text
+                          key={`label-${dep.id}`}
+                          x={dep.labelX}
+                          y={dep.labelY}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          style={{
+                            fill: "white",
+                            fontSize: "8px",
+                            fontWeight: 700,
+                            fontFamily: "Inter, sans-serif",
+                            pointerEvents: "none",
+                            userSelect: "none",
+                            textShadow: "0 1px 2px rgba(0,0,0,0.3)",
+                          }}
+                        >
+                          {dep.id}
+                        </text>
+                      ))}
+
+                      {/* Pin(s) das capitais */}
                       {paisSelecionado === "Paraguai" ? (
-                        <>
-                          <path
-                            d="M 115,80 L 230,70 L 230,110 L 270,112 L 282,150 L 310,180 L 305,225 L 318,255 L 305,295 L 285,320 L 260,335 L 230,342 L 200,325 L 182,305 L 180,260 L 155,230 L 130,200 L 115,160 L 98,135 Z"
-                            fill="#2e7d32"
-                            stroke="white"
-                            strokeWidth="3"
-                            style={{ filter: "drop-shadow(0 6px 16px rgba(46,125,50,0.3))" }}
-                          />
-                          {/* Divisões de Estados/Departamentos (Linhas Internas) */}
-                          <path
-                            d="M 230,110 L 180,210 M 155,145 L 230,110 M 115,160 L 180,210 M 180,210 L 305,225 M 230,220 L 255,280 M 180,260 L 230,220 L 282,150 M 200,325 L 230,270 L 305,295 M 230,270 L 260,335 M 180,260 L 200,325"
-                            fill="none"
-                            stroke="rgba(255,255,255,0.32)"
-                            strokeWidth="1.2"
-                          />
-                          {/* Pulsing Pin em Asunción */}
-                          <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <circle cx="180" cy="260" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
-                            <circle cx="180" cy="260" r="7" fill="#c9a84c" />
-                            <circle cx="180" cy="260" r="3" fill="white" />
-                          </g>
-                        </>
+                        <g className="pulse-pin" style={{ cursor: "pointer" }}>
+                          <title>{capitalParaguai.nome}</title>
+                          <circle cx={capitalParaguai.x} cy={capitalParaguai.y} r="14" fill="none" stroke="#c9a84c" strokeWidth="2" opacity="0.6" />
+                          <circle cx={capitalParaguai.x} cy={capitalParaguai.y} r="7" fill="#c9a84c" />
+                          <circle cx={capitalParaguai.x} cy={capitalParaguai.y} r="3" fill="white" />
+                          <text
+                            x={capitalParaguai.x}
+                            y={capitalParaguai.y + 22}
+                            textAnchor="middle"
+                            style={{ fill: "#c9a84c", fontSize: "9px", fontWeight: 800, fontFamily: "Inter, sans-serif", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
+                          >
+                            ★ {capitalParaguai.nome}
+                          </text>
+                        </g>
                       ) : (
-                        <>
-                          <path
-                            d="M 80,95 L 110,105 L 150,85 L 170,120 L 205,145 L 245,170 L 280,180 L 300,195 L 295,230 L 305,255 L 300,290 L 270,290 L 250,295 L 220,320 L 185,320 L 165,330 L 135,320 L 110,315 L 95,295 L 92,250 L 85,210 L 100,180 L 92,150 L 102,120 Z"
-                            fill="#2e7d32"
-                            stroke="white"
-                            strokeWidth="3"
-                            style={{ filter: "drop-shadow(0 6px 16px rgba(46,125,50,0.3))" }}
-                          />
-                          {/* Divisões de Estados/Departamentos (Linhas Internas) */}
-                          <path
-                            d="M 102,120 L 150,140 M 150,140 L 205,175 L 245,170 M 150,140 L 135,220 M 135,220 L 92,250 M 95,295 L 135,280 M 135,280 L 165,330 M 135,220 L 185,240 L 185,290 M 185,290 L 300,290 M 135,320 L 185,290 M 205,175 L 200,220 L 295,230"
-                            fill="none"
-                            stroke="rgba(255,255,255,0.32)"
-                            strokeWidth="1.2"
-                          />
-                          {/* Pulsing Pin em Santa Cruz de la Sierra */}
-                          <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <circle cx="210" cy="220" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
-                            <circle cx="210" cy="220" r="7" fill="#c9a84c" />
-                            <circle cx="210" cy="220" r="3" fill="white" />
+                        capitaisBolivia.map((cap) => (
+                          <g key={cap.nome} className="pulse-pin" style={{ cursor: "pointer" }}>
+                            <title>{cap.nome}</title>
+                            <circle cx={cap.x} cy={cap.y} r="14" fill="none" stroke="#c9a84c" strokeWidth="2" opacity="0.6" />
+                            <circle cx={cap.x} cy={cap.y} r="7" fill="#c9a84c" />
+                            <circle cx={cap.x} cy={cap.y} r="3" fill="white" />
+                            <text
+                              x={cap.x}
+                              y={cap.y + 22}
+                              textAnchor="middle"
+                              style={{ fill: "#c9a84c", fontSize: "9px", fontWeight: 800, fontFamily: "Inter, sans-serif", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
+                            >
+                              ★ {cap.nome}
+                            </text>
                           </g>
-                        </>
+                        ))
                       )}
                     </svg>
                     <div style={{ marginTop: 16, fontSize: "0.85rem", color: "var(--verde-escuro)", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
