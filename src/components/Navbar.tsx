@@ -40,10 +40,11 @@ export default function Navbar() {
   const textColor = "rgba(255,255,255,0.95)";
 
   // Logo muda conforme idioma
+  // Logo muda conforme idioma — todas com fundo transparente
   const logoMap: Record<string, string> = {
-    PT: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
-    EN: "/images/logo/Alternativa Comederos - Horizontal branca1.png",
-    ES: "/images/logo/Alternativa Comederos - ESP.png",
+    PT: "/images/logo/logo-pt-perfect.png",
+    EN: "/images/logo/logo-en-perfect.png",
+    ES: "/images/logo/logo-es-perfect.png",
   };
   const logoSrc = logoMap[language] || logoMap.PT;
 
@@ -76,11 +77,12 @@ export default function Navbar() {
             <img
               src={logoSrc}
               alt={t("brand.name")}
-            style={{
-              height: "90px",
-              width: "auto",
-              objectFit: "contain",
-            }}
+              style={{
+                height: "50px",
+                width: "200px",
+                objectFit: "contain",
+                objectPosition: "left",
+              }}
             />
           </Link>
 

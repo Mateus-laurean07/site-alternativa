@@ -7,11 +7,11 @@ export default function Footer() {
   const year = new Date().getFullYear();
   const { language, t } = useLanguage();
 
-  // Logo muda conforme idioma — cada idioma tem sua versão
+  // Logo muda conforme idioma — todas com fundo transparente
   const logoMap: Record<string, string> = {
-    PT: "/images/logo/Alternativa Comederos - Horizontal branca2.png",
-    EN: "/images/logo/Alternativa Comederos - Horizontal branca1.png",
-    ES: "/images/logo/Alternativa Comederos - ESP.png",
+    PT: "/images/logo/logo-pt-perfect.png",
+    EN: "/images/logo/logo-en-perfect.png",
+    ES: "/images/logo/logo-es-perfect.png",
   };
   const logoSrc = logoMap[language] || logoMap.PT;
 
@@ -39,7 +39,7 @@ export default function Footer() {
               <img
                 src={logoSrc}
                 alt={t("brand.name")}
-                style={{ height: 80, objectFit: "contain" }}
+                style={{ height: 60, width: 220, objectFit: "contain", objectPosition: "left" }}
               />
             </div>
             <p
