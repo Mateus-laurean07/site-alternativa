@@ -161,6 +161,38 @@ export default function RepresentantesPage() {
           transform: scale(1.03) translateX(2px);
           color: #b59543 !important;
         }
+        .main-representantes-grid {
+          display: grid;
+          grid-template-columns: 1fr 320px;
+          gap: 32px;
+          align-items: start;
+        }
+        .map-wrapper-card {
+          padding: 28px 28px 16px;
+        }
+        .intl-split-view {
+          display: grid;
+          grid-template-columns: 1.1fr 1fr;
+          gap: 32px;
+          align-items: center;
+          min-height: 400px;
+        }
+        @media (max-width: 992px) {
+          .main-representantes-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+        }
+        @media (max-width: 768px) {
+          .map-wrapper-card {
+            padding: 16px;
+          }
+          .intl-split-view {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            min-height: auto;
+          }
+        }
       `}</style>
 
       {/* HERO */}
@@ -292,7 +324,7 @@ export default function RepresentantesPage() {
           </div>
 
           {/* Grid: Mapa | Painel */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 32, alignItems: "start" }}>
+          <div className="main-representantes-grid">
 
           {/* MAPA */}
           <motion.div
@@ -301,11 +333,10 @@ export default function RepresentantesPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <div style={{
+            <div className="map-wrapper-card" style={{
               background: "white",
               borderRadius: 20,
               boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-              padding: "28px 28px 16px",
             }}>
               {paisSelecionado === "Brasil" ? (
                 <>
@@ -466,7 +497,7 @@ export default function RepresentantesPage() {
                 </>
               ) : (
                 /* Split-View Internacional para Paraguai / Bolívia */
-                <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 32, alignItems: "center", minHeight: 400 }}>
+                <div className="intl-split-view">
                   
                   {/* Lado Esquerdo: Desenho Artístico do País no SVG */}
                   <div style={{ 
