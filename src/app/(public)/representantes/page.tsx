@@ -471,7 +471,7 @@ export default function RepresentantesPage() {
                                     <span style={{ fontSize: 11, fontWeight: 700, color: "#1a3a1f" }}>{rep.nome}</span>
                                     {rep.telefone && (
                                       <a 
-                                        href={`https://wa.me/55${rep.telefone.replace(/\D/g, '')}`}
+                                        href={`https://wa.me/${rep.telefone.replace(/\D/g, '').startsWith('55') ? rep.telefone.replace(/\D/g, '') : '55' + rep.telefone.replace(/\D/g, '')}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="tel-link"
@@ -516,11 +516,11 @@ export default function RepresentantesPage() {
                       </defs>
                       <rect width="100%" height="100%" fill="url(#grid)" rx="10" />
                       
-                      {/* Outline do País Geométrico Simples */}
+                      {/* Outline do País Geométrico Realista */}
                       {paisSelecionado === "Paraguai" ? (
                         <>
                           <path
-                            d="M 180,100 L 250,120 L 300,180 L 320,240 L 280,310 L 230,350 L 160,330 L 110,230 L 120,160 Z"
+                            d="M 120,120 L 220,100 L 220,135 L 270,135 L 295,170 L 315,200 L 320,235 L 300,270 L 270,305 L 230,320 L 185,310 L 180,250 L 155,230 L 130,200 L 115,170 L 100,140 Z"
                             fill="#2e7d32"
                             stroke="white"
                             strokeWidth="3"
@@ -528,15 +528,15 @@ export default function RepresentantesPage() {
                           />
                           {/* Pulsing Pin em Asunción */}
                           <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <circle cx="150" cy="210" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
-                            <circle cx="150" cy="210" r="7" fill="#c9a84c" />
-                            <circle cx="150" cy="210" r="3" fill="white" />
+                            <circle cx="180" cy="250" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
+                            <circle cx="180" cy="250" r="7" fill="#c9a84c" />
+                            <circle cx="180" cy="250" r="3" fill="white" />
                           </g>
                         </>
                       ) : (
                         <>
                           <path
-                            d="M 160,110 L 240,90 L 300,140 L 290,230 L 240,320 L 160,300 L 110,200 L 120,140 Z"
+                            d="M 100,90 L 160,105 L 200,130 L 250,170 L 290,175 L 310,195 L 305,240 L 320,270 L 290,300 L 250,300 L 220,330 L 185,330 L 155,335 L 125,325 L 95,305 L 85,255 L 85,205 L 100,175 L 90,130 Z"
                             fill="#2e7d32"
                             stroke="white"
                             strokeWidth="3"
@@ -544,9 +544,9 @@ export default function RepresentantesPage() {
                           />
                           {/* Pulsing Pin em Santa Cruz de la Sierra */}
                           <g className="pulse-pin" style={{ cursor: "pointer" }}>
-                            <circle cx="230" cy="210" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
-                            <circle cx="230" cy="210" r="7" fill="#c9a84c" />
-                            <circle cx="230" cy="210" r="3" fill="white" />
+                            <circle cx="220" cy="225" r="16" fill="none" stroke="#c9a84c" strokeWidth="2.5" />
+                            <circle cx="220" cy="225" r="7" fill="#c9a84c" />
+                            <circle cx="220" cy="225" r="3" fill="white" />
                           </g>
                         </>
                       )}
@@ -590,7 +590,7 @@ export default function RepresentantesPage() {
                         </div>
                         {rep.telefone && (
                           <a
-                            href={`https://wa.me/55${rep.telefone.replace(/\D/g, '')}`}
+                            href={`https://wa.me/${rep.telefone.replace(/\D/g, '').startsWith('55') ? rep.telefone.replace(/\D/g, '') : '55' + rep.telefone.replace(/\D/g, '')}`}
                             target="_blank"
                             rel="noreferrer"
                             style={{

@@ -134,14 +134,14 @@ export const representantesPorEstado: EstadoRepresentantes[] = [
     id: "BO",
     nome: "Bolívia",
     representantes: [
-      { nome: "Matriz (Direcionamento)", telefone: "(65) 99990-2024", detalhe: "Telefone Fixo: (65) 3549-4354" }
+      { nome: "Matriz (Direcionamento)", telefone: "+55 (65) 3549-4354", detalhe: "Atendimento Internacional" }
     ],
   },
   {
     id: "PY",
     nome: "Paraguai",
     representantes: [
-      { nome: "Matriz (Direcionamento)", telefone: "(65) 99990-2024", detalhe: "Telefone Fixo: (65) 3549-4354" }
+      { nome: "Matriz (Direcionamento)", telefone: "+55 (65) 3549-4354", detalhe: "Atendimento Internacional" }
     ],
   },
 ];
