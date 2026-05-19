@@ -134,14 +134,14 @@ export const representantesPorEstado: EstadoRepresentantes[] = [
     id: "BO",
     nome: "Bolívia",
     representantes: [
-      { nome: "Juan Carlos (Representante Oficial)", telefone: "+591 700 12345", cidade: "Santa Cruz de la Sierra", detalhe: "Atendimento e suporte técnico na Bolívia" }
+      { nome: "Matriz (Direcionamento)", telefone: "(65) 99990-2024", detalhe: "Telefone Fixo: (65) 3549-4354" }
     ],
   },
   {
     id: "PY",
     nome: "Paraguai",
     representantes: [
-      { nome: "Carlos Bogado (Representante Oficial)", telefone: "+595 981 123456", cidade: "Asunción", detalhe: "Atendimento e suporte técnico no Paraguai" }
+      { nome: "Matriz (Direcionamento)", telefone: "(65) 99990-2024", detalhe: "Telefone Fixo: (65) 3549-4354" }
     ],
   },
 ];

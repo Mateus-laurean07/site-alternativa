@@ -557,10 +557,9 @@ export default function RepresentantesPage() {
                           {rep.cidade && <div style={{ fontSize: "0.88rem", color: "#555", marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>📍 {rep.cidade}</div>}
                           {rep.detalhe && <div style={{ fontSize: "0.85rem", color: "#888", fontStyle: "italic", marginTop: 4 }}>{rep.detalhe}</div>}
                         </div>
-
                         {rep.telefone && (
                           <a
-                            href={`https://wa.me/${rep.telefone.replace(/\D/g, '')}`}
+                            href={`https://wa.me/55${rep.telefone.replace(/\D/g, '')}`}
                             target="_blank"
                             rel="noreferrer"
                             style={{
@@ -582,8 +581,7 @@ export default function RepresentantesPage() {
                           >
                             <span>💬</span> Falar no WhatsApp: {rep.telefone}
                           </a>
-                        )}
-                      </div>
+                        )}                      </div>
                     ))}
                   </div>
 
